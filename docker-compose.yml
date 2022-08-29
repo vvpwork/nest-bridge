@@ -1,0 +1,39 @@
+version: '3.2'
+services:
+  postgres:
+    image: postgres:11
+    container_name: postgres_bridge
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+    logging:
+      options:
+        max-size: 10m
+        max-file: '3'
+    ports:
+      - '54380:5432'
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: rabbitmq_bridge
+    hostname: rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+      - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+
+    healthcheck:
+      test: [ "CMD", "nc", "-z", "localhost", "5672" ]
+      interval: 5s
+      timeout: 15s
+      retries: 1
+
+  redis_db:
+    image: redis:alpine
+    container_name: redis_bridge
+    command: redis-server --appendonly yes
+    ports:
+      - 6379:6379
