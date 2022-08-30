@@ -1,7 +1,7 @@
-import { Module } from '@nestjs/common'
+import { Module } from '@nestjs/common';
 
-import { ExampleController } from './controllers'
-import { ExampleService } from './services'
+import { ExampleController } from './controllers';
+import { ExampleService } from './services';
 // import { configuration } from './config/configuration.js'
 
 @Module({

@@ -1,9 +1,10 @@
-import { config } from '@/common/config'
-import { ExceptionsFilter } from '@/common/filters'
-import { Module, ValidationPipe } from '@nestjs/common'
-import { APP_FILTER, APP_PIPE, RouterModule } from '@nestjs/core'
-import { TypeOrmModule } from '@nestjs/typeorm'
-import { ExampleModule } from './example'
+import { Module, ValidationPipe } from '@nestjs/common';
+import { APP_FILTER, APP_PIPE, RouterModule } from '@nestjs/core';
+import { TypeOrmModule } from '@nestjs/typeorm';
+
+import { ExceptionsFilter } from '@/common/filters';
+import { config } from '@/common/config';
+import { ExampleModule } from './example';
 
 const imports = [
   // DB
@@ -16,7 +17,7 @@ const imports = [
       module: ExampleModule,
     },
   ]),
-]
+];
 
 const providers = [
   // Global Guard, Authentication check on all routers
@@ -36,7 +37,7 @@ const providers = [
       whitelist: true,
     }),
   },
-]
+];
 
 @Module({
   imports,

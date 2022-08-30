@@ -9,13 +9,16 @@
     "esModuleInterop": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "useUnknownInCatchVariables": true,
+    "useUnknownInCatchVariables": false,
     "target": "ES2017",
     "sourceMap": true,
     "allowJs": true,
     "outDir": "dist",
     "lib": [
-      "es7"
+      "es6",
+      "es7",
+      "es2017",
+      "DOM"
     ],
     "baseUrl": "./",
     "paths": {

@@ -1,4 +1,4 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-cd ./api && npm run lint:staged && git add .
+cd ./api && npm run format && npm run lint && git add .

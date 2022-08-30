@@ -1,10 +1,5 @@
-import {
-  IsDateString,
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-  IsString,
-} from 'class-validator'
+/* eslint-disable @typescript-eslint/typedef */
+import { IsDateString, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 /**
  * https://github.com/typestack/class-validator#validation-decorators
@@ -12,21 +7,21 @@ import {
  */
 export class ExampleDto {
   @IsNumber()
-  public id!: number
+  public id!: number;
 
   @IsString()
-  public title!: string
+  public title!: string;
 
   @IsOptional()
   @IsString()
-  public content?: string // optional value
+  public content?: string; // optional value
 
   @IsDateString() // ISO 8601
-  public date: string = new Date().toISOString() // default value
+  public date: string = new Date().toISOString(); // default value
 
   @IsNotEmpty()
-  public something!: string
+  public something!: string;
 
   @IsNumber()
-  public page = 1
+  public page = 1;
 }
