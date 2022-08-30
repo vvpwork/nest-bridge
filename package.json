@@ -2,7 +2,9 @@
   "name": "bridgetower",
   "version": "0.0.1",
   "private": true,
-  "dependencies": {},
+  "dependencies": {
+    "husky": "^8.0.1"
+  },
   "scripts": {},
   "browserslist": {
     "production": [
