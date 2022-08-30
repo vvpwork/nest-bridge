@@ -1,3 +1,4 @@
+/* eslint-disable promise/valid-params */
 import { ArgumentsHost, Catch, HttpException, HttpStatus, Logger } from '@nestjs/common';
 import { BaseExceptionFilter } from '@nestjs/core';
 
