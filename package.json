@@ -5,7 +5,9 @@
   "dependencies": {
     "husky": "^8.0.1"
   },
-  "scripts": {},
+  "scripts": {
+    "prepare": "husky install"
+  },
   "browserslist": {
     "production": [
       ">0.2%",
