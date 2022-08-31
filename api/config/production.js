@@ -3,7 +3,7 @@ dotenv.config();
 
 module.exports = {
   port: Number.parseInt(process.env.PORT || '3000', 10),
-  nodeEnv: process.env.NODE_ENV,
+  nodeEnv: process.env.NODE_ENV || 'production',
   jwt: {
     secret: process.env.JWT_SECRET,
   },
@@ -14,5 +14,6 @@ module.exports = {
     name: process.env.DB_NAME || 'postgres',
     username: process.env.DB_USER || 'postgres',
     dialect: process.env.DB_TYPE || 'postgres',
+    schema: process.env.DB_SCHEMA || 'public'
   },
 };
