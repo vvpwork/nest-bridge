@@ -9,7 +9,7 @@ import { ExampleModule } from './modules';
 
 const imports = [
   // DB
-  SequelizeModule.forRoot(config.db),
+  SequelizeModule.forRoot({ ...config.db, models: [], logging: Logger.log }),
 
   ExampleModule,
   RouterModule.register([
