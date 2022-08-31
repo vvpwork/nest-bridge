@@ -1,1 +1,3 @@
 test
+/src/db/migrations
+/src/db/seeds
