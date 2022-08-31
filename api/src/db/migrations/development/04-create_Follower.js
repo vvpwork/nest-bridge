@@ -40,7 +40,7 @@ module.exports = {
     });
 
     queryInterface.addConstraint('Follower', {
-      fields: ['identityId', 'targetIdentityId'],
+      fields: ['profileId', 'targetProfileId'],
       type: 'unique',
       name: 'constraint_profileId_targetProfileId',
     });

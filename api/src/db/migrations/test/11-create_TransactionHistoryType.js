@@ -9,7 +9,7 @@ module.exports = {
     });
 
     await queryInterface.bulkInsert(
-      'NftHistoryType',
+      'TransactionHistoryType',
       [ {
           code: 'buy'
         },
