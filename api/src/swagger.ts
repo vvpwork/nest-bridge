@@ -5,7 +5,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module.js';
 
 /**
- * https://docs.nestjs.com/recipes/swagger.
+ * https://docs.nestjs.com/recipes/swagger
  */
 async function bootstrap(): Promise<string> {
   const app = await NestFactory.create(AppModule);
