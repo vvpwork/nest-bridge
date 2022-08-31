@@ -4,7 +4,7 @@ import morgan from 'morgan';
 import cors from 'cors';
 import helmet from 'helmet';
 import compression from 'compression';
-import { AppModule } from './modules/app.module';
+import { AppModule } from './app.module';
 
 async function bootstrap(): Promise<string> {
   const app = await NestFactory.create(AppModule);
