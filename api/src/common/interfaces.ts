@@ -3,8 +3,8 @@ export interface IConfig {
     host: string;
     port: number;
     password: string;
-    name: string;
+    database: string;
     username: string;
-    dialect: string;
+    dialect: any;
   };
 }
