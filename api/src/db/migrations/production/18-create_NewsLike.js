@@ -1,6 +1,9 @@
+const nodeConfig = require('config');
+const db = nodeConfig.get('db');
+
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('NewsLike', {
+    await queryInterface.createTable({ tableName: 'NewsLike', schema: db.schema }, {
       id: {
         type: Sequelize.BIGINT,
         allowNull: false,
@@ -8,7 +11,7 @@ module.exports = {
         autoIncrement: true,
       },
       profileId: {
-        type: Sequelize.UUID,
+        type: Sequelize.BIGINT,
         allowNull: false,
         references: {
           model: 'Profile',
@@ -38,7 +41,7 @@ module.exports = {
     });
 
     queryInterface.addConstraint('NewsLike', {
-      fields: ['identityId', 'newsId'],
+      fields: ['profileId', 'newsId'],
       type: 'unique',
       name: 'constraint_identityId_newsId',
     });

@@ -1,16 +1,18 @@
+const nodeConfig = require('config');
+const db = nodeConfig.get('db');
+
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Identity', {
+    await queryInterface.createTable({ tableName: 'Identity', schema: db.schema }, {
       id: {
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
+        type: Sequelize.BIGINT,
+        autoIncrement: true,
         allowNull: false,
         primaryKey: true,
       },
       address: {
         type: Sequelize.STRING,
         allowNull: false,
-        primaryKey: true,
       },
       securitizeId: {
         type: Sequelize.STRING,
@@ -25,7 +27,7 @@ module.exports = {
         },
       },
       profileId: {
-        type: Sequelize.UUID,
+        type: Sequelize.BIGINT,
         allowNull: false,
         references: {
           model: 'Profile',
@@ -54,8 +56,8 @@ module.exports = {
         { tableName: 'Identity' },
         {
           type: 'UNIQUE',
-          fields: ['id'],
-          name: 'unique_id',
+          fields: ['address'],
+          name: 'unique_address',
         },
     );
   },

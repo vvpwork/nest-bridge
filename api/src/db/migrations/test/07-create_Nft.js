@@ -1,13 +1,16 @@
+const nodeConfig = require('config');
+const db = nodeConfig.get('db');
+
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Nft', {
+    await queryInterface.createTable({ tableName: 'Nft', schema: db.schema }, {
       id: {
         type: Sequelize.STRING(60),
         allowNull: false,
         primaryKey: true,
       },
       collectionId: {
-        type: Sequelize.UUID,
+        type: Sequelize.STRING(60),
         allowNull: false,
         references: {
           model: 'Collection',
@@ -19,7 +22,6 @@ module.exports = {
       tokenId: {
         type: Sequelize.STRING,
         allowNull: false,
-        primaryKey: true,
       },
       metadata: {
         type: Sequelize.JSONB,
@@ -52,6 +54,15 @@ module.exports = {
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
       },
     });
+
+    await queryInterface.addConstraint(
+        { tableName: 'Nft' },
+        {
+          type: 'UNIQUE',
+          fields: ['tokenId'],
+          name: 'unique_tokenId',
+        },
+    );
   },
 
   down: (queryInterface) => queryInterface.dropTable('Nft'),

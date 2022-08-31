@@ -1,13 +1,16 @@
+const nodeConfig = require('config');
+const db = nodeConfig.get('db');
+
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Nft', {
+    await queryInterface.createTable({ tableName: 'Collection', schema: db.schema }, {
       id: {
         type: Sequelize.STRING(60),
         allowNull: false,
         primaryKey: true,
       },
       identityId: {
-        type: Sequelize.UUID,
+        type: Sequelize.BIGINT,
         allowNull: false,
         references: {
           model: 'Identity',
@@ -43,5 +46,5 @@ module.exports = {
     });
   },
 
-  down: (queryInterface) => queryInterface.dropTable('Nft'),
+  down: (queryInterface) => queryInterface.dropTable('Collection'),
 };

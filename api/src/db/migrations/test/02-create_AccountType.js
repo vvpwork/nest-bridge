@@ -1,6 +1,9 @@
+const nodeConfig = require('config');
+const db = nodeConfig.get('db');
+
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('AccountType', {
+    await queryInterface.createTable({ tableName: 'AccountType', schema: db.schema }, {
       code: {
         type: Sequelize.STRING(16),
         allowNull: false,

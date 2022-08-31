@@ -1,9 +1,12 @@
+const nodeConfig = require('config');
+const db = nodeConfig.get('db');
+
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Profile', {
+    await queryInterface.createTable({ tableName: 'Profile', schema: db.schema }, {
       id: {
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
+        type: Sequelize.BIGINT,
+        autoIncrement: true,
         allowNull: false,
         primaryKey: true,
       },

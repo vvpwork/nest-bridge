@@ -1,6 +1,9 @@
+const nodeConfig = require('config');
+const db = nodeConfig.get('db');
+
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('NftLike', {
+    await queryInterface.createTable({ tableName: 'NftLike', schema: db.schema }, {
       id: {
         type: Sequelize.BIGINT,
         allowNull: false,
@@ -8,7 +11,7 @@ module.exports = {
         autoIncrement: true,
       },
       identityId: {
-        type: Sequelize.UUID,
+        type: Sequelize.BIGINT,
         allowNull: false,
         references: {
           model: 'Identity',
