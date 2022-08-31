@@ -1,14 +1,15 @@
-import { Module, ValidationPipe } from '@nestjs/common';
+import { Module, ValidationPipe, Logger } from '@nestjs/common';
 import { APP_FILTER, APP_PIPE, RouterModule } from '@nestjs/core';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { SequelizeModule } from '@nestjs/sequelize';
 
-import { ExceptionsFilter } from '@/common/filters';
-import { config } from '@/common/config';
-import { ExampleModule } from './example';
+import { config } from '@Common/config';
+import { ExceptionsFilter } from '@Common/filters';
+
+import { ExampleModule } from './modules';
 
 const imports = [
   // DB
-  TypeOrmModule.forRoot(config.db),
+  SequelizeModule.forRoot({ ...config.db, models: [], logging: Logger.log }),
 
   ExampleModule,
   RouterModule.register([

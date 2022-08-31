@@ -1,5 +1,6 @@
 import nodeConfig from 'config';
+import { IConfig } from './interfaces';
 
-export const config = {
+export const config: IConfig = {
   db: nodeConfig.get('db'),
 };

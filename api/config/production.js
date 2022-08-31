@@ -1,5 +1,5 @@
-const dotenv = require('dotenv')
-dotenv.config()
+const dotenv = require('dotenv');
+dotenv.config();
 
 module.exports = {
   port: Number.parseInt(process.env.PORT || '3000', 10),
@@ -13,6 +13,6 @@ module.exports = {
     password: process.env.DB_PASSWORD || 'postgres',
     name: process.env.DB_NAME || 'postgres',
     username: process.env.DB_USER || 'postgres',
-    type: process.env.DB_TYPE || 'postgres',
+    dialect: process.env.DB_TYPE || 'postgres',
   },
-}
+};
