@@ -10,6 +10,7 @@ module.exports = {
         primaryKey: true,
       },
     });
+    // TODO remove from here
 
     await queryInterface.bulkInsert(
       'TransactionHistoryType',

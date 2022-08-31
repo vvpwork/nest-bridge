@@ -11,6 +11,8 @@ module.exports = {
       },
     });
 
+    // TODO remove from here 
+
     await queryInterface.bulkInsert(
       'AccountType',
       [ {
