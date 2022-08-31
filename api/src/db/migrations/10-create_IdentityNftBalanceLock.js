@@ -36,6 +36,10 @@ module.exports = {
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
       },
     });
+
+    await queryInterface.addIndex('IdentityNftBalanceLock', ['unlockTime'], {
+      indexName: 'unlockTime',
+    });
   },
 
   down: (queryInterface) => queryInterface.dropTable('IdentityNftBalanceLock'),
