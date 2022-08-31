@@ -31,6 +31,9 @@ module.exports = {
         {
           code: 'nftsUnlocked'
         },
+        {
+          code: 'newFollower'
+        },
       ]
     );
   },
