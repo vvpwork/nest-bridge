@@ -10,6 +10,15 @@ export interface IConfig {
     username: string;
     dialect: any;
   };
+  redis: {
+    host: string;
+    port: number;
+    password: string;
+  };
+  rabbit: {
+    uri: string;
+    exchangeName: string;
+  };
 }
 
 export interface IProfileModel {

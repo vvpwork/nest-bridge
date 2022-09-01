@@ -1,15 +1,22 @@
 import { Module, ValidationPipe, Logger } from '@nestjs/common';
 import { APP_FILTER, APP_PIPE, RouterModule } from '@nestjs/core';
 import { SequelizeModule } from '@nestjs/sequelize';
+import { RedisModule } from '@liaoliaots/nestjs-redis';
 
 import { config } from '@Common/config';
 import { ExceptionsFilter } from '@Common/filters';
 
-import { ExampleModule } from './modules';
+import { ExampleModule, RabbitExampleModule } from './modules';
 
 const imports = [
-  // DB
+  // DB postgres
   SequelizeModule.forRoot({ ...config.db, models: [], logging: Logger.log }),
+
+  // Redis
+  RedisModule.forRoot({ config: config.redis }),
+
+  // Rabbit
+  RabbitExampleModule,
 
   ExampleModule,
   RouterModule.register([

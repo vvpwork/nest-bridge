@@ -10,7 +10,7 @@
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "node dist/app",
-    "start:dev": "del-cli dist && nest start --watch",
+    "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "lint": "eslint --quiet --fix \"src/**/*.{ts,json}\"",
@@ -26,6 +26,8 @@
     "db:migrate:undo": "npx sequelize-cli db:migrate:undo"
   },
   "dependencies": {
+    "@golevelup/nestjs-rabbitmq": "^3.2.0",
+    "@liaoliaots/nestjs-redis": "^9.0.1",
     "@nestjs/common": "^9.0.0",
     "@nestjs/config": "^2.2.0",
     "@nestjs/core": "^9.0.0",
@@ -40,6 +42,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
     "helmet": "^6.0.0",
+    "ioredis": "^5.2.3",
     "morgan": "^1.10.0",
     "pg": "^8.8.0",
     "reflect-metadata": "^0.1.13",
@@ -64,7 +67,6 @@
     "@types/supertest": "^2.0.11",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
-    "del-cli": "^5.0.0",
     "eslint": "^8.22.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-airbnb-typescript": "^17.0.0",
