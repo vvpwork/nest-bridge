@@ -6,7 +6,7 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
 import { config } from '@Common/config';
 import { ExceptionsFilter } from '@Common/filters';
 
-import { ExampleModule, RabbitExampleModule } from './modules';
+import { AuthModule, ExampleModule, RabbitExampleModule } from './modules';
 
 const imports = [
   // DB postgres
@@ -18,11 +18,16 @@ const imports = [
   // Rabbit
   RabbitExampleModule,
 
+  AuthModule,
   ExampleModule,
   RouterModule.register([
     {
       path: '/example',
       module: ExampleModule,
+    },
+    {
+      path: '/login',
+      module: AuthModule,
     },
   ]),
 ];

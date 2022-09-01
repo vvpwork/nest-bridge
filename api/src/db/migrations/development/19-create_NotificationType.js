@@ -13,35 +13,7 @@ module.exports = {
         },
       },
     );
-
-    // TODO remove from here
-    await queryInterface.bulkInsert('NotificationType', [
-      {
-        code: 'nftSold',
-      },
-      {
-        code: 'royaltyReceived',
-      },
-      {
-        code: 'followingPersonListsNft',
-      },
-      {
-        code: 'followingPersonAddedNews',
-      },
-      {
-        code: 'followingPersonAddedPodcast',
-      },
-      {
-        code: 'followingPersonAddedLibrary',
-      },
-      {
-        code: 'nftsUnlocked',
-      },
-      {
-        code: 'newFollower',
-      },
-    ]);
   },
 
-  down: queryInterface => queryInterface.dropTable('NotificationType'),
+  down: queryInterface => queryInterface.dropTable({ tableName: 'NotificationType', schema: db.schema }),
 };

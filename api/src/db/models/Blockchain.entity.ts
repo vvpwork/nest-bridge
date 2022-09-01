@@ -1,5 +1,4 @@
 import { Table, Column, Model, DataType, PrimaryKey, AllowNull } from 'sequelize-typescript';
-
 import { IBlockchainModel } from '@Common/interfaces';
 
 @Table({

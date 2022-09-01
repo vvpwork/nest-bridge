@@ -61,5 +61,5 @@ module.exports = {
     );
   },
 
-  down: queryInterface => queryInterface.dropTable('Collection'),
+  down: queryInterface => queryInterface.dropTable({ tableName: 'Collection', schema: db.schema }),
 };

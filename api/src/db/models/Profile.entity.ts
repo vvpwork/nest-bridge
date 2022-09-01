@@ -1,20 +1,7 @@
-import {
-  Table,
-  Column,
-  Model,
-  DataType,
-  PrimaryKey,
-  AllowNull,
-  Default,
-  AutoIncrement,
-  HasOne,
-  CreatedAt,
-  UpdatedAt,
-} from 'sequelize-typescript';
-
+import { Table, Column, Model, DataType, PrimaryKey, AllowNull, Default, AutoIncrement, HasOne } from 'sequelize-typescript';
 import { IProfileModel } from '@Common/interfaces';
 import { PROFILE_SECTIONS } from '@Common/enums';
-import { Identity } from '@/db/models/index';
+import { Identity } from '@/db/models/Identity.entity';
 
 @Table({
   tableName: 'Profile',
@@ -66,12 +53,6 @@ export class Profile extends Model<IProfileModel> {
   @Default(Object.values(PROFILE_SECTIONS))
   @Column(DataType.JSONB)
   sections: string;
-
-  @CreatedAt
-  createdAt: Date;
-
-  @UpdatedAt
-  updatedAt: Date;
 
   @HasOne(() => Identity, 'profileId')
   identity: Identity;
