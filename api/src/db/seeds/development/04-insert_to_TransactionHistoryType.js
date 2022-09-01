@@ -1,4 +1,4 @@
-const { upsert } = require('../../utils/helper');
+const { upsertData } = require('../../utils/helper');
 
 module.exports = {
   up: async queryInterface => {
@@ -26,7 +26,7 @@ module.exports = {
       },
     ];
 
-    const transactionHistoryTypesQuery = upsert(
+    const transactionHistoryTypesQuery = upsertData(
       'TransactionHistoryType',
       ['code'],
       transactionHistoryTypes.map(tr => [`'${tr.code}'`]),

@@ -1,16 +1,20 @@
 /* eslint-disable */
 const config = require('config');
-const schema = config.get('database').schema;
+const schema = config.get('db').schema;
 
 const upsertData = (nameTable, dataKeys, dataValues, conflictKey) => {
   const keyConflict = conflictKey || 'id';
-  return `INSERT INTO ${nameTable} (${dataKeys.join(', ')}) VALUES
+  const table = `${schema ? `"${schema}".` : ''}"${nameTable}"`;
+
+  return `INSERT INTO ${table} (${dataKeys.join(', ')}) VALUES
     ${dataValues
       .map(v => {
         return `(${v.join(', ')})`;
       })
       .join(', ')}
-    ON CONFLICT (${keyConflict}) DO UPDATE SET (${dataKeys.join(', ')}) = (${dataKeys.map(v => `EXCLUDED.${v}`).join(', ')})`;
+    ON CONFLICT (${keyConflict}) DO UPDATE SET ${dataKeys.length > 1 ? `(${dataKeys.join(', ')})` : dataKeys[0]} = (${dataKeys
+    .map(v => `EXCLUDED.${v}`)
+    .join(', ')})`;
 };
 
 const resetSequence = async (queryInterface, table) => {

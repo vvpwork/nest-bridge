@@ -1,4 +1,4 @@
-const { upsert } = require('../../utils/helper');
+const { upsertData } = require('../../utils/helper');
 
 module.exports = {
   up: async queryInterface => {
@@ -8,7 +8,7 @@ module.exports = {
       },
     ];
 
-    const balanceStatusesQuery = upsert(
+    const balanceStatusesQuery = upsertData(
       'IdentityNftBalanceStatus',
       ['code'],
       balanceStatuses.map(tr => [`'${tr.code}'`]),

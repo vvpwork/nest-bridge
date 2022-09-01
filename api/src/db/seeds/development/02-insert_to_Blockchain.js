@@ -1,4 +1,4 @@
-const { upsert } = require('../../utils/helper');
+const { upsertData } = require('../../utils/helper');
 
 module.exports = {
   up: async queryInterface => {
@@ -40,7 +40,7 @@ module.exports = {
       },
     ];
 
-    const blockchainsQuery = upsert(
+    const blockchainsQuery = upsertData(
       'Blockchain',
       ['"chainId"', 'name', 'description'],
       blockchains.map(tr => [`'${tr.chainId}','${tr.name}','${tr.description}'`]),
