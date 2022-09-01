@@ -1,4 +1,4 @@
 test
-/src/db/migrations
-/src/db/seeds
-/src/db/utils
+/src/db/migrations/**
+/src/db/seeds/**
+/src/db/utils/*

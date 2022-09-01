@@ -27,6 +27,12 @@
       ],
       "@Common/*": [
         "src/common/*"
+      ],
+      "@DB/*": [
+        "src/db/*"
+      ],
+      "@Modules/*": [
+        "src/modules/*"
       ]
     }
   },
