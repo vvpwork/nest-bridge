@@ -8,7 +8,7 @@ export enum PROFILE_SECTIONS {
 export enum ACCOUNT_TYPES {
   USER = 'user',
   PARTNER = 'partner',
-  ADMIN = 'admin',
+  // ADMIN = 'admin',
 }
 
 export enum BALANCE_STATUSES {
