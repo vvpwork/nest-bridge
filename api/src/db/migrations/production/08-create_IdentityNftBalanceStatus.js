@@ -3,23 +3,17 @@ const db = nodeConfig.get('db');
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable({ tableName: 'IdentityNftBalanceStatus', schema: db.schema }, {
-      code: {
-        type: Sequelize.STRING(16),
-        allowNull: false,
-        primaryKey: true,
-      },
-    });
-
-    await queryInterface.bulkInsert(
-      'IdentityNftBalanceStatus',
-      [
-        {
-          code: 'sold'
+    await queryInterface.createTable(
+      { tableName: 'IdentityNftBalanceStatus', schema: db.schema },
+      {
+        code: {
+          type: Sequelize.STRING(16),
+          allowNull: false,
+          primaryKey: true,
         },
-      ]
+      },
     );
   },
 
-  down: (queryInterface) => queryInterface.dropTable('IdentityNftBalanceStatus'),
+  down: queryInterface => queryInterface.dropTable({ tableName: 'IdentityNftBalanceStatus', schema: db.schema }),
 };

@@ -7,25 +7,18 @@ import {
   AllowNull,
   ForeignKey,
   DefaultScope,
-  Scopes,
   AutoIncrement,
   BelongsTo,
-  CreatedAt,
-  UpdatedAt,
 } from 'sequelize-typescript';
 import { IIdentityModel } from '@Common/interfaces';
 import { Profile } from '@/db/models/Profile.entity';
 import { AccountType } from '@/db/models/AccountType.entity';
-// import { Profile, AccountType } from './index';
 
 @DefaultScope(() => ({
   attributes: {
     exclude: ['nonce'],
   },
   order: [['createdAt', 'DESC']],
-}))
-@Scopes(() => ({
-  clean: {},
 }))
 @Table({
   tableName: 'Identity',
@@ -60,12 +53,6 @@ export class Identity extends Model<IIdentityModel> {
   @Column(DataType.BIGINT)
   nonce: number;
 
-  @CreatedAt
-  createdAt: Date;
-
-  @UpdatedAt
-  updatedAt: Date;
-
-  @BelongsTo(() => Profile, 'identityId')
+  @BelongsTo(() => Profile, 'profileId')
   profile: Profile;
 }

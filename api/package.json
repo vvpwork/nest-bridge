@@ -23,7 +23,9 @@
     "doc": "compodoc -p tsconfig.json -s -d docs",
     "doc:api": "yarn build && node dist/swagger",
     "db:migrate": "npx sequelize-cli db:migrate",
-    "db:migrate:undo": "npx sequelize-cli db:migrate:undo"
+    "db:migrate:undo": "npx sequelize-cli db:migrate:undo",
+    "db:seed": "npx sequelize-cli db:seed:all",
+    "db:seed:undo": "npx sequelize-cli db:seed:undo"
   },
   "dependencies": {
     "@golevelup/nestjs-rabbitmq": "^3.2.0",

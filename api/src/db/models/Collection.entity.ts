@@ -1,20 +1,8 @@
-import {
-  Table,
-  Column,
-  Model,
-  DataType,
-  PrimaryKey,
-  AllowNull,
-  AutoIncrement,
-  CreatedAt,
-  UpdatedAt,
-  ForeignKey,
-  BelongsTo,
-  DefaultScope,
-} from 'sequelize-typescript';
-
+import { Table, Column, Model, DataType, PrimaryKey, AllowNull, ForeignKey, BelongsTo, DefaultScope, Default } from 'sequelize-typescript';
 import { ICollectionModel } from '@Common/interfaces';
-import { Blockchain, Identity } from '@/db/models/index';
+import { randomBytes } from 'node:crypto';
+import { Identity } from '@/db/models/Identity.entity';
+import { Blockchain } from '@/db/models/Blockchain.entity';
 
 @DefaultScope(() => ({
   order: [['createdAt', 'DESC']],
@@ -25,10 +13,10 @@ import { Blockchain, Identity } from '@/db/models/index';
 })
 export class Collection extends Model<ICollectionModel> {
   @PrimaryKey
-  @AutoIncrement
   @AllowNull(false)
-  @Column(DataType.BIGINT)
-  id: number;
+  @Default(randomBytes(20).toString('hex').slice(0, 60))
+  @Column(DataType.STRING(60))
+  id: string;
 
   @ForeignKey(() => Identity)
   @AllowNull(false)
@@ -55,12 +43,6 @@ export class Collection extends Model<ICollectionModel> {
   @AllowNull(false)
   @Column(DataType.INTEGER)
   chainId: number;
-
-  @CreatedAt
-  createdAt: Date;
-
-  @UpdatedAt
-  updatedAt: Date;
 
   @BelongsTo(() => Identity, 'identityId')
   identity: Identity;

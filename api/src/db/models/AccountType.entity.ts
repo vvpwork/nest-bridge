@@ -2,7 +2,7 @@ import { Table, Column, Model, DataType, PrimaryKey, AllowNull } from 'sequelize
 
 @Table({
   tableName: 'AccountType',
-  timestamps: true,
+  timestamps: false,
 })
 export class AccountType extends Model<{ code: string }> {
   @PrimaryKey

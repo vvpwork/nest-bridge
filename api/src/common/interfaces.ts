@@ -1,5 +1,5 @@
-import { ProfileSocials } from '@Common/types';
-import { ACCOUNT_TYPES, PROFILE_SECTIONS } from '@Common/enums';
+import { MetadataObject, ProfileSocials } from '@Common/types';
+import { ACCOUNT_TYPES, BALANCE_STATUSES, NOTIFICATION_TYPES, PROFILE_SECTIONS } from '@Common/enums';
 
 export interface IConfig {
   db: {
@@ -68,6 +68,123 @@ export interface ICollectionModel {
   cover: string;
   logo: string;
   chainId: number;
+  createdAt: any;
+  updatedAt: any;
+}
+
+export interface INftModel {
+  id: string;
+  collectionId: string;
+  tokenId: string;
+  thumbnail: string;
+  amount: number;
+  metadata: MetadataObject;
+  creatorIds: string[];
+  royaltyIds: string[];
+  royalty: number;
+  totalSupply: number;
+  createdAt: any;
+  updatedAt: any;
+}
+
+export interface IIdentityBalanceModel {
+  id: number;
+  identityId: number;
+  nftId: string;
+  amount: number;
+  status: BALANCE_STATUSES;
+  createdAt: any;
+  updatedAt: any;
+}
+
+export interface IIdentityNftBalanceLock {
+  id: number;
+  identityNftBalanceId: number;
+  amount: number;
+  unlockTime: number;
+  createdAt: any;
+  updatedAt: any;
+}
+
+export interface ITransactionHistory {
+  id: number;
+  identityId: number;
+  nftId: string;
+  amount: number;
+  price: string;
+  txHash: string;
+  type: string;
+  createdAt: any;
+  updatedAt: any;
+}
+
+export interface IOrderModel {
+  id: number;
+  identityId: number;
+  nftId: string;
+  amount: number;
+  price: string;
+  decimals: string;
+  signature: string;
+  metadata: any;
+  createdAt: any;
+  updatedAt: any;
+}
+
+export interface INftLikeModel {
+  id: number;
+  identityId: number;
+  nftId: string;
+  createdAt: any;
+  updatedAt: any;
+}
+
+export interface ILibraryModel {
+  id: string;
+  profileId: number;
+  title: string;
+  image: string;
+  source: string;
+  createdAt: any;
+  updatedAt: any;
+}
+
+export interface IPodcastModel {
+  id: string;
+  profileId: number;
+  title: string;
+  description: string;
+  image: string;
+  source: string;
+  createdAt: any;
+  updatedAt: any;
+}
+
+export interface INewsModel {
+  id: string;
+  profileId: number;
+  title: string;
+  description: string;
+  image: string;
+  source: string;
+  createdAt: any;
+  updatedAt: any;
+}
+
+export interface INewsLikeModel {
+  id: string;
+  profileId: number;
+  newsId: string;
+  createdAt: any;
+  updatedAt: any;
+}
+
+export interface INotificationModel {
+  id: number;
+  profileId: string;
+  params: any;
+  type: NOTIFICATION_TYPES;
+  isRead: boolean;
   createdAt: any;
   updatedAt: any;
 }

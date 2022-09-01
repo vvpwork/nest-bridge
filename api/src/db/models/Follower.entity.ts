@@ -9,8 +9,6 @@ import {
   BelongsTo,
   ForeignKey,
   DefaultScope,
-  CreatedAt,
-  UpdatedAt,
 } from 'sequelize-typescript';
 import { IFollowerModel } from '@Common/interfaces';
 import { Profile } from '@/db/models/Profile.entity';
@@ -39,12 +37,6 @@ export class Follower extends Model<IFollowerModel> {
   @AllowNull(false)
   @Column(DataType.BIGINT)
   targetProfileId: number;
-
-  @CreatedAt
-  createdAt: Date;
-
-  @UpdatedAt
-  updatedAt: Date;
 
   @BelongsTo(() => Profile, 'profileId')
   profile: Profile;
