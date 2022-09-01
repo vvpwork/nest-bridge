@@ -1,8 +1,8 @@
 import { Table, Column, Model, DataType, PrimaryKey, AllowNull, ForeignKey, BelongsTo, DefaultScope, Default } from 'sequelize-typescript';
 import { ICollectionModel } from '@Common/interfaces';
 import { randomBytes } from 'node:crypto';
-import { Identity } from '@/db/models/Identity.entity';
-import { Blockchain } from '@/db/models/Blockchain.entity';
+import { IdentityEntity } from '@/db/models/Identity.entity';
+import { BlockchainEntity } from '@/db/models/Blockchain.entity';
 
 @DefaultScope(() => ({
   order: [['createdAt', 'DESC']],
@@ -11,14 +11,14 @@ import { Blockchain } from '@/db/models/Blockchain.entity';
   tableName: 'Collection',
   timestamps: true,
 })
-export class Collection extends Model<ICollectionModel> {
+export class CollectionEntity extends Model<ICollectionModel> {
   @PrimaryKey
   @AllowNull(false)
   @Default(randomBytes(20).toString('hex').slice(0, 60))
   @Column(DataType.STRING(60))
   id: string;
 
-  @ForeignKey(() => Identity)
+  @ForeignKey(() => IdentityEntity)
   @AllowNull(false)
   @Column(DataType.BIGINT)
   identityId: number;
@@ -39,14 +39,14 @@ export class Collection extends Model<ICollectionModel> {
   @Column(DataType.STRING)
   logo: string;
 
-  @ForeignKey(() => Blockchain)
+  @ForeignKey(() => BlockchainEntity)
   @AllowNull(false)
   @Column(DataType.INTEGER)
   chainId: number;
 
-  @BelongsTo(() => Identity, 'identityId')
-  identity: Identity;
+  @BelongsTo(() => IdentityEntity, 'identityId')
+  identity: IdentityEntity;
 
-  @BelongsTo(() => Blockchain, 'chainId')
-  blockchain: Blockchain;
+  @BelongsTo(() => BlockchainEntity, 'chainId')
+  blockchain: BlockchainEntity;
 }

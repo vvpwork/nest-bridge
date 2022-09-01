@@ -1,7 +1,7 @@
 import { Table, Column, Model, DataType, PrimaryKey, DefaultScope, AllowNull, Default, ForeignKey, BelongsTo } from 'sequelize-typescript';
 import { randomBytes } from 'node:crypto';
 import { INewsModel } from '@Common/interfaces';
-import { Profile } from '@/db/models/Profile.entity';
+import { ProfileEntity } from '@/db/models/Profile.entity';
 
 @DefaultScope(() => ({
   order: [['createdAt', 'DESC']],
@@ -10,14 +10,14 @@ import { Profile } from '@/db/models/Profile.entity';
   tableName: 'News',
   timestamps: true,
 })
-export class News extends Model<INewsModel> {
+export class NewsEntity extends Model<INewsModel> {
   @PrimaryKey
   @AllowNull(false)
   @Default(randomBytes(20).toString('hex').slice(0, 60))
   @Column(DataType.STRING(60))
   id: string;
 
-  @ForeignKey(() => Profile)
+  @ForeignKey(() => ProfileEntity)
   @AllowNull(false)
   @Column(DataType.BIGINT)
   profileId: number;
@@ -38,6 +38,6 @@ export class News extends Model<INewsModel> {
   @Column(DataType.STRING)
   source: string;
 
-  @BelongsTo(() => Profile, 'profileId')
-  profile: Profile;
+  @BelongsTo(() => ProfileEntity, 'profileId')
+  profile: ProfileEntity;
 }

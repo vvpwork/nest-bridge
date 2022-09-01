@@ -20,6 +20,7 @@ const imports = [
 
   AuthModule,
   ExampleModule,
+  ProfileModule,
   RouterModule.register([
     {
       path: '/example',

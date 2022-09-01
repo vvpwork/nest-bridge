@@ -11,7 +11,7 @@ import {
   DefaultScope,
 } from 'sequelize-typescript';
 import { IFollowerModel } from '@Common/interfaces';
-import { Profile } from '@/db/models/Profile.entity';
+import { ProfileEntity } from '@/db/models/Profile.entity';
 
 @DefaultScope(() => ({
   attributes: ['identityId', 'targetIdentityId'],
@@ -21,26 +21,26 @@ import { Profile } from '@/db/models/Profile.entity';
   tableName: 'Follower',
   timestamps: true,
 })
-export class Follower extends Model<IFollowerModel> {
+export class FollowerEntity extends Model<IFollowerModel> {
   @PrimaryKey
   @AllowNull(false)
   @AutoIncrement
   @Column(DataType.BIGINT)
   id: number;
 
-  @ForeignKey(() => Profile)
+  @ForeignKey(() => ProfileEntity)
   @AllowNull(false)
   @Column(DataType.BIGINT)
   profileId: number;
 
-  @ForeignKey(() => Profile)
+  @ForeignKey(() => ProfileEntity)
   @AllowNull(false)
   @Column(DataType.BIGINT)
   targetProfileId: number;
 
-  @BelongsTo(() => Profile, 'profileId')
-  profile: Profile;
+  @BelongsTo(() => ProfileEntity, 'profileId')
+  profile: ProfileEntity;
 
-  @BelongsTo(() => Profile, 'targetProfileId')
-  target: Profile;
+  @BelongsTo(() => ProfileEntity, 'targetProfileId')
+  target: ProfileEntity;
 }

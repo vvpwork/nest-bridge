@@ -11,9 +11,9 @@ import {
   AutoIncrement,
 } from 'sequelize-typescript';
 import { IIdentityBalanceModel } from '@Common/interfaces';
-import { Identity } from '@/db/models/Identity.entity';
-import { Nft } from '@/db/models/Nft.entity';
-import { IdentityNftBalanceStatus } from '@/db/models/IdentityNftBalanceStatus.entity';
+import { IdentityEntity } from '@/db/models/Identity.entity';
+import { NftEntity } from '@/db/models/Nft.entity';
+import { IdentityNftBalanceStatusEntity } from '@/db/models/IdentityNftBalanceStatus.entity';
 
 @DefaultScope(() => ({
   order: [['createdAt', 'DESC']],
@@ -22,19 +22,19 @@ import { IdentityNftBalanceStatus } from '@/db/models/IdentityNftBalanceStatus.e
   tableName: 'IdentityNftBalance',
   timestamps: true,
 })
-export class IdentityNftBalance extends Model<IIdentityBalanceModel> {
+export class IdentityNftBalanceEntity extends Model<IIdentityBalanceModel> {
   @PrimaryKey
   @AutoIncrement
   @AllowNull(false)
   @Column(DataType.BIGINT)
   id: number;
 
-  @ForeignKey(() => Identity)
+  @ForeignKey(() => IdentityEntity)
   @AllowNull(false)
   @Column(DataType.BIGINT)
   identityId: number;
 
-  @ForeignKey(() => Nft)
+  @ForeignKey(() => NftEntity)
   @AllowNull(false)
   @Column(DataType.STRING(60))
   nftId: string;
@@ -43,14 +43,14 @@ export class IdentityNftBalance extends Model<IIdentityBalanceModel> {
   @Column(DataType.INTEGER)
   amount: number;
 
-  @ForeignKey(() => IdentityNftBalanceStatus)
+  @ForeignKey(() => IdentityNftBalanceStatusEntity)
   @AllowNull(false)
   @Column(DataType.STRING)
   status: string;
 
-  @BelongsTo(() => Identity, 'identityId')
-  identity: Identity;
+  @BelongsTo(() => IdentityEntity, 'identityId')
+  identity: IdentityEntity;
 
-  @BelongsTo(() => Nft, 'nftId')
-  nft: Nft;
+  @BelongsTo(() => NftEntity, 'nftId')
+  nft: NftEntity;
 }

@@ -5,7 +5,7 @@ import { IBlockchainModel } from '@Common/interfaces';
   tableName: 'Blockchain',
   timestamps: false,
 })
-export class Blockchain extends Model<IBlockchainModel> {
+export class BlockchainEntity extends Model<IBlockchainModel> {
   @PrimaryKey
   @AllowNull(false)
   @Column(DataType.INTEGER)

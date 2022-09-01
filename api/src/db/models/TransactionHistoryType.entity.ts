@@ -4,7 +4,7 @@ import { Table, Column, Model, DataType, PrimaryKey, AllowNull } from 'sequelize
   tableName: 'TransactionHistoryType',
   timestamps: false,
 })
-export class TransactionHistoryType extends Model<{ code: string }> {
+export class TransactionHistoryTypeEntity extends Model<{ code: string }> {
   @PrimaryKey
   @AllowNull(false)
   @Column(DataType.STRING)

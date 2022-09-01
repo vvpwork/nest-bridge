@@ -1,13 +1,13 @@
 import { Table, Column, Model, DataType, PrimaryKey, AllowNull, Default, AutoIncrement, HasOne } from 'sequelize-typescript';
 import { IProfileModel } from '@Common/interfaces';
 import { PROFILE_SECTIONS } from '@Common/enums';
-import { Identity } from '@/db/models/Identity.entity';
+import { IdentityEntity } from '@/db/models/Identity.entity';
 
 @Table({
   tableName: 'Profile',
   timestamps: true,
 })
-export class Profile extends Model<IProfileModel> {
+export class ProfileEntity extends Model<IProfileModel> {
   @PrimaryKey
   @AutoIncrement
   @AllowNull(false)
@@ -54,6 +54,6 @@ export class Profile extends Model<IProfileModel> {
   @Column(DataType.JSONB)
   sections: string;
 
-  @HasOne(() => Identity, 'profileId')
-  identity: Identity;
+  @HasOne(() => IdentityEntity, 'profileId')
+  identity: IdentityEntity;
 }

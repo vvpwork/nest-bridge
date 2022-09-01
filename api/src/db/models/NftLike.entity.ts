@@ -1,7 +1,7 @@
 import { Table, Column, Model, DataType, PrimaryKey, ForeignKey, AutoIncrement, BelongsTo, AllowNull } from 'sequelize-typescript';
 import { INftLikeModel } from '@Common/interfaces';
-import { Identity } from '@/db/models/Identity.entity';
-import { Nft } from '@/db/models/Nft.entity';
+import { IdentityEntity } from '@/db/models/Identity.entity';
+import { NftEntity } from '@/db/models/Nft.entity';
 
 @Table({
   tableName: 'NftLike',
@@ -14,19 +14,19 @@ export class NftLike extends Model<INftLikeModel> {
   @Column(DataType.BIGINT)
   id: number;
 
-  @ForeignKey(() => Identity)
+  @ForeignKey(() => IdentityEntity)
   @AllowNull(false)
   @Column(DataType.BIGINT)
   identityId: number;
 
-  @ForeignKey(() => Nft)
+  @ForeignKey(() => NftEntity)
   @AllowNull(false)
   @Column(DataType.STRING(60))
   nftId: string;
 
-  @BelongsTo(() => Identity, 'identityId')
-  identity: Identity;
+  @BelongsTo(() => IdentityEntity, 'identityId')
+  identity: IdentityEntity;
 
-  @BelongsTo(() => Nft, 'nftId')
-  nft: Nft;
+  @BelongsTo(() => NftEntity, 'nftId')
+  nft: NftEntity;
 }

@@ -5,7 +5,7 @@ import { IsDateString, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-
  * https://github.com/typestack/class-validator#validation-decorators
  * https://docs.nestjs.com/techniques/serialization
  */
-export class ExampleDto {
+export class ProfileDto {
   @IsNumber()
   public id!: number;
 

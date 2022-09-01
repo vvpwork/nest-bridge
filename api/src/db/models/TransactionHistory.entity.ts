@@ -11,30 +11,30 @@ import {
   AutoIncrement,
 } from 'sequelize-typescript';
 import { ITransactionHistory } from '@Common/interfaces';
-import { Identity } from '@/db/models/Identity.entity';
-import { Nft } from '@/db/models/Nft.entity';
-import { TransactionHistoryType } from '@/db/models/TransactionHistoryType.entity';
+import { IdentityEntity } from '@/db/models/Identity.entity';
+import { NftEntity } from '@/db/models/Nft.entity';
+import { TransactionHistoryTypeEntity } from '@/db/models/TransactionHistoryType.entity';
 
 @DefaultScope(() => ({
   order: [['createdAt', 'DESC']],
 }))
 @Table({
-  tableName: 'IdentityNftBalance',
+  tableName: 'TransactionHistory',
   timestamps: true,
 })
-export class IdentityNftBalance extends Model<ITransactionHistory> {
+export class TransactionHistoryEntity extends Model<ITransactionHistory> {
   @PrimaryKey
   @AutoIncrement
   @AllowNull(false)
   @Column(DataType.BIGINT)
   id: number;
 
-  @ForeignKey(() => Identity)
+  @ForeignKey(() => IdentityEntity)
   @AllowNull(false)
   @Column(DataType.BIGINT)
   identityId: number;
 
-  @ForeignKey(() => Nft)
+  @ForeignKey(() => NftEntity)
   @AllowNull(false)
   @Column(DataType.STRING(60))
   nftId: string;
@@ -51,14 +51,14 @@ export class IdentityNftBalance extends Model<ITransactionHistory> {
   @Column(DataType.STRING)
   txHash: string;
 
-  @ForeignKey(() => TransactionHistoryType)
+  @ForeignKey(() => TransactionHistoryTypeEntity)
   @AllowNull(false)
   @Column(DataType.STRING)
   type: string;
 
-  @BelongsTo(() => Identity, 'identityId')
-  identity: Identity;
+  @BelongsTo(() => IdentityEntity, 'identityId')
+  identity: IdentityEntity;
 
-  @BelongsTo(() => Nft, 'nftId')
-  nft: Nft;
+  @BelongsTo(() => NftEntity, 'nftId')
+  nft: NftEntity;
 }

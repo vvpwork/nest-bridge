@@ -14,8 +14,8 @@ import {
 } from 'sequelize-typescript';
 import { randomBytes } from 'node:crypto';
 import { INftModel } from '@Common/interfaces';
-import { Collection } from '@/db/models/Collection.entity';
-import { IdentityNftBalance } from '@/db/models/IdentityNftBalance.entity';
+import { CollectionEntity } from '@/db/models/Collection.entity';
+import { IdentityNftBalanceEntity } from '@/db/models/IdentityNftBalance.entity';
 
 @DefaultScope(() => ({
   order: [['createdAt', 'DESC']],
@@ -24,14 +24,14 @@ import { IdentityNftBalance } from '@/db/models/IdentityNftBalance.entity';
   tableName: 'Nft',
   timestamps: true,
 })
-export class Nft extends Model<INftModel> {
+export class NftEntity extends Model<INftModel> {
   @PrimaryKey
   @AllowNull(false)
   @Default(randomBytes(20).toString('hex').slice(0, 60))
   @Column(DataType.STRING(60))
   id: string;
 
-  @ForeignKey(() => Collection)
+  @ForeignKey(() => CollectionEntity)
   @AllowNull(false)
   @Column(DataType.STRING(60))
   collectionId: string;
@@ -70,9 +70,9 @@ export class Nft extends Model<INftModel> {
   @Column(DataType.INTEGER)
   royalty: number;
 
-  @HasMany(() => IdentityNftBalance, 'nftId')
-  owners: IdentityNftBalance;
+  @HasMany(() => IdentityNftBalanceEntity, 'nftId')
+  owners: IdentityNftBalanceEntity;
 
-  @BelongsTo(() => Collection, 'collectionId')
-  collection: Collection;
+  @BelongsTo(() => CollectionEntity, 'collectionId')
+  collection: CollectionEntity;
 }

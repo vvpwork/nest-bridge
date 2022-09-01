@@ -11,8 +11,8 @@ import {
   BelongsTo,
 } from 'sequelize-typescript';
 import { IIdentityModel } from '@Common/interfaces';
-import { Profile } from '@/db/models/Profile.entity';
-import { AccountType } from '@/db/models/AccountType.entity';
+import { ProfileEntity } from '@/db/models/Profile.entity';
+import { AccountTypeEntity } from '@/db/models/AccountType.entity';
 
 @DefaultScope(() => ({
   attributes: {
@@ -24,7 +24,7 @@ import { AccountType } from '@/db/models/AccountType.entity';
   tableName: 'Identity',
   timestamps: true,
 })
-export class Identity extends Model<IIdentityModel> {
+export class IdentityEntity extends Model<IIdentityModel> {
   @PrimaryKey
   @AutoIncrement
   @AllowNull(false)
@@ -36,7 +36,7 @@ export class Identity extends Model<IIdentityModel> {
   @Column(DataType.STRING)
   address: string;
 
-  @ForeignKey(() => Profile)
+  @ForeignKey(() => ProfileEntity)
   @AllowNull(false)
   @Column(DataType.BIGINT)
   profileId: number;
@@ -44,7 +44,7 @@ export class Identity extends Model<IIdentityModel> {
   @Column(DataType.STRING)
   securitizeId: string;
 
-  @ForeignKey(() => AccountType)
+  @ForeignKey(() => AccountTypeEntity)
   @AllowNull(false)
   @Column(DataType.STRING)
   accountType: string;
@@ -53,6 +53,6 @@ export class Identity extends Model<IIdentityModel> {
   @Column(DataType.BIGINT)
   nonce: number;
 
-  @BelongsTo(() => Profile, 'profileId')
-  profile: Profile;
+  @BelongsTo(() => ProfileEntity, 'profileId')
+  profile: ProfileEntity;
 }
