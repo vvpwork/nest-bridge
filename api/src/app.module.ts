@@ -1,5 +1,5 @@
 import { Module, ValidationPipe } from '@nestjs/common';
-import { APP_FILTER, APP_PIPE, RouterModule } from '@nestjs/core';
+import { APP_FILTER, APP_PIPE, RouterModule, APP_GUARD } from '@nestjs/core';
 import { RedisModule } from '@liaoliaots/nestjs-redis';
 
 import { config } from '@Common/config';
@@ -17,6 +17,7 @@ const imports = [
   // Rabbit
   RabbitExampleModule,
 
+  // api
   AuthModule,
   ExampleModule,
   ProfileModule,
@@ -27,7 +28,7 @@ const imports = [
       module: ExampleModule,
     },
     {
-      path: '/login',
+      path: '/auth',
       module: AuthModule,
     },
     {
@@ -42,8 +43,7 @@ const imports = [
 ];
 
 const providers = [
-  // Global Guard, Authentication check on all routers
-  // { provide: APP_GUARD, useClass: AuthenticatedGuard },
+  { provide: APP_GUARD, useClass: AuthModule },
 
   // Global Filter, Exception check
   { provide: APP_FILTER, useClass: ExceptionsFilter },

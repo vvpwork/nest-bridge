@@ -14,7 +14,6 @@ async function bootstrap(): Promise<string> {
   app.use(helmet());
   app.use(compression());
   app.use(morgan('combined'));
-
   await app.listen(8000);
 
   return app.getUrl();
