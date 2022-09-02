@@ -1,4 +1,5 @@
 import { Logger } from '@nestjs/common';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { NestFactory } from '@nestjs/core';
 import morgan from 'morgan';
 import cors from 'cors';
@@ -9,13 +10,25 @@ import { AppModule } from './app.module';
 async function bootstrap(): Promise<string> {
   const app = await NestFactory.create(AppModule);
 
-  // global middlewares
+  // *******  swagger setup
+  const options = new DocumentBuilder()
+    .setTitle('OpenAPI Documentation')
+    .setDescription('Bridge Tower Api Documentation')
+    .setVersion('1.0')
+    .addBearerAuth()
+    .build();
+  const document = SwaggerModule.createDocument(app, options);
+  SwaggerModule.setup('api/v1/api-doc', app, document);
+  // *******
+
+  // *******  global middlewares
   app.use(cors());
   app.use(helmet());
   app.use(compression());
   app.use(morgan('combined'));
-  await app.listen(8000);
+  // *******
 
+  await app.listen(8000);
   return app.getUrl();
 }
 

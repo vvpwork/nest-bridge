@@ -1,8 +1,9 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { Body, Controller, Header, Post, Req, Res } from '@nestjs/common';
+import { ApiForbiddenResponse, ApiOkResponse, ApiResponse, ApiUnprocessableEntityResponse } from '@nestjs/swagger';
 import { Response } from 'express';
 import { Public, User } from '@/common/decorators';
-import { LoginDto } from '../dtos/auth-login.dto';
+import { ILoginResponse, LoginDto } from '../dtos/auth-login.dto';
 import { AuthService } from '../services/auth.service';
 
 @Controller()
@@ -11,12 +12,18 @@ export class AuthController {
 
   @Public()
   @Post('login')
+  @ApiUnprocessableEntityResponse({ description: 'Bad Request' })
+  @ApiForbiddenResponse({ description: 'Unauthorized Request' })
+  @ApiResponse({
+    status: 200,
+    description: 'User was authorized',
+    type: ILoginResponse,
+  })
   public async login(@Body() body: LoginDto, @Res() res: Response) {
-    // TODO add logic
+    // TODO add general logic
+
     return res.status(200).send({
-      data: {
-        token: this.authService.jwtSign(50),
-      },
+      token: this.authService.jwtSign(50),
     });
   }
 

@@ -6,6 +6,7 @@ import { config } from '@Common/config';
 import { ExceptionsFilter } from '@Common/filters';
 import { DatabaseModule } from '@DB/database.module';
 import { AuthModule, ExampleModule, RabbitExampleModule, ProfileModule, LibraryModule } from './modules';
+import { apiV1Alias } from './common/constants';
 
 const imports = [
   // DB postgres
@@ -24,19 +25,19 @@ const imports = [
   LibraryModule,
   RouterModule.register([
     {
-      path: '/example',
+      path: `${apiV1Alias}/example`,
       module: ExampleModule,
     },
     {
-      path: '/auth',
+      path: `${apiV1Alias}/auth`,
       module: AuthModule,
     },
     {
-      path: '/profiles',
+      path: `${apiV1Alias}/profiles`,
       module: ProfileModule,
     },
     {
-      path: '/libraries',
+      path: `${apiV1Alias}/libraries`,
       module: LibraryModule,
     },
   ]),

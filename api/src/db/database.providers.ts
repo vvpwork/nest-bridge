@@ -2,28 +2,7 @@ import { SEQUELIZE } from '@Common/constants';
 import { config } from '@Common/config';
 import { Sequelize } from 'sequelize-typescript';
 import { Logger } from '@nestjs/common';
-import {
-  IdentityEntity,
-  LibraryEntity,
-  ProfileEntity,
-  NotificationEntity,
-  FollowerEntity,
-  NotificationTypeEntity,
-  OrderEntity,
-  TransactionHistoryEntity,
-  NftEntity,
-  NftLike,
-  PodcastEntity,
-  NewsLikeEntity,
-  NewsEntity,
-  IdentityNftBalanceLockEntity,
-  IdentityNftBalanceStatusEntity,
-  IdentityNftBalanceEntity,
-  CollectionEntity,
-  AccountTypeEntity,
-  BlockchainEntity,
-  TransactionHistoryTypeEntity,
-} from '@DB/models';
+import * as models from '@DB/models';
 
 export const databaseProviders = [
   {
@@ -33,31 +12,21 @@ export const databaseProviders = [
         ...config.db,
         logging: Logger.log,
       });
-      sequelize.addModels([
-        IdentityEntity,
-        LibraryEntity,
-        ProfileEntity,
-        NotificationEntity,
-        FollowerEntity,
-        NotificationTypeEntity,
-        OrderEntity,
-        TransactionHistoryEntity,
-        NftEntity,
-        NftLike,
-        PodcastEntity,
-        NewsLikeEntity,
-        NewsEntity,
-        IdentityNftBalanceLockEntity,
-        IdentityNftBalanceStatusEntity,
-        IdentityNftBalanceEntity,
-        CollectionEntity,
-        AccountTypeEntity,
-        BlockchainEntity,
-        TransactionHistoryTypeEntity,
-      ]);
-
-      await sequelize.sync();
+      sequelize.addModels(Object.values(models));
       return sequelize;
     },
   },
 ];
+
+// TODO refactor repository
+export const MODEL_PROVIDERS_ALIAS = Object.keys(models).map((name: string) => {
+  const providerAlias = name
+    .split(/(?=[A-Z])/)
+    .map((v: string) => v.toUpperCase())
+    .join('_');
+
+  return {
+    provide: providerAlias,
+    useValue: models[name],
+  };
+});

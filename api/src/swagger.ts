@@ -12,7 +12,7 @@ async function bootstrap(): Promise<string> {
 
   const options = new DocumentBuilder()
     .setTitle('OpenAPI Documentation')
-    .setDescription('The sample API description')
+    .setDescription('Bridge Tower Api Documentation')
     .setVersion('1.0')
     .addBearerAuth()
     .build();
