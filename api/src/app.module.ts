@@ -5,12 +5,58 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
 
 import { config } from '@Common/config';
 import { ExceptionsFilter } from '@Common/filters';
-
+import {
+  AccountTypeEntity,
+  BlockchainEntity,
+  CollectionEntity,
+  FollowerEntity,
+  IdentityEntity,
+  IdentityNftBalanceEntity,
+  IdentityNftBalanceStatusEntity,
+  IdentityNftBalanceLockEntity,
+  LibraryEntity,
+  NewsEntity,
+  NewsLikeEntity,
+  PodcastEntity,
+  NftEntity,
+  NftLike,
+  NotificationEntity,
+  NotificationTypeEntity,
+  OrderEntity,
+  ProfileEntity,
+  TransactionHistoryEntity,
+  TransactionHistoryTypeEntity,
+} from '@DB/models/';
 import { AuthModule, ExampleModule, RabbitExampleModule, ProfileModule } from './modules';
 
 const imports = [
   // DB postgres
-  SequelizeModule.forRoot({ ...config.db, models: [], logging: Logger.log }),
+  SequelizeModule.forRoot({
+    ...config.db,
+    models: [
+      AccountTypeEntity,
+      BlockchainEntity,
+      CollectionEntity,
+      FollowerEntity,
+      IdentityEntity,
+      IdentityNftBalanceEntity,
+      IdentityNftBalanceStatusEntity,
+      IdentityNftBalanceLockEntity,
+      LibraryEntity,
+      NewsEntity,
+      NewsLikeEntity,
+      PodcastEntity,
+      NftEntity,
+      NftLike,
+      NotificationEntity,
+      NotificationTypeEntity,
+      OrderEntity,
+      ProfileEntity,
+      TransactionHistoryEntity,
+      TransactionHistoryTypeEntity,
+    ],
+    logging: Logger.log,
+  }),
 
   // Redis
   RedisModule.forRoot({ config: config.redis }),
