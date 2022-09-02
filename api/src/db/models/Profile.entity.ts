@@ -1,6 +1,7 @@
 import { Table, Column, Model, DataType, PrimaryKey, AllowNull, Default, AutoIncrement, HasOne } from 'sequelize-typescript';
 import { IProfileModel } from '@Common/interfaces';
 import { PROFILE_SECTIONS } from '@Common/enums';
+import { ProfileSocials } from '@Common/types';
 import { IdentityEntity } from '@/db/models/Identity.entity';
 
 @Table({
@@ -48,7 +49,7 @@ export class ProfileEntity extends Model<IProfileModel> {
 
   @AllowNull(true)
   @Column(DataType.JSONB)
-  socials: string;
+  socials: ProfileSocials;
 
   @Default(Object.values(PROFILE_SECTIONS))
   @Column(DataType.JSONB)
