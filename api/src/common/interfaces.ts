@@ -52,8 +52,8 @@ export interface IIdentityModel {
 }
 
 export interface IFollowerModel {
-  identityId: number;
-  targetIdentityId: number;
+  profileId: number;
+  targetProfileId: number;
   createdAt: any;
   updatedAt: any;
 }
@@ -185,7 +185,7 @@ export interface INewsLikeModel {
 
 export interface INotificationModel {
   id: number;
-  profileId: string;
+  profileId: number;
   params: any;
   type: NOTIFICATION_TYPES;
   isRead: boolean;

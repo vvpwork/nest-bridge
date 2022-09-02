@@ -10,7 +10,7 @@ import {
   Length,
   ValidateNested,
 } from 'class-validator';
-import { ProfileSocialsDto } from '@Modules/profile/dtos/profileSocialsDto.dto';
+import { ProfileSocialsDto } from '@Modules/profile/dtos';
 import { Type } from 'class-transformer';
 import { PROFILE_SECTIONS } from '@Common/enums';
 import { ProfileSocials } from '@Common/types';
@@ -21,43 +21,43 @@ import { ProfileSocials } from '@Common/types';
  */
 export class EditProfileDto {
   @IsString()
-  @Length(1, 254)
+  @Length(0, 254)
   @IsOptional()
   public cover?: string;
 
   @IsString()
-  @Length(1, 254)
+  @Length(0, 254)
   @IsOptional()
   public avatar?: string;
 
   @IsString()
-  @Length(1, 30)
+  @Length(0, 30)
   @IsOptional()
   public name?: string;
 
   @IsString()
-  @Length(1, 30)
+  @Length(0, 30)
   @IsOptional()
   public userName?: string;
 
   @IsString()
-  @Length(1, 254)
+  @Length(0, 254)
   @IsOptional()
   public website?: string;
 
   @IsString()
-  @Length(1, 254)
+  @Length(0, 254)
   @IsEmail()
   @IsOptional()
   public email?: string;
 
   @IsString()
-  @Length(1, 254)
+  @Length(0, 254)
   @IsOptional()
   public communityLink?: string;
 
   @IsString()
-  @Length(1, 1000)
+  @Length(0, 1000)
   @IsOptional()
   public bio?: string;
 

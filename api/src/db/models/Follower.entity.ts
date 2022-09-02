@@ -14,7 +14,7 @@ import { IFollowerModel } from '@Common/interfaces';
 import { ProfileEntity } from '@/db/models/Profile.entity';
 
 @DefaultScope(() => ({
-  attributes: ['identityId', 'targetIdentityId'],
+  attributes: ['profileId', 'targetProfileId'],
   order: [['createdAt', 'DESC']],
 }))
 @Table({

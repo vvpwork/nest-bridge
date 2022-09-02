@@ -7,27 +7,27 @@ import { IsOptional, IsString, Length } from 'class-validator';
  */
 export class ProfileSocialsDto {
   @IsString()
-  @Length(1, 254)
+  @Length(0, 254)
   @IsOptional()
   public twitter?: string;
 
   @IsString()
-  @Length(1, 254)
+  @Length(0, 254)
   @IsOptional()
   public facebook?: string;
 
   @IsString()
-  @Length(1, 254)
+  @Length(0, 254)
   @IsOptional()
   public instagram?: string;
 
   @IsString()
-  @Length(1, 254)
+  @Length(0, 254)
   @IsOptional()
   public medium?: string;
 
   @IsString()
-  @Length(1, 254)
+  @Length(0, 254)
   @IsOptional()
   public telegram?: string;
 }

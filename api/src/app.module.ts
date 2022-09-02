@@ -1,62 +1,15 @@
-import { Module, ValidationPipe, Logger } from '@nestjs/common';
+import { Module, ValidationPipe } from '@nestjs/common';
 import { APP_FILTER, APP_PIPE, RouterModule } from '@nestjs/core';
-import { SequelizeModule } from '@nestjs/sequelize';
 import { RedisModule } from '@liaoliaots/nestjs-redis';
 
 import { config } from '@Common/config';
 import { ExceptionsFilter } from '@Common/filters';
-import {
-  AccountTypeEntity,
-  BlockchainEntity,
-  CollectionEntity,
-  FollowerEntity,
-  IdentityEntity,
-  IdentityNftBalanceEntity,
-  IdentityNftBalanceStatusEntity,
-  IdentityNftBalanceLockEntity,
-  LibraryEntity,
-  NewsEntity,
-  NewsLikeEntity,
-  PodcastEntity,
-  NftEntity,
-  NftLike,
-  NotificationEntity,
-  NotificationTypeEntity,
-  OrderEntity,
-  ProfileEntity,
-  TransactionHistoryEntity,
-  TransactionHistoryTypeEntity,
-} from '@DB/models/';
-import { AuthModule, ExampleModule, RabbitExampleModule, ProfileModule } from './modules';
+import { DatabaseModule } from '@DB/database.module';
+import { AuthModule, ExampleModule, RabbitExampleModule, ProfileModule, LibraryModule } from './modules';
 
 const imports = [
   // DB postgres
-  SequelizeModule.forRoot({
-    ...config.db,
-    models: [
-      AccountTypeEntity,
-      BlockchainEntity,
-      CollectionEntity,
-      FollowerEntity,
-      IdentityEntity,
-      IdentityNftBalanceEntity,
-      IdentityNftBalanceStatusEntity,
-      IdentityNftBalanceLockEntity,
-      LibraryEntity,
-      NewsEntity,
-      NewsLikeEntity,
-      PodcastEntity,
-      NftEntity,
-      NftLike,
-      NotificationEntity,
-      NotificationTypeEntity,
-      OrderEntity,
-      ProfileEntity,
-      TransactionHistoryEntity,
-      TransactionHistoryTypeEntity,
-    ],
-    logging: Logger.log,
-  }),
+  DatabaseModule,
 
   // Redis
   RedisModule.forRoot({ config: config.redis }),
@@ -67,6 +20,7 @@ const imports = [
   AuthModule,
   ExampleModule,
   ProfileModule,
+  LibraryModule,
   RouterModule.register([
     {
       path: '/example',
@@ -79,6 +33,10 @@ const imports = [
     {
       path: '/profiles',
       module: ProfileModule,
+    },
+    {
+      path: '/libraries',
+      module: LibraryModule,
     },
   ]),
 ];
