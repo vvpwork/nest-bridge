@@ -1,6 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import { Body, Controller, Header, Post, Req, Res } from '@nestjs/common';
-import { ApiForbiddenResponse, ApiOkResponse, ApiResponse, ApiTags, ApiUnprocessableEntityResponse } from '@nestjs/swagger';
+import { Body, Controller, Post, Res } from '@nestjs/common';
+import { ApiForbiddenResponse, ApiResponse, ApiTags, ApiUnprocessableEntityResponse } from '@nestjs/swagger';
 import { Response } from 'express';
 import { Public, User } from '@/common/decorators';
 import { ILoginResponse, LoginDto } from './dtos/auth-login.dto';
@@ -11,8 +11,6 @@ import { AuthService } from './auth.service';
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @Public()
-  @Post('login')
   @ApiUnprocessableEntityResponse({ description: 'Bad Request' })
   @ApiForbiddenResponse({ description: 'Unauthorized Request' })
   @ApiResponse({
@@ -20,6 +18,8 @@ export class AuthController {
     description: 'User was authorized',
     type: ILoginResponse,
   })
+  @Public()
+  @Post('login')
   public async login(@Body() body: LoginDto, @Res() res: Response) {
     // TODO add general logic
 
@@ -39,7 +39,8 @@ export class AuthController {
     const { tokenData } = user;
 
     await this.authService.jwtBlock(tokenData.token, tokenData.exp);
+    // TODO add logic logout from securitize
 
-    return res.status(200).send({ data: 'token added to BlackList' });
+    return res.status(200).send({ data: 'Token was added to BlackList' });
   }
 }

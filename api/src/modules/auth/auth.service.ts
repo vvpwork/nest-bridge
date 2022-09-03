@@ -48,6 +48,7 @@ export class AuthService {
     const tokenData = await this.jwtValidate(reqToken);
     if (!tokenData) return false;
 
+    // TODO change after add seeds
     const userFromDB = await this.profileService.getById(100);
     if (!userFromDB) {
       req.user = {

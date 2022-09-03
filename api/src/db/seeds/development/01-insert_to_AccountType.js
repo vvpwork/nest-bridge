@@ -1,3 +1,4 @@
+/* eslint-disable */
 const { upsertData } = require('../../utils/helper');
 
 module.exports = {
