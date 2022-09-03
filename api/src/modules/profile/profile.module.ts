@@ -1,14 +1,15 @@
 import { Global, Module } from '@nestjs/common';
+import { SequelizeModule } from '@nestjs/sequelize';
 
-import { profileProviders } from '@Modules/profile/profile.providers';
-import { ProfileController } from './controllers';
-import { ProfileService } from './services';
+import { ProfileController } from './profile.controller';
+import { ProfileService } from './profile.service';
+import { ProfileEntity } from '@/db/models';
 
 @Global()
 @Module({
-  imports: [],
+  imports: [SequelizeModule.forFeature([ProfileEntity])],
   controllers: [ProfileController],
-  providers: [ProfileService, ...profileProviders],
+  providers: [ProfileService],
   exports: [ProfileService],
 })
 export class ProfileModule {}

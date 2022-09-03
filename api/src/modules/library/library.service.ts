@@ -1,20 +1,21 @@
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { LibraryEntity, NotificationEntity } from '@DB/models';
-import { NotificationService } from '@Modules/notification/services';
+import { NotificationService } from '@Modules/notification';
 import { NOTIFICATION_TYPES } from '@Common/enums';
-import { ProfileService } from '@Modules/profile/services';
+import { ProfileService } from '@Modules/profile';
 import { EditLibraryDto } from '@Modules/library/dtos/editLibraryDto.dto';
 import { CreateLibraryDto } from '@Modules/library/dtos/createLibraryDto.dto';
 import { LIBRARY_REPOSITORY, NOTIFICATION_REPOSITORY } from '@Common/constants';
+import { InjectModel } from '@nestjs/sequelize';
 
 @Injectable()
 export class LibraryService {
   constructor(
     private readonly notificationService: NotificationService,
     private readonly profileService: ProfileService,
-    @Inject(LIBRARY_REPOSITORY)
+    @InjectModel(LibraryEntity)
     private libraryModel: typeof LibraryEntity,
-    @Inject(NOTIFICATION_REPOSITORY)
+    @InjectModel(NotificationEntity)
     private notificationModel: typeof NotificationEntity,
   ) {}
 

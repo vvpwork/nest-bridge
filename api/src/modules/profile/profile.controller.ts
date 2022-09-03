@@ -3,7 +3,7 @@ import { User } from '@Common/decorators/user.decorator';
 import { IIdentityModel } from '@Common/interfaces';
 import { ProfileEntity } from '@DB/models/Profile.entity';
 import { EditProfileDto } from '@Modules/profile/dtos/';
-import { ProfileService } from '../services';
+import { ProfileService } from './profile.service';
 
 @Controller()
 export class ProfileController {

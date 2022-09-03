@@ -1,12 +1,12 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/sequelize';
 import { NOTIFICATION_TYPES } from '@Common/enums';
 import { FollowerEntity, NotificationEntity } from '@DB/models';
-import { NOTIFICATION_REPOSITORY } from '@Common/constants';
 
 @Injectable()
 export class NotificationService {
   constructor(
-    @Inject(NOTIFICATION_REPOSITORY)
+    @InjectModel(NotificationEntity)
     private notificationModel: typeof NotificationEntity,
   ) {}
 

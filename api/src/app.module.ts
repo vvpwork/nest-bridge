@@ -1,16 +1,17 @@
 import { Module, ValidationPipe } from '@nestjs/common';
 import { APP_FILTER, APP_PIPE, RouterModule, APP_GUARD } from '@nestjs/core';
 import { RedisModule } from '@liaoliaots/nestjs-redis';
+import { SequelizeModule } from '@nestjs/sequelize';
 
 import { config } from '@Common/config';
 import { ExceptionsFilter } from '@Common/filters';
-import { DatabaseModule } from '@DB/database.module';
 import { AuthModule, ExampleModule, RabbitExampleModule, ProfileModule, LibraryModule } from './modules';
-import { apiV1Alias } from './common/constants';
+import * as models from './db/models';
+import { SseModule } from './modules/sse/sse.module';
 
 const imports = [
   // DB postgres
-  DatabaseModule,
+  SequelizeModule.forRoot({ ...config.db, models: Object.values(models) }),
 
   // Redis
   RedisModule.forRoot({ config: config.redis }),
@@ -23,21 +24,26 @@ const imports = [
   ExampleModule,
   ProfileModule,
   LibraryModule,
+  SseModule,
   RouterModule.register([
     {
-      path: `${apiV1Alias}/example`,
+      path: `/example`,
       module: ExampleModule,
     },
     {
-      path: `${apiV1Alias}/auth`,
+      path: `/auth`,
       module: AuthModule,
     },
     {
-      path: `${apiV1Alias}/profiles`,
+      path: `/profiles`,
       module: ProfileModule,
     },
     {
-      path: `${apiV1Alias}/libraries`,
+      path: `/libraries`,
+      module: LibraryModule,
+    },
+    {
+      path: `/sse`,
       module: LibraryModule,
     },
   ]),

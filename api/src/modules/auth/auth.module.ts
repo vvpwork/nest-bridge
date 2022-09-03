@@ -2,9 +2,9 @@ import { ExecutionContext, Global, Inject, Logger, Module } from '@nestjs/common
 import { Request } from 'express';
 import { Reflector } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
-import { AuthController } from './controllers/auth.controller';
+import { AuthController } from './auth.controller';
 import { config } from '@/common/config';
-import { AuthService } from './services/auth.service';
+import { AuthService } from './auth.service';
 
 import { ProfileModule } from '../profile';
 

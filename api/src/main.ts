@@ -6,9 +6,11 @@ import cors from 'cors';
 import helmet from 'helmet';
 import compression from 'compression';
 import { AppModule } from './app.module';
+import { apiV1Alias } from './common/constants';
 
 async function bootstrap(): Promise<string> {
   const app = await NestFactory.create(AppModule);
+  app.setGlobalPrefix(apiV1Alias);
 
   // *******  swagger setup
   const options = new DocumentBuilder()

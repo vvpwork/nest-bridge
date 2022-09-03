@@ -2,12 +2,12 @@ import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { ProfileEntity } from '@DB/models/Profile.entity';
 import { EditProfileDto } from '@Modules/profile/dtos/editProfileDto.dto';
 import { IdentityEntity } from '@DB/models';
-import { PROFILE_REPOSITORY } from '@Common/constants';
+import { InjectModel } from '@nestjs/sequelize';
 
 @Injectable()
 export class ProfileService {
   constructor(
-    @Inject(PROFILE_REPOSITORY)
+    @InjectModel(ProfileEntity)
     private profileModel: typeof ProfileEntity,
   ) {}
 

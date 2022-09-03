@@ -1,11 +1,12 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { Body, Controller, Header, Post, Req, Res } from '@nestjs/common';
-import { ApiForbiddenResponse, ApiOkResponse, ApiResponse, ApiUnprocessableEntityResponse } from '@nestjs/swagger';
+import { ApiForbiddenResponse, ApiOkResponse, ApiResponse, ApiTags, ApiUnprocessableEntityResponse } from '@nestjs/swagger';
 import { Response } from 'express';
 import { Public, User } from '@/common/decorators';
-import { ILoginResponse, LoginDto } from '../dtos/auth-login.dto';
-import { AuthService } from '../services/auth.service';
+import { ILoginResponse, LoginDto } from './dtos/auth-login.dto';
+import { AuthService } from './auth.service';
 
+@ApiTags('Auth')
 @Controller()
 export class AuthController {
   constructor(private authService: AuthService) {}

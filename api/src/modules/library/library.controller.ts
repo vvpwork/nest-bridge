@@ -3,7 +3,7 @@ import { User } from '@Common/decorators/user.decorator';
 import { IIdentityModel } from '@Common/interfaces';
 import { CreateLibraryDto, EditLibraryDto } from '@Modules/library/dtos/';
 import { LibraryEntity } from '@DB/models';
-import { LibraryService } from '../services';
+import { LibraryService } from './library.service';
 
 @Controller()
 export class LibraryController {

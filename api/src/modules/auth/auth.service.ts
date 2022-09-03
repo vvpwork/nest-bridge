@@ -1,11 +1,11 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { Request } from 'express';
 
 import { config } from '@Common/config';
 import { InjectRedis } from '@liaoliaots/nestjs-redis';
 import Redis from 'ioredis';
-import { Request } from 'express';
-import { ProfileService } from '@/modules/profile/services';
+import { ProfileService } from '@/modules/profile';
 
 const { secret, ttl } = config.jwt;
 
@@ -51,7 +51,7 @@ export class AuthService {
     const userFromDB = await this.profileService.getById(100);
     if (!userFromDB) {
       req.user = {
-        // data: userFromDB.toJSON(),
+        data: userFromDB.toJSON(),
         tokenData: {
           token: reqToken,
           ...tokenData,
