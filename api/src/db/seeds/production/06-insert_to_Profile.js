@@ -1,5 +1,6 @@
 /* eslint-disable */
 const { upsertData } = require('../../utils/helper');
+const { resetSequence } = require('@DB/utils/helper');
 
 module.exports = {
   up: async queryInterface => {
@@ -46,6 +47,8 @@ module.exports = {
     );
 
     await queryInterface.sequelize.query(profilesQuery);
+
+    await resetSequence(queryInterface, 'Profile');
   },
 
   down: queryInterface => queryInterface.bulkDelete('Profile'),

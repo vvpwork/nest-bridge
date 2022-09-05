@@ -28,12 +28,12 @@ export class Nft extends Model<INftModel> {
   @PrimaryKey
   @AllowNull(false)
   @Default(randomBytes(20).toString('hex').slice(0, 60))
-  @Column(DataType.STRING(60))
+  @Column(DataType.UUIDV4)
   id: string;
 
   @ForeignKey(() => Collection)
   @AllowNull(false)
-  @Column(DataType.STRING(60))
+  @Column(DataType.UUIDV4)
   collectionId: string;
 
   @Unique

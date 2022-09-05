@@ -7,12 +7,13 @@ module.exports = {
       { tableName: 'Nft', schema: db.schema },
       {
         id: {
-          type: Sequelize.STRING(60),
+          type: Sequelize.UUID,
+          defaultValue: Sequelize.UUIDV4,
           allowNull: false,
           primaryKey: true,
         },
         collectionId: {
-          type: Sequelize.STRING(60),
+          type: Sequelize.UUID,
           allowNull: false,
           references: {
             model: 'Collection',

@@ -23,7 +23,7 @@ module.exports = {
           onUpdate: 'CASCADE',
         },
         nftId: {
-          type: Sequelize.STRING(60),
+          type: Sequelize.UUID,
           allowNull: false,
           references: {
             model: 'Nft',
@@ -38,6 +38,10 @@ module.exports = {
         },
         price: {
           type: Sequelize.STRING(64),
+          allowNull: false,
+        },
+        decimals: {
+          type: Sequelize.INTEGER,
           allowNull: false,
         },
         signature: {

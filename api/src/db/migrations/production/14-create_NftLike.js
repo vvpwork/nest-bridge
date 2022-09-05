@@ -22,7 +22,8 @@ module.exports = {
           onDelete: 'CASCADE',
         },
         nftId: {
-          type: Sequelize.STRING(60),
+          type: Sequelize.UUID,
+          defaultValue: Sequelize.UUIDV4,
           allowNull: false,
           references: {
             model: 'Nft',
