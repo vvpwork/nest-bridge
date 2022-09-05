@@ -23,7 +23,15 @@ export interface IConfig {
     secret: string;
     ttl: string | number;
   };
+  securitize: {
+    issuerId: string;
+    secret: string;
+    baseUrl: string;
+    proxyAddress: string;
+  };
 }
+
+// TODO move to db folder
 
 export interface IProfileModel {
   id: number;

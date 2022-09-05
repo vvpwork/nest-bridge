@@ -10,11 +10,11 @@ export class ProfileController {
   constructor(private readonly profileService: ProfileService) {}
 
   @Get()
-  getMy(@User() user: IIdentityModel): Promise<Profile> {
+  async getMy(@User() user: IIdentityModel): Promise<Profile> {
     return this.profileService.getById(user.profileId);
   }
 
-  editMy(@User() user: IIdentityModel, @Body() body: EditProfileDto): Promise<{ success: true }> {
+  async editMy(@User() user: IIdentityModel, @Body() body: EditProfileDto): Promise<{ success: true }> {
     return this.profileService.updateById(user.profileId, body);
   }
 }

@@ -6,4 +6,5 @@ export const config: IConfig = {
   redis: nodeConfig.get('redis'),
   rabbit: nodeConfig.get('rabbit'),
   jwt: nodeConfig.get('jwt'),
+  securitize: nodeConfig.get('securitize'),
 };
