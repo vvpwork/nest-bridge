@@ -3,3 +3,4 @@ export * from './rabbit';
 export * from './auth';
 export * from './profile';
 export * from './library';
+export * from './podcast';

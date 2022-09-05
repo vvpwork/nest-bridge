@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { Library, Notification, Podcast } from '@DB/models';
+import { Notification, Podcast } from '@DB/models';
 import { NotificationService } from '@Modules/notification';
 import { NOTIFICATION_TYPES } from '@Common/enums';
 import { ProfileService } from '@Modules/profile';
@@ -47,7 +47,7 @@ export class PodcastService {
     );
     if (allNotificationIds.length) {
       const { id, title, image, source } = newPodcastRecord;
-      await Notification.update(
+      await this.notificationModel.update(
         {
           params: {
             id,

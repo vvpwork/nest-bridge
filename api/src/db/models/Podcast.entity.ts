@@ -10,11 +10,18 @@ import { Profile } from '@/db/models/Profile.entity';
   tableName: 'Podcast',
   timestamps: true,
 })
+// const test = function (): string {
+//   return generateRandomString(60);
+// };
 export class Podcast extends Model<IPodcastModel> {
   @PrimaryKey
   @AllowNull(false)
-  @Default(randomBytes(20).toString('hex').slice(0, 60))
   @Column(DataType.STRING(60))
+  // set id(value: string) {
+  //   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  //   // @ts-ignore
+  //   this.setDataValue('id', 'sad');
+  // }
   id: string;
 
   @ForeignKey(() => Profile)

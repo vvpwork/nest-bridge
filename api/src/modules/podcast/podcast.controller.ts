@@ -14,7 +14,8 @@ export class PodcastController {
   @Post()
   create(@User() user: IIdentityModel, @Body() body: CreatePodcastDto): Promise<Podcast> {
     const mockUser = { id: 1, profileId: 1 }; // ToDo get user from request instead of mock
-    return this.podcastService.create(mockUser.profileId, body);
+    console.log('scv_user', user);
+    return this.podcastService.create(user.profileId, body);
   }
 
   // ToDo add middleware to allow only owner to perform this action

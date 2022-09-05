@@ -37,9 +37,9 @@ export class LibraryService {
   }
 
   async update(libraryId: number, params: EditLibraryDto): Promise<{ success: true }> {
-    await Library.update(params, { where: { id: libraryId } });
+    await this.libraryModel.update(params, { where: { id: libraryId } });
 
-    const newLibraryRecord = await Library.findByPk(libraryId);
+    const newLibraryRecord = await this.libraryModel.findByPk(libraryId);
 
     const allNotificationIds = await this.notificationService.getAllNotificationIdsByTypeAndParams(
       { id: libraryId },
@@ -47,7 +47,7 @@ export class LibraryService {
     );
     if (allNotificationIds.length) {
       const { id, title, image, source } = newLibraryRecord;
-      await Notification.update(
+      await this.notificationModel.update(
         {
           params: {
             id,
@@ -63,7 +63,7 @@ export class LibraryService {
   }
 
   async delete(libraryId: number): Promise<{ success: true }> {
-    const libraryRecord = await Library.findByPk(libraryId, { attributes: ['id'] });
+    const libraryRecord = await this.libraryModel.findByPk(libraryId, { attributes: ['id'] });
     if (!libraryRecord) {
       throw new HttpException('LIBRARY_NOT_FOUND', HttpStatus.NOT_FOUND);
     }
