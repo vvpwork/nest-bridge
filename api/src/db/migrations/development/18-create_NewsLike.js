@@ -22,7 +22,7 @@ module.exports = {
           onDelete: 'CASCADE',
         },
         newsId: {
-          type: Sequelize.STRING(60),
+          type: Sequelize.UUID,
           allowNull: false,
           references: {
             model: 'News',

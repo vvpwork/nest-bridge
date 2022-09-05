@@ -7,7 +7,8 @@ module.exports = {
       { tableName: 'News', schema: db.schema },
       {
         id: {
-          type: Sequelize.STRING(60),
+          type: Sequelize.UUID,
+          defaultValue: Sequelize.UUIDV4,
           allowNull: false,
           primaryKey: true,
         },

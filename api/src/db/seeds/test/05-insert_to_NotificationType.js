@@ -34,7 +34,6 @@ module.exports = {
       'NotificationType',
       ['code'],
       notificationTypes.map(tr => [`'${tr.code}'`]),
-      'code',
     );
 
     await queryInterface.sequelize.query(notificationTypesQuery);

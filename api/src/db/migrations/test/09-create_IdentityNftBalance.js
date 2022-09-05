@@ -23,7 +23,7 @@ module.exports = {
           onUpdate: 'CASCADE',
         },
         nftId: {
-          type: Sequelize.STRING(60),
+          type: Sequelize.UUID,
           allowNull: false,
           references: {
             model: 'Nft',

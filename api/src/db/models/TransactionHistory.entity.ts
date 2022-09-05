@@ -36,7 +36,7 @@ export class TransactionHistory extends Model<ITransactionHistory> {
 
   @ForeignKey(() => Nft)
   @AllowNull(false)
-  @Column(DataType.STRING(60))
+  @Column(DataType.UUIDV4)
   nftId: string;
 
   @AllowNull(false)
