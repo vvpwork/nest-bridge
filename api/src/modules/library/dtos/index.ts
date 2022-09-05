@@ -1,2 +1,2 @@
-export * from './editLibraryDto.dto';
-export * from './createLibraryDto.dto';
+export * from './editLibrary.dto';
+export * from './createLibrary.dto';

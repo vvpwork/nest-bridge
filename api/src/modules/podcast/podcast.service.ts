@@ -1,31 +1,31 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { LibraryEntity, NotificationEntity } from '@DB/models';
+import { LibraryEntity, NotificationEntity, PodcastEntity } from '@DB/models';
 import { NotificationService } from '@Modules/notification';
 import { NOTIFICATION_TYPES } from '@Common/enums';
 import { ProfileService } from '@Modules/profile';
 import { InjectModel } from '@nestjs/sequelize';
-import { EditLibraryDto, CreateLibraryDto } from './dtos';
+import { EditPodcastDto, CreatePodcastDto } from './dtos';
 
 @Injectable()
-export class LibraryService {
+export class PodcastService {
   constructor(
     private readonly notificationService: NotificationService,
     private readonly profileService: ProfileService,
-    @InjectModel(LibraryEntity)
-    private libraryModel: typeof LibraryEntity,
+    @InjectModel(PodcastEntity)
+    private podcastModel: typeof PodcastEntity,
     @InjectModel(NotificationEntity)
     private notificationModel: typeof NotificationEntity,
   ) {}
 
-  async create(profileId: number, params: CreateLibraryDto): Promise<LibraryEntity> {
+  async create(profileId: number, params: CreatePodcastDto): Promise<PodcastEntity> {
     const { image, source, title } = params;
 
-    const newLibraryRecord = await this.libraryModel.create({ profileId, image, source, title });
+    const newPodcastRecord = await this.podcastModel.create({ profileId, image, source, title });
 
     await this.notificationService.addNotificationToAllIdentityFollowers(
       profileId,
       {
-        id: newLibraryRecord.id,
+        id: newPodcastRecord.id,
         image,
         source,
         title,
@@ -33,20 +33,20 @@ export class LibraryService {
       },
       NOTIFICATION_TYPES.FOLLOWING_PERSON_ADDED_LIBRARY,
     );
-    return newLibraryRecord;
+    return newPodcastRecord;
   }
 
-  async update(libraryId: number, params: EditLibraryDto): Promise<{ success: true }> {
-    await LibraryEntity.update(params, { where: { id: libraryId } });
+  async update(podcastId: number, params: EditPodcastDto): Promise<{ success: true }> {
+    await this.podcastModel.update(params, { where: { id: podcastId } });
 
-    const newLibraryRecord = await LibraryEntity.findByPk(libraryId);
+    const newPodcastRecord = await this.podcastModel.findByPk(podcastId);
 
     const allNotificationIds = await this.notificationService.getAllNotificationIdsByTypeAndParams(
-      { id: libraryId },
+      { id: podcastId },
       NOTIFICATION_TYPES.FOLLOWING_PERSON_ADDED_LIBRARY,
     );
     if (allNotificationIds.length) {
-      const { id, title, image, source } = newLibraryRecord;
+      const { id, title, image, source } = newPodcastRecord;
       await NotificationEntity.update(
         {
           params: {
@@ -62,17 +62,17 @@ export class LibraryService {
     return { success: true };
   }
 
-  async delete(libraryId: number): Promise<{ success: true }> {
-    const libraryRecord = await LibraryEntity.findByPk(libraryId, { attributes: ['id'] });
-    if (!libraryRecord) {
-      throw new HttpException('LIBRARY_NOT_FOUND', HttpStatus.NOT_FOUND);
+  async delete(podcastId: number): Promise<{ success: true }> {
+    const podcastRecord = await this.podcastModel.findByPk(podcastId, { attributes: ['id'] });
+    if (!podcastRecord) {
+      throw new HttpException('PODCAST_NOT_FOUND', HttpStatus.NOT_FOUND);
     }
 
-    await libraryRecord.destroy();
+    await podcastRecord.destroy();
 
     const allNotificationIds: number[] = await this.notificationService.getAllNotificationIdsByTypeAndParams(
-      { id: libraryId },
-      NOTIFICATION_TYPES.FOLLOWING_PERSON_ADDED_LIBRARY,
+      { id: podcastId },
+      NOTIFICATION_TYPES.FOLLOWING_PERSON_ADDED_PODCAST,
     );
 
     if (allNotificationIds.length) {

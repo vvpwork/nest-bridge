@@ -1,6 +1,6 @@
-import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ProfileEntity } from '@DB/models/Profile.entity';
-import { EditProfileDto } from '@Modules/profile/dtos/editProfileDto.dto';
+import { EditProfileDto } from '@Modules/profile/dtos/editProfile.dto';
 import { IdentityEntity } from '@DB/models';
 import { InjectModel } from '@nestjs/sequelize';
 
