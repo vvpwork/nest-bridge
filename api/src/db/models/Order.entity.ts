@@ -35,7 +35,7 @@ export class Order extends Model<IOrderModel> {
 
   @ForeignKey(() => Nft)
   @AllowNull(false)
-  @Column(DataType.STRING(60))
+  @Column(DataType.UUIDV4)
   nftId: string;
 
   @AllowNull(false)

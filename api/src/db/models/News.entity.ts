@@ -14,7 +14,7 @@ export class News extends Model<INewsModel> {
   @PrimaryKey
   @AllowNull(false)
   @Default(randomBytes(20).toString('hex').slice(0, 60))
-  @Column(DataType.STRING(60))
+  @Column(DataType.UUIDV4)
   id: string;
 
   @ForeignKey(() => Profile)

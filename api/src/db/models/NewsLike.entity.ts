@@ -21,7 +21,7 @@ export class NewsLike extends Model<INewsLikeModel> {
 
   @ForeignKey(() => News)
   @AllowNull(false)
-  @Column(DataType.STRING(60))
+  @Column(DataType.UUIDV4)
   newsId: string;
 
   @BelongsTo(() => Profile, 'profileId')

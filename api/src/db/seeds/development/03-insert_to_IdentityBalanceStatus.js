@@ -13,7 +13,6 @@ module.exports = {
       'IdentityNftBalanceStatus',
       ['code'],
       balanceStatuses.map(tr => [`'${tr.code}'`]),
-      'code',
     );
 
     await queryInterface.sequelize.query(balanceStatusesQuery);

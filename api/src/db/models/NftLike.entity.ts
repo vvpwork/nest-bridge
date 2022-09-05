@@ -21,7 +21,7 @@ export class NftLike extends Model<INftLikeModel> {
 
   @ForeignKey(() => Nft)
   @AllowNull(false)
-  @Column(DataType.STRING(60))
+  @Column(DataType.UUIDV4)
   nftId: string;
 
   @BelongsTo(() => Identity, 'identityId')

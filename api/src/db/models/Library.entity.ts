@@ -1,5 +1,4 @@
 import { Table, Column, Model, DataType, PrimaryKey, DefaultScope, AllowNull, Default, ForeignKey, BelongsTo } from 'sequelize-typescript';
-import { randomBytes } from 'node:crypto';
 import { ILibraryModel } from '../interfaces';
 import { Profile } from '@/db/models/Profile.entity';
 
@@ -13,8 +12,8 @@ import { Profile } from '@/db/models/Profile.entity';
 export class Library extends Model<ILibraryModel> {
   @PrimaryKey
   @AllowNull(false)
-  @Default(randomBytes(20).toString('hex').slice(0, 60))
-  @Column(DataType.STRING(60))
+  @Default(DataType.UUIDV4)
+  @Column(DataType.UUID)
   id: string;
 
   @ForeignKey(() => Profile)

@@ -16,7 +16,6 @@ module.exports = {
       'AccountType',
       ['code'],
       accountTypes.map(tr => [`'${tr.code}'`]),
-      'code',
     );
 
     await queryInterface.sequelize.query(accountTypeQuery);

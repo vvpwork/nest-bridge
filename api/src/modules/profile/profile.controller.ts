@@ -14,6 +14,7 @@ export class ProfileController {
     return this.profileService.getById(user.profileId);
   }
 
+  @Patch()
   async editMy(@User() user: IIdentityModel, @Body() body: EditProfileDto): Promise<{ success: true }> {
     return this.profileService.updateById(user.profileId, body);
   }

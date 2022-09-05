@@ -1,0 +1,46 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": false,
+    "noImplicitAny": false,
+    "noUnusedLocals": false,
+    "removeComments": true,
+    "noLib": false,
+    "esModuleInterop": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "useUnknownInCatchVariables": false,
+    "target": "ES2017",
+    "sourceMap": true,
+    "allowJs": true,
+    "outDir": "dist",
+    "lib": [
+      "es6",
+      "es7",
+      "es2017",
+      "DOM"
+    ],
+    "baseUrl": "./",
+    "paths": {
+      "@/*": [
+        "src/*"
+      ],
+      "@Common/*": [
+        "src/common/*"
+      ],
+      "@DB/*": [
+        "src/db/*"
+      ],
+      "@Modules/*": [
+        "src/modules/*"
+      ]
+    }
+  },
+  "include": [
+    "src/custom.d.ts",
+    "src/**/*",
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
