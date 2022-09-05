@@ -1,6 +1,6 @@
 import { Table, Column, Model, DataType, PrimaryKey, DefaultScope, AllowNull, Default, ForeignKey, BelongsTo } from 'sequelize-typescript';
 import { randomBytes } from 'node:crypto';
-import { ILibraryModel } from '@Common/interfaces';
+import { ILibraryModel } from '../interfaces';
 import { Profile } from '@/db/models/Profile.entity';
 
 @DefaultScope(() => ({

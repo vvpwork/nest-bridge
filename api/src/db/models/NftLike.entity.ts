@@ -1,5 +1,5 @@
 import { Table, Column, Model, DataType, PrimaryKey, ForeignKey, AutoIncrement, BelongsTo, AllowNull } from 'sequelize-typescript';
-import { INftLikeModel } from '@Common/interfaces';
+import { INftLikeModel } from '../interfaces';
 import { Identity } from '@/db/models/Identity.entity';
 import { Nft } from '@/db/models/Nft.entity';
 

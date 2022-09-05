@@ -13,7 +13,7 @@ import {
   BelongsTo,
 } from 'sequelize-typescript';
 import { randomBytes } from 'node:crypto';
-import { INftModel } from '@Common/interfaces';
+import { INftModel } from '../interfaces';
 import { Collection } from '@/db/models/Collection.entity';
 import { IdentityNftBalance } from '@/db/models/IdentityNftBalance.entity';
 

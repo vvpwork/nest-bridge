@@ -10,7 +10,7 @@ import {
   AutoIncrement,
   BelongsTo,
 } from 'sequelize-typescript';
-import { IIdentityModel } from '@Common/interfaces';
+import { IIdentityModel } from '../interfaces';
 import { Profile } from '@/db/models/Profile.entity';
 import { AccountType } from '@/db/models/AccountType.entity';
 

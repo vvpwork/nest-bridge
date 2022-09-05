@@ -1,6 +1,6 @@
 import { Table, Column, Model, DataType, PrimaryKey, AllowNull, ForeignKey, BelongsTo, DefaultScope, Default } from 'sequelize-typescript';
-import { ICollectionModel } from '@Common/interfaces';
 import { randomBytes } from 'node:crypto';
+import { ICollectionModel } from '../interfaces';
 import { Identity } from '@/db/models/Identity.entity';
 import { Blockchain } from '@/db/models/Blockchain.entity';
 

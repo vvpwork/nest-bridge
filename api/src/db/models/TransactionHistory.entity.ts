@@ -10,7 +10,7 @@ import {
   ForeignKey,
   AutoIncrement,
 } from 'sequelize-typescript';
-import { ITransactionHistory } from '@Common/interfaces';
+import { ITransactionHistory } from '../interfaces';
 import { Identity } from '@/db/models/Identity.entity';
 import { Nft } from '@/db/models/Nft.entity';
 import { TransactionHistoryType } from '@/db/models/TransactionHistoryType.entity';
