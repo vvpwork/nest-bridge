@@ -10,17 +10,17 @@ export class PodcastController {
   constructor(private readonly podcastService: PodcastService) {}
 
   @Post()
-  create(@User() user: IIdentityModel, @Body() body: CreatePodcastDto): Promise<Podcast> {
+  async create(@User() user: IIdentityModel, @Body() body: CreatePodcastDto): Promise<Podcast> {
     return this.podcastService.create(user.profileId, body);
   }
 
   @Patch(':id')
-  update(@Body() body: EditPodcastDto, @Param('id') id: number): Promise<{ success: true }> {
+  async update(@Body() body: EditPodcastDto, @Param('id') id: number): Promise<{ success: true }> {
     return this.podcastService.update(id, body);
   }
 
   @Delete(':id')
-  delete(@Param('id') id: number): Promise<{ success: true }> {
+  async delete(@Param('id') id: number): Promise<{ success: true }> {
     return this.podcastService.delete(id);
   }
 }
