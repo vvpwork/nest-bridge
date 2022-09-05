@@ -1,24 +1,24 @@
-import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
-import { ProfileEntity } from '@DB/models/Profile.entity';
-import { EditProfileDto } from '@Modules/profile/dtos/editProfileDto.dto';
-import { IdentityEntity } from '@DB/models';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Profile } from '@DB/models/Profile.entity';
+import { EditProfileDto } from '@Modules/profile/dtos/editProfile.dto';
+import { Identity } from '@DB/models';
 import { InjectModel } from '@nestjs/sequelize';
 
 @Injectable()
 export class ProfileService {
   constructor(
-    @InjectModel(ProfileEntity)
-    private profileModel: typeof ProfileEntity,
+    @InjectModel(Profile)
+    private profileModel: typeof Profile,
+
+    @InjectModel(Identity)
+    private identityModel: typeof Identity,
   ) {}
 
-  async getById(id: number): Promise<ProfileEntity> {
-    return this.profileModel.findByPk(id);
+  async getById(id: number): Promise<Profile> {
+    return this.profileModel.findOne({ where: { id } });
   }
 
   async updateById(id: number, params: EditProfileDto): Promise<{ success: true }> {
-    // eslint-disable-next-line no-param-reassign,security/detect-object-injection
-    Object.keys(params).forEach((key: string) => (params[key] === undefined || params[key] === null ? delete params[key] : {}));
-
     if (params.userName && params.userName !== '') {
       const alreadyExists = await this.profileModel.findOne({ where: { userName: params.userName }, attributes: ['id'], raw: true });
       if (alreadyExists) {
@@ -38,8 +38,8 @@ export class ProfileService {
   }
 
   async getUserNameByProfileId(profileId: number): Promise<string | null> {
-    const user = await IdentityEntity.findOne({
-      where: { profileId },
+    const user = await this.identityModel.findOne({
+      where: { id: profileId },
       include: [
         {
           model: this.profileModel,

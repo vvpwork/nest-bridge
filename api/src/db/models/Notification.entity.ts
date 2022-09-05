@@ -12,8 +12,8 @@ import {
   BelongsTo,
 } from 'sequelize-typescript';
 import { INotificationModel } from '@Common/interfaces';
-import { ProfileEntity } from '@/db/models/Profile.entity';
-import { NotificationTypeEntity } from '@/db/models/NotificationType.entity';
+import { Profile } from '@/db/models/Profile.entity';
+import { NotificationType } from '@/db/models/NotificationType.entity';
 
 @DefaultScope(() => ({
   order: [['createdAt', 'DESC']],
@@ -22,14 +22,14 @@ import { NotificationTypeEntity } from '@/db/models/NotificationType.entity';
   tableName: 'Notification',
   timestamps: true,
 })
-export class NotificationEntity extends Model<INotificationModel> {
+export class Notification extends Model<INotificationModel> {
   @PrimaryKey
   @AutoIncrement
   @AllowNull(false)
   @Column(DataType.BIGINT)
   id: number;
 
-  @ForeignKey(() => ProfileEntity)
+  @ForeignKey(() => Profile)
   @AllowNull(false)
   @Column(DataType.BIGINT)
   profileId: number;
@@ -39,7 +39,7 @@ export class NotificationEntity extends Model<INotificationModel> {
   @Column(DataType.JSONB)
   params: object;
 
-  @ForeignKey(() => NotificationTypeEntity)
+  @ForeignKey(() => NotificationType)
   @AllowNull(false)
   @Column(DataType.STRING)
   type: string;
@@ -48,6 +48,6 @@ export class NotificationEntity extends Model<INotificationModel> {
   @Column(DataType.BOOLEAN)
   isRead: boolean;
 
-  @BelongsTo(() => ProfileEntity, 'profileId')
-  profile: ProfileEntity;
+  @BelongsTo(() => Profile, 'profileId')
+  profile: Profile;
 }

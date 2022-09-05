@@ -11,8 +11,8 @@ import {
   AutoIncrement,
 } from 'sequelize-typescript';
 import { IOrderModel } from '@Common/interfaces';
-import { IdentityEntity } from '@/db/models/Identity.entity';
-import { NftEntity } from '@/db/models/Nft.entity';
+import { Identity } from '@/db/models/Identity.entity';
+import { Nft } from '@/db/models/Nft.entity';
 
 @DefaultScope(() => ({
   order: [['createdAt', 'DESC']],
@@ -21,19 +21,19 @@ import { NftEntity } from '@/db/models/Nft.entity';
   tableName: 'Order',
   timestamps: true,
 })
-export class OrderEntity extends Model<IOrderModel> {
+export class Order extends Model<IOrderModel> {
   @PrimaryKey
   @AutoIncrement
   @AllowNull(false)
   @Column(DataType.BIGINT)
   id: number;
 
-  @ForeignKey(() => IdentityEntity)
+  @ForeignKey(() => Identity)
   @AllowNull(false)
   @Column(DataType.BIGINT)
   identityId: number;
 
-  @ForeignKey(() => NftEntity)
+  @ForeignKey(() => Nft)
   @AllowNull(false)
   @Column(DataType.STRING(60))
   nftId: string;
@@ -54,9 +54,9 @@ export class OrderEntity extends Model<IOrderModel> {
   @Column(DataType.INTEGER)
   decimals: number;
 
-  @BelongsTo(() => IdentityEntity, 'identityId')
-  identity: IdentityEntity;
+  @BelongsTo(() => Identity, 'identityId')
+  identity: Identity;
 
-  @BelongsTo(() => NftEntity, 'nftId')
-  nft: NftEntity;
+  @BelongsTo(() => Nft, 'nftId')
+  nft: Nft;
 }

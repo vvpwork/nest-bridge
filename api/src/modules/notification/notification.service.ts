@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { NOTIFICATION_TYPES } from '@Common/enums';
-import { FollowerEntity, NotificationEntity } from '@DB/models';
+import { Follower, Notification } from '@DB/models';
 
 @Injectable()
 export class NotificationService {
   constructor(
-    @InjectModel(NotificationEntity)
-    private notificationModel: typeof NotificationEntity,
+    @InjectModel(Notification)
+    private notificationModel: typeof Notification,
   ) {}
 
   async addNotification(profileId: number, type: NOTIFICATION_TYPES, params: Record<string, unknown>) {
@@ -15,7 +15,7 @@ export class NotificationService {
   }
 
   async addNotificationToAllIdentityFollowers(profileId: number, params: Record<string, unknown>, type: NOTIFICATION_TYPES) {
-    const allFollowers: Pick<FollowerEntity, 'profileId'>[] = await FollowerEntity.findAll({
+    const allFollowers: Pick<Follower, 'profileId'>[] = await Follower.findAll({
       where: { targetProfileId: profileId },
       attributes: ['profileId'],
       raw: true,
@@ -24,14 +24,12 @@ export class NotificationService {
     while (allFollowers.length) {
       const toProcess = allFollowers.splice(0, 100);
       // eslint-disable-next-line no-await-in-loop
-      await Promise.all(
-        toProcess.map((follower: Pick<FollowerEntity, 'profileId'>) => this.addNotification(follower.profileId, type, params)),
-      );
+      await Promise.all(toProcess.map((follower: Pick<Follower, 'profileId'>) => this.addNotification(follower.profileId, type, params)));
     }
   }
 
   async getAllNotificationIdsByTypeAndParams(params: any, type: NOTIFICATION_TYPES) {
-    const allNotifications: Pick<NotificationEntity, 'id'>[] = await this.notificationModel.findAll({
+    const allNotifications: Pick<Notification, 'id'>[] = await this.notificationModel.findAll({
       where: { type, params },
       attributes: ['id'],
     });

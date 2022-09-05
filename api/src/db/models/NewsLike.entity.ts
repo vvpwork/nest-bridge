@@ -1,32 +1,32 @@
 import { Table, Column, Model, DataType, PrimaryKey, ForeignKey, AutoIncrement, BelongsTo, AllowNull } from 'sequelize-typescript';
 import { INewsLikeModel } from '@Common/interfaces';
-import { ProfileEntity } from '@/db/models/Profile.entity';
-import { NewsEntity } from '@/db/models/News.entity';
+import { Profile } from '@/db/models/Profile.entity';
+import { News } from '@/db/models/News.entity';
 
 @Table({
   tableName: 'NewsLike',
   timestamps: true,
 })
-export class NewsLikeEntity extends Model<INewsLikeModel> {
+export class NewsLike extends Model<INewsLikeModel> {
   @PrimaryKey
   @AutoIncrement
   @AllowNull(false)
   @Column(DataType.BIGINT)
   id: number;
 
-  @ForeignKey(() => ProfileEntity)
+  @ForeignKey(() => Profile)
   @AllowNull(false)
   @Column(DataType.BIGINT)
   profileId: number;
 
-  @ForeignKey(() => NewsEntity)
+  @ForeignKey(() => News)
   @AllowNull(false)
   @Column(DataType.STRING(60))
   newsId: string;
 
-  @BelongsTo(() => ProfileEntity, 'profileId')
-  profile: ProfileEntity;
+  @BelongsTo(() => Profile, 'profileId')
+  profile: Profile;
 
-  @BelongsTo(() => NewsEntity, 'newsId')
-  news: NewsEntity;
+  @BelongsTo(() => News, 'newsId')
+  news: News;
 }

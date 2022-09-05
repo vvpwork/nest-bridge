@@ -24,7 +24,7 @@ export class AuthController {
     // TODO add general logic
 
     return res.status(200).send({
-      token: this.authService.jwtSign(50),
+      token: this.authService.jwtSign(1),
     });
   }
 

@@ -5,13 +5,20 @@ import { Request } from 'express';
 import { config } from '@Common/config';
 import { InjectRedis } from '@liaoliaots/nestjs-redis';
 import Redis from 'ioredis';
+import { InjectModel } from '@nestjs/sequelize';
+import { Identity } from '@DB/models';
 import { ProfileService } from '@/modules/profile';
 
 const { secret, ttl } = config.jwt;
 
 @Injectable()
 export class AuthService {
-  constructor(private jwt: JwtService, @InjectRedis() private readonly redis: Redis, private profileService: ProfileService) {}
+  constructor(
+    private jwt: JwtService,
+    @InjectRedis() private readonly redis: Redis,
+    @InjectModel(Identity)
+    private identityModel: typeof Identity,
+  ) {}
 
   private makeRedisKey(token: string) {
     return `black:${token}`;
@@ -21,7 +28,7 @@ export class AuthService {
     await this.redis.set(this.makeRedisKey(token), token, 'EX', expire);
   }
 
-  public async jwtValidate(token: string): Promise<null | { sub: string }> {
+  public async jwtValidate(token: string): Promise<null | { sub: number }> {
     try {
       if (!this.jwt.verify(token, { secret })) return null;
 
@@ -29,7 +36,7 @@ export class AuthService {
       const jwtFromBlackList = await this.redis.get(this.makeRedisKey(token));
       if (jwtFromBlackList) return null;
 
-      const decodedToken = <{ sub: string }>this.jwt.decode(token);
+      const decodedToken = <{ sub: number }>this.jwt.decode(token);
       return decodedToken;
     } catch (err) {
       return null;
@@ -48,9 +55,8 @@ export class AuthService {
     const tokenData = await this.jwtValidate(reqToken);
     if (!tokenData) return false;
 
-    // TODO change after add seeds
-    const userFromDB = await this.profileService.getById(100);
-    if (!userFromDB) {
+    const userFromDB = await this.identityModel.findByPk(tokenData.sub);
+    if (userFromDB) {
       req.user = {
         data: userFromDB.toJSON(),
         tokenData: {

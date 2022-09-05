@@ -2,13 +2,13 @@ import { Table, Column, Model, DataType, PrimaryKey, AllowNull, Default, AutoInc
 import { IProfileModel } from '@Common/interfaces';
 import { PROFILE_SECTIONS } from '@Common/enums';
 import { ProfileSocials } from '@Common/types';
-import { IdentityEntity } from '@/db/models/Identity.entity';
+import { Identity } from '@/db/models/Identity.entity';
 
 @Table({
   tableName: 'Profile',
   timestamps: true,
 })
-export class ProfileEntity extends Model<IProfileModel> {
+export class Profile extends Model<IProfileModel> {
   @PrimaryKey
   @AutoIncrement
   @AllowNull(false)
@@ -55,6 +55,6 @@ export class ProfileEntity extends Model<IProfileModel> {
   @Column(DataType.JSONB)
   sections: string;
 
-  @HasOne(() => IdentityEntity, 'profileId')
-  identity: IdentityEntity;
+  @HasOne(() => Identity, 'profileId')
+  identity: Identity;
 }

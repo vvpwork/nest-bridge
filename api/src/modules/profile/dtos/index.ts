@@ -1,3 +1,3 @@
-export * from './editProfileDto.dto';
-export * from './profileSectionsDto.dto';
-export * from './profileSocialsDto.dto';
+export * from './editProfile.dto';
+export * from './profileSections.dto';
+export * from './profileSocials.dto';

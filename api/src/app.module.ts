@@ -5,7 +5,7 @@ import { SequelizeModule } from '@nestjs/sequelize';
 
 import { config } from '@Common/config';
 import { ExceptionsFilter } from '@Common/filters';
-import { AuthModule, ExampleModule, RabbitExampleModule, ProfileModule, LibraryModule } from './modules';
+import { AuthModule, ExampleModule, RabbitExampleModule, ProfileModule, LibraryModule, PodcastModule } from './modules';
 import * as models from './db/models';
 import { SseModule } from './modules/sse/sse.module';
 
@@ -25,26 +25,31 @@ const imports = [
   ProfileModule,
   LibraryModule,
   SseModule,
+  PodcastModule,
   RouterModule.register([
     {
-      path: `/example`,
+      path: '/example',
       module: ExampleModule,
     },
     {
-      path: `/auth`,
+      path: '/auth',
       module: AuthModule,
     },
     {
-      path: `/profiles`,
+      path: '/profiles',
       module: ProfileModule,
     },
     {
-      path: `/libraries`,
+      path: '/libraries',
       module: LibraryModule,
     },
     {
-      path: `/sse`,
-      module: LibraryModule,
+      path: '/podcasts',
+      module: PodcastModule,
+    },
+    {
+      path: '/sse',
+      module: SseModule,
     },
   ]),
 ];
