@@ -4,12 +4,11 @@ const db = nodeConfig.get('db');
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable(
-      { tableName: 'Profile', schema: db.schema },
+      { tableName: 'Profile',  schema: db.schema   },
       {
         id: {
           type: Sequelize.BIGINT,
           autoIncrement: true,
-          allowNull: false,
           primaryKey: true,
         },
         cover: {
@@ -37,16 +36,15 @@ module.exports = {
           allowNull: true,
         },
         socials: {
-          type: Sequelize.JSONB,
+          type: Sequelize.JSON,
           allowNull: true,
         },
         sections: {
-          type: Sequelize.JSONB,
+          type: Sequelize.JSON,
           allowNull: false,
         },
         email: {
           type: Sequelize.STRING,
-          after: 'identityId',
           allowNull: true,
         },
         communityLink: {

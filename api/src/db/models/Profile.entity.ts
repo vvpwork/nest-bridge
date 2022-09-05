@@ -48,11 +48,11 @@ export class Profile extends Model<IProfileModel> {
   bio: string;
 
   @AllowNull(true)
-  @Column(DataType.JSONB)
+  @Column(DataType.JSON)
   socials: ProfileSocials;
 
   @Default(Object.values(PROFILE_SECTIONS))
-  @Column(DataType.JSONB)
+  @Column(DataType.JSON)
   sections: string;
 
   @HasOne(() => Identity, 'profileId')

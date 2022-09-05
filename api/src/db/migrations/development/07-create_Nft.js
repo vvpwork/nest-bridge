@@ -27,7 +27,7 @@ module.exports = {
           allowNull: false,
         },
         metadata: {
-          type: Sequelize.JSONB,
+          type: Sequelize.JSON,
           allowNull: true,
         },
         totalSupply: {

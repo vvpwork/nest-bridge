@@ -36,7 +36,7 @@ export class Notification extends Model<INotificationModel> {
 
   @AllowNull(true)
   @Default({})
-  @Column(DataType.JSONB)
+  @Column(DataType.JSON)
   params: object;
 
   @ForeignKey(() => NotificationType)

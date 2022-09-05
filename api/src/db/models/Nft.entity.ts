@@ -46,7 +46,7 @@ export class Nft extends Model<INftModel> {
   thumbnail: string;
 
   @AllowNull(true)
-  @Column(DataType.JSONB)
+  @Column(DataType.JSON)
   metadata: string;
 
   @AllowNull(false)
@@ -59,11 +59,11 @@ export class Nft extends Model<INftModel> {
   totalSupply: number;
 
   @AllowNull(false)
-  @Column(DataType.JSONB)
+  @Column(DataType.JSON)
   creatorIds: string;
 
   @AllowNull(false)
-  @Column(DataType.JSONB)
+  @Column(DataType.JSON)
   royaltyIds: string;
 
   @AllowNull(false)
