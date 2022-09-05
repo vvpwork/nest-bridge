@@ -40,6 +40,10 @@ module.exports = {
           type: Sequelize.STRING(64),
           allowNull: false,
         },
+        decimals: {
+          type: Sequelize.INTEGER,
+          allowNull: false,
+        },
         signature: {
           type: Sequelize.TEXT,
           allowNull: false,
