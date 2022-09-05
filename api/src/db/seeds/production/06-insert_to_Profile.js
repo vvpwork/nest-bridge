@@ -1,5 +1,5 @@
 /* eslint-disable */
-const { upsertData } = require('../../utils/helper');
+const { upsertData, resetSequence } = require('../../utils/helper');
 
 module.exports = {
   up: async queryInterface => {
@@ -38,14 +38,15 @@ module.exports = {
 
     const profilesQuery = upsertData(
       'Profile',
-      ['id', 'cover', 'avatar', 'name', '"userName"', 'sections', 'socials', 'email'],
+      ['id', 'cover', 'avatar', 'name', 'userName', 'sections', 'socials', 'email'],
       profiles.map(tr => [
         `'${tr.id}','${tr.cover}','${tr.avatar}','${tr.name}', '${tr.userName}','${tr.sections}','${tr.socials}','${tr.email}'`,
       ]),
-      'id',
     );
 
     await queryInterface.sequelize.query(profilesQuery);
+
+    await resetSequence(queryInterface, 'Profile');
   },
 
   down: queryInterface => queryInterface.bulkDelete('Profile'),

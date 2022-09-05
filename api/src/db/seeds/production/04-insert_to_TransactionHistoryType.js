@@ -31,7 +31,6 @@ module.exports = {
       'TransactionHistoryType',
       ['code'],
       transactionHistoryTypes.map(tr => [`'${tr.code}'`]),
-      'code',
     );
 
     await queryInterface.sequelize.query(transactionHistoryTypesQuery);
