@@ -4,7 +4,7 @@ const db = nodeConfig.get('db');
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable(
-      { tableName: 'Library ', schema: db.schema },
+      { tableName: 'Library', schema: db.schema },
       {
         id: {
           type: Sequelize.STRING(60),

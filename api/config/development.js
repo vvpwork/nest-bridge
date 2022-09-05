@@ -11,11 +11,11 @@ module.exports = {
   },
   db: {
     host: process.env.DB_HOST,
-    port: Number.parseInt(process.env.DB_PORT || '5432', 10),
+    port: Number.parseInt(process.env.DB_PORT || '3306', 10),
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     username: process.env.DB_USER,
-    dialect: process.env.DB_TYPE,
+    dialect: process.env.DB_DIALECT,
     schema: process.env.DB_SCHEMA,
   },
   redis: {

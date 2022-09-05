@@ -13,7 +13,7 @@ module.exports = {
           primaryKey: true,
         },
         identityId: {
-          type: Sequelize.INTEGER,
+          type: Sequelize.BIGINT,
           allowNull: false,
           references: {
             model: 'Identity',
@@ -49,7 +49,7 @@ module.exports = {
           allowNull: false,
         },
         metadata: {
-          type: Sequelize.JSONB,
+          type: Sequelize.JSON,
           allowNull: false,
         },
         createdAt: {
