@@ -1,8 +1,8 @@
 version: '3.2'
 services:
   postgres:
-    image: postgres:11
-    container_name: postgres_bridge
+    image: mariadb
+    container_name: mariadb_bridge
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres

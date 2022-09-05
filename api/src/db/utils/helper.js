@@ -1,10 +1,6 @@
 /* eslint-disable */
-const config = require('config');
-const schema = config.get('db').schema;
-
-const upsertData = (nameTable, dataKeys, dataValues, conflictKey) => {
-  const keyConflict = conflictKey || 'id';
-  const table = `${schema ? `"${schema}".` : ''}"${nameTable}"`;
+const upsertData = (nameTable, dataKeys, dataValues) => {
+  const table = `${nameTable}`;
 
   return `INSERT INTO ${table} (${dataKeys.join(', ')}) VALUES
     ${dataValues
@@ -12,26 +8,15 @@ const upsertData = (nameTable, dataKeys, dataValues, conflictKey) => {
         return `(${v.join(', ')})`;
       })
       .join(', ')}
-    ON CONFLICT (${keyConflict}) DO UPDATE SET ${dataKeys.length > 1 ? `(${dataKeys.join(', ')})` : dataKeys[0]} = (${dataKeys
-    .map(v => `EXCLUDED.${v}`)
-    .join(', ')})`;
+    ON DUPLICATE KEY UPDATE ${dataKeys.map(v => `${v} = ${v}`).join(', ')}`;
 };
 
 const resetSequence = async (queryInterface, table) => {
-  const sql = `  
-  BEGIN;
-    -- protect against concurrent inserts while you update the counter
-  LOCK TABLE ${table} IN EXCLUSIVE MODE;
-    -- Update the sequence
-  SELECT setval('${table}_id_seq', COALESCE((SELECT MAX(id)+1 FROM ${table}), 1), false);
-  COMMIT;
-  `;
+  const sql = `ALTER TABLE ${table} AUTO_INCREMENT = 1`;
 
   console.log(sql);
 
-  return queryInterface.sequelize.query(sql, {
-    schema,
-  });
+  return queryInterface.sequelize.query(sql);
 };
 
 module.exports = {

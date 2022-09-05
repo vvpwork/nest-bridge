@@ -43,9 +43,8 @@ module.exports = {
 
     const blockchainsQuery = upsertData(
       'Blockchain',
-      ['"chainId"', 'name', 'description'],
+      ['chainId', 'name', 'description'],
       blockchains.map(tr => [`'${tr.chainId}','${tr.name}','${tr.description}'`]),
-      '"chainId"',
     );
 
     await queryInterface.sequelize.query(blockchainsQuery);

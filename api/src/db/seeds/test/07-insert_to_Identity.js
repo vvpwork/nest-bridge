@@ -1,6 +1,5 @@
 /* eslint-disable */
-const { upsertData } = require('../../utils/helper');
-const { resetSequence } = require('@DB/utils/helper');
+const { upsertData, resetSequence } = require('../../utils/helper');
 
 module.exports = {
   up: async queryInterface => {
@@ -33,9 +32,8 @@ module.exports = {
 
     const identitiesQuery = upsertData(
       'Identity',
-      ['id', 'address', '"securitizeId"', '"accountType"', '"profileId"', 'nonce'],
+      ['id', 'address', 'securitizeId', 'accountType', 'profileId', 'nonce'],
       identitites.map(tr => [`'${tr.id}','${tr.address}','${tr.securitizeId}','${tr.accountType}','${tr.profileId}','${tr.nonce}'`]),
-      'id',
     );
 
     await queryInterface.sequelize.query(identitiesQuery);
