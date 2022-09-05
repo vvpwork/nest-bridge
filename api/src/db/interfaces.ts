@@ -1,37 +1,6 @@
-import { MetadataObject, ProfileSocials } from '@Common/types';
-import { ACCOUNT_TYPES, BALANCE_STATUSES, NOTIFICATION_TYPES, PROFILE_SECTIONS } from '@Common/enums';
+import { ACCOUNT_TYPES, BALANCE_STATUSES, NOTIFICATION_TYPES, PROFILE_SECTIONS } from './enums';
+import { MetadataObject, ProfileSocials } from './types';
 
-export interface IConfig {
-  db: {
-    host: string;
-    port: number;
-    password: string;
-    database: string;
-    username: string;
-    dialect: any;
-  };
-  redis: {
-    host: string;
-    port: number;
-    password: string;
-  };
-  rabbit: {
-    uri: string;
-    exchangeName: string;
-  };
-  jwt: {
-    secret: string;
-    ttl: string | number;
-  };
-  securitize: {
-    issuerId: string;
-    secret: string;
-    baseUrl: string;
-    proxyAddress: string;
-  };
-}
-
-// TODO move to db folder
 export interface IProfileModel {
   id: number;
   cover: string;

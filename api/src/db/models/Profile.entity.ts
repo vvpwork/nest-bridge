@@ -1,7 +1,7 @@
 import { Table, Column, Model, DataType, PrimaryKey, AllowNull, Default, AutoIncrement, HasOne } from 'sequelize-typescript';
-import { IProfileModel } from '@Common/interfaces';
 import { PROFILE_SECTIONS } from '@Common/enums';
 import { ProfileSocials } from '@Common/types';
+import { IProfileModel } from '../interfaces';
 import { Identity } from '@/db/models/Identity.entity';
 
 @Table({

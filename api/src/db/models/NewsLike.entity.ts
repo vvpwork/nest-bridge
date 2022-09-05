@@ -1,5 +1,5 @@
 import { Table, Column, Model, DataType, PrimaryKey, ForeignKey, AutoIncrement, BelongsTo, AllowNull } from 'sequelize-typescript';
-import { INewsLikeModel } from '@Common/interfaces';
+import { INewsLikeModel } from '../interfaces';
 import { Profile } from '@/db/models/Profile.entity';
 import { News } from '@/db/models/News.entity';
 

@@ -10,7 +10,7 @@ import {
   ForeignKey,
   DefaultScope,
 } from 'sequelize-typescript';
-import { IFollowerModel } from '@Common/interfaces';
+import { IFollowerModel } from '../interfaces';
 import { Profile } from '@/db/models/Profile.entity';
 
 @DefaultScope(() => ({

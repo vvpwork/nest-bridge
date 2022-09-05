@@ -10,7 +10,7 @@ import {
   ForeignKey,
   AutoIncrement,
 } from 'sequelize-typescript';
-import { IIdentityBalanceModel } from '@Common/interfaces';
+import { IIdentityBalanceModel } from '../interfaces';
 import { Identity } from '@/db/models/Identity.entity';
 import { Nft } from '@/db/models/Nft.entity';
 import { IdentityNftBalanceStatus } from '@/db/models/IdentityNftBalanceStatus.entity';

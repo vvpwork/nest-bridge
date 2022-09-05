@@ -11,7 +11,7 @@ import {
   AutoIncrement,
   BelongsTo,
 } from 'sequelize-typescript';
-import { INotificationModel } from '@Common/interfaces';
+import { INotificationModel } from '../interfaces';
 import { Profile } from '@/db/models/Profile.entity';
 import { NotificationType } from '@/db/models/NotificationType.entity';
 

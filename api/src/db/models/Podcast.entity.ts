@@ -1,5 +1,6 @@
 import { Table, Column, Model, DataType, PrimaryKey, DefaultScope, AllowNull, Default, ForeignKey, BelongsTo } from 'sequelize-typescript';
-import { IPodcastModel } from '@Common/interfaces';
+
+import { IPodcastModel } from '../interfaces';
 import { Profile } from '@/db/models/Profile.entity';
 
 @DefaultScope(() => ({

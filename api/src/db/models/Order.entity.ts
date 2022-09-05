@@ -10,7 +10,7 @@ import {
   BelongsTo,
   AutoIncrement,
 } from 'sequelize-typescript';
-import { IOrderModel } from '@Common/interfaces';
+import { IOrderModel } from '../interfaces';
 import { Identity } from '@/db/models/Identity.entity';
 import { Nft } from '@/db/models/Nft.entity';
 

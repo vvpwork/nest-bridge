@@ -1,5 +1,5 @@
 import { Table, Column, Model, DataType, PrimaryKey, AllowNull, AutoIncrement, ForeignKey, BelongsTo } from 'sequelize-typescript';
-import { IIdentityNftBalanceLock } from '@Common/interfaces';
+import { IIdentityNftBalanceLock } from '../interfaces';
 import { IdentityNftBalance } from '@/db/models/IdentityNftBalance.entity';
 
 @Table({
