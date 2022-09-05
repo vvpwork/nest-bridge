@@ -2,6 +2,8 @@ import { ExecutionContext, Module } from '@nestjs/common';
 import { Request } from 'express';
 import { Reflector } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
+import { SequelizeModule } from '@nestjs/sequelize';
+import { Identity } from '@DB/models';
 import { AuthController } from './auth.controller';
 import { config } from '@/common/config';
 import { AuthService } from './auth.service';
@@ -17,6 +19,7 @@ const { ttl, secret } = config.jwt;
       signOptions: { expiresIn: ttl },
     }),
     ProfileModule,
+    SequelizeModule.forFeature([Identity]),
   ],
   controllers: [AuthController],
   providers: [AuthService],
@@ -33,7 +36,7 @@ export class AuthModule {
 
     const request = this.getRequest(context);
 
-    this.auth.isAuthenticated(request);
+    return this.auth.isAuthenticated(request);
   }
 
   public getRequest(context: ExecutionContext): Request {

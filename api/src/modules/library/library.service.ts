@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { LibraryEntity, NotificationEntity } from '@DB/models';
+import { Library, Notification } from '@DB/models';
 import { NotificationService } from '@Modules/notification';
 import { NOTIFICATION_TYPES } from '@Common/enums';
 import { ProfileService } from '@Modules/profile';
@@ -11,13 +11,13 @@ export class LibraryService {
   constructor(
     private readonly notificationService: NotificationService,
     private readonly profileService: ProfileService,
-    @InjectModel(LibraryEntity)
-    private libraryModel: typeof LibraryEntity,
-    @InjectModel(NotificationEntity)
-    private notificationModel: typeof NotificationEntity,
+    @InjectModel(Library)
+    private libraryModel: typeof Library,
+    @InjectModel(Notification)
+    private notificationModel: typeof Notification,
   ) {}
 
-  async create(profileId: number, params: CreateLibraryDto): Promise<LibraryEntity> {
+  async create(profileId: number, params: CreateLibraryDto): Promise<Library> {
     const { image, source, title } = params;
 
     const newLibraryRecord = await this.libraryModel.create({ profileId, image, source, title });
@@ -37,9 +37,9 @@ export class LibraryService {
   }
 
   async update(libraryId: number, params: EditLibraryDto): Promise<{ success: true }> {
-    await LibraryEntity.update(params, { where: { id: libraryId } });
+    await Library.update(params, { where: { id: libraryId } });
 
-    const newLibraryRecord = await LibraryEntity.findByPk(libraryId);
+    const newLibraryRecord = await Library.findByPk(libraryId);
 
     const allNotificationIds = await this.notificationService.getAllNotificationIdsByTypeAndParams(
       { id: libraryId },
@@ -47,7 +47,7 @@ export class LibraryService {
     );
     if (allNotificationIds.length) {
       const { id, title, image, source } = newLibraryRecord;
-      await NotificationEntity.update(
+      await Notification.update(
         {
           params: {
             id,
@@ -63,7 +63,7 @@ export class LibraryService {
   }
 
   async delete(libraryId: number): Promise<{ success: true }> {
-    const libraryRecord = await LibraryEntity.findByPk(libraryId, { attributes: ['id'] });
+    const libraryRecord = await Library.findByPk(libraryId, { attributes: ['id'] });
     if (!libraryRecord) {
       throw new HttpException('LIBRARY_NOT_FOUND', HttpStatus.NOT_FOUND);
     }

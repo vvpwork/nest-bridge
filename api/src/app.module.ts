@@ -44,7 +44,7 @@ const imports = [
     },
     {
       path: `/sse`,
-      module: LibraryModule,
+      module: SseModule,
     },
   ]),
 ];

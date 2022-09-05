@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { User } from '@Common/decorators/user.decorator';
 import { IIdentityModel } from '@Common/interfaces';
-import { PodcastEntity } from '@DB/models';
+import { Podcast } from '@DB/models';
 import { CreatePodcastDto, EditPodcastDto } from './dtos';
 import { PodcastService } from './podcast.service';
 
@@ -12,7 +12,7 @@ export class PodcastController {
   // ToDo add auth guard
   // ToDo add middleware to allow only owner to perform this action
   @Post()
-  create(@User() user: IIdentityModel, @Body() body: CreatePodcastDto): Promise<PodcastEntity> {
+  create(@User() user: IIdentityModel, @Body() body: CreatePodcastDto): Promise<Podcast> {
     const mockUser = { id: 1, profileId: 1 }; // ToDo get user from request instead of mock
     return this.podcastService.create(mockUser.profileId, body);
   }

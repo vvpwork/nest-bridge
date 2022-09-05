@@ -4,7 +4,7 @@ import { Table, Column, Model, DataType, PrimaryKey, AllowNull } from 'sequelize
   tableName: 'NotificationType',
   timestamps: false,
 })
-export class NotificationTypeEntity extends Model<{ code: string }> {
+export class NotificationType extends Model<{ code: string }> {
   @PrimaryKey
   @AllowNull(false)
   @Column(DataType.STRING)

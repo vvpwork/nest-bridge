@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Patch } from '@nestjs/common';
 import { User } from '@Common/decorators/user.decorator';
 import { IIdentityModel } from '@Common/interfaces';
-import { ProfileEntity } from '@DB/models/Profile.entity';
+import { Profile } from '@DB/models/Profile.entity';
 import { EditProfileDto } from '@Modules/profile/dtos/';
 import { ProfileService } from './profile.service';
 
@@ -10,9 +10,10 @@ export class ProfileController {
   constructor(private readonly profileService: ProfileService) {}
 
   @Get() // ToDo add auth guard
-  getMy(@User() user: IIdentityModel): Promise<ProfileEntity> {
+  getMy(@User() user: IIdentityModel): Promise<Profile> {
     const mockUser = { id: 1, profileId: 1 }; // ToDo get user from request instead of mock
-    return this.profileService.getById(mockUser.profileId);
+    console.log('scv_user', user.profileId, user);
+    return this.profileService.getById(user.profileId);
   }
 
   @Patch() // ToDo add auth guard
