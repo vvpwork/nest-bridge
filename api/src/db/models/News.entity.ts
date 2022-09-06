@@ -38,6 +38,14 @@ export class News extends Model<INewsModel> {
   @Column(DataType.STRING)
   source: string;
 
+  @AllowNull(true)
+  @Column(DataType.VIRTUAL)
+  likesCount: number;
+
+  @AllowNull(true)
+  @Column(DataType.VIRTUAL)
+  isLiked: boolean;
+
   @BelongsTo(() => Profile, 'profileId')
   profile: Profile;
 }

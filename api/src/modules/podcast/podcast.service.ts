@@ -39,14 +39,18 @@ export class PodcastService {
   async update(podcastId: number, params: EditPodcastDto): Promise<{ success: true }> {
     await this.podcastModel.update(params, { where: { id: podcastId } });
 
-    const newPodcastRecord = await this.podcastModel.findByPk(podcastId);
+    const podcastRecord = await this.podcastModel.findByPk(podcastId);
+
+    if (!podcastRecord) {
+      throw new HttpException('PODCAST_NOT_FOUND', HttpStatus.NOT_FOUND);
+    }
 
     const allNotificationIds = await this.notificationService.getAllNotificationIdsByTypeAndParams(
       { id: podcastId },
       NOTIFICATION_TYPES.FOLLOWING_PERSON_ADDED_LIBRARY,
     );
     if (allNotificationIds.length) {
-      const { id, title, image, source } = newPodcastRecord;
+      const { id, title, image, source } = podcastRecord;
       await this.notificationModel.update(
         {
           params: {
