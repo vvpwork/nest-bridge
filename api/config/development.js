@@ -33,4 +33,13 @@ module.exports = {
     baseUrl: process.env.SECURITIZE_API_BASE_URL,
     proxyAddress: process.env.SECURITIZE_REGISTRY_PROXY_ADDRESS,
   },
+  blockChain: {
+    nodeUrl: process.env.NODE_URL,
+    erc1155Proxy: process.env.ERC1155_BRIDGE_TOWER_PROXY_ADDRESS,
+    exchangeV2Proxy: process.env.EXCHANGE_V2_PROXY_ADDRESS,
+    artemundiWallet: process.env.ARTEMUNDI_WALLET_ADDRESS,
+    transferProxy: process.env.TRANSFER_PROXY_ADDRESS,
+    erc20proxy: process.env.ERC_20_TRANSFER_PROXY_ADDRESS,
+    secretKey: process.env.WALLET_SECRET_KEY,
+  },
 };
