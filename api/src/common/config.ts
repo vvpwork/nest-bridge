@@ -7,4 +7,5 @@ export const config: IConfig = {
   rabbit: nodeConfig.get('rabbit'),
   jwt: nodeConfig.get('jwt'),
   securitize: nodeConfig.get('securitize'),
+  blockChain: nodeConfig.get('blockChain'),
 };
