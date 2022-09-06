@@ -39,14 +39,18 @@ export class LibraryService {
   async update(libraryId: number, params: EditLibraryDto): Promise<{ success: true }> {
     await this.libraryModel.update(params, { where: { id: libraryId } });
 
-    const newLibraryRecord = await this.libraryModel.findByPk(libraryId);
+    const libraryRecord = await this.libraryModel.findByPk(libraryId);
+
+    if (!libraryRecord) {
+      throw new HttpException('LIBRARY_NOT_FOUND', HttpStatus.NOT_FOUND);
+    }
 
     const allNotificationIds = await this.notificationService.getAllNotificationIdsByTypeAndParams(
       { id: libraryId },
       NOTIFICATION_TYPES.FOLLOWING_PERSON_ADDED_LIBRARY,
     );
     if (allNotificationIds.length) {
-      const { id, title, image, source } = newLibraryRecord;
+      const { id, title, image, source } = libraryRecord;
       await this.notificationModel.update(
         {
           params: {

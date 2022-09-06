@@ -5,7 +5,7 @@ import { SequelizeModule } from '@nestjs/sequelize';
 
 import { config } from '@Common/config';
 import { ExceptionsFilter } from '@Common/filters';
-import { AuthModule, ExampleModule, RabbitExampleModule, ProfileModule, LibraryModule, PodcastModule } from './modules';
+import { AuthModule, ExampleModule, RabbitExampleModule, ProfileModule, LibraryModule, PodcastModule, NewsModule } from './modules';
 import * as models from './db/models';
 import { SseModule } from './modules/sse/sse.module';
 
@@ -26,6 +26,7 @@ const imports = [
   LibraryModule,
   SseModule,
   PodcastModule,
+  NewsModule,
   RouterModule.register([
     {
       path: '/example',
@@ -46,6 +47,10 @@ const imports = [
     {
       path: '/podcasts',
       module: PodcastModule,
+    },
+    {
+      path: '/news',
+      module: NewsModule,
     },
     {
       path: '/sse',

@@ -147,6 +147,8 @@ export interface INewsModel {
   description: string;
   image: string;
   source: string;
+  likesCount: number;
+  isLiked: boolean;
   createdAt: any;
   updatedAt: any;
 }

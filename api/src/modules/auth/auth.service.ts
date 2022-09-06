@@ -64,9 +64,20 @@ export class AuthService {
           ...tokenData,
         },
       };
+
       return true;
     }
 
     return false;
+  }
+
+  async getUserFromReqHeaders(req: Request) {
+    if (!req.headers.authorization || (req.headers.authorization && !req.headers.authorization.includes('Bearer'))) return null;
+
+    const reqToken = req.headers.authorization.split(' ')[1];
+    const tokenData = await this.jwtValidate(reqToken);
+    if (!tokenData) return null;
+
+    return this.identityModel.findByPk(tokenData.sub);
   }
 }
