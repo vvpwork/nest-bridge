@@ -1,8 +1,9 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Profile } from '@DB/models/Profile.entity';
 import { EditProfileDto } from '@Modules/profile/dtos/editProfile.dto';
-import { Identity } from '@DB/models';
+import { Identity, Library, Podcast } from '@DB/models';
 import { InjectModel } from '@nestjs/sequelize';
+import { paginate } from '@Common/utils/pagination.util';
 
 @Injectable()
 export class ProfileService {
@@ -12,6 +13,12 @@ export class ProfileService {
 
     @InjectModel(Identity)
     private identityModel: typeof Identity,
+
+    @InjectModel(Library)
+    private libraryModel: typeof Library,
+
+    @InjectModel(Podcast)
+    private podcastModel: typeof Podcast,
   ) {}
 
   async getById(id: number): Promise<Profile> {
@@ -35,6 +42,14 @@ export class ProfileService {
 
     await this.profileModel.update(params, { where: { id } });
     return { success: true };
+  }
+
+  async getLibrariesByProfileId(profileId: number, limit?: number, offset?: number) {
+    return paginate(this.libraryModel, { query: { where: { profileId } }, limit, offset });
+  }
+
+  async getPodcastsByProfileId(profileId: number, limit?: number, offset?: number) {
+    return paginate(this.podcastModel, { query: { where: { profileId } }, limit, offset });
   }
 
   async getUserNameByProfileId(profileId: number): Promise<string | null> {
