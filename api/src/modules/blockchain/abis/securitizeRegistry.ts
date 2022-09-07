@@ -1,7 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { AbiItem } from 'web3-utils';
 
-const securitizeRegistryAbi: AbiItem[] = [
+export const securitizeRegistryAbi: AbiItem[] = [
   {
     inputs: [{ internalType: 'address', name: 'initialSecuritizeRegistry', type: 'address' }],
     stateMutability: 'nonpayable',
@@ -53,5 +53,3 @@ const securitizeRegistryAbi: AbiItem[] = [
     type: 'function',
   },
 ];
-
-export { securitizeRegistryAbi };

@@ -1,15 +1,16 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import { Body, Controller, Post, Res } from '@nestjs/common';
+import { Body, Controller, ForbiddenException, Logger, Next, Post, Res } from '@nestjs/common';
 import { ApiForbiddenResponse, ApiResponse, ApiTags, ApiUnprocessableEntityResponse } from '@nestjs/swagger';
-import { Response } from 'express';
+import { NextFunction, Response } from 'express';
 import { Public, User } from '@/common/decorators';
 import { ILoginResponse, LoginDto } from './dtos/auth-login.dto';
 import { AuthService } from './auth.service';
+import { IdentityService } from '../identity/identity.service';
 
 @ApiTags('Auth')
 @Controller()
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private identityService: IdentityService) {}
 
   @ApiUnprocessableEntityResponse({ description: 'Bad Request' })
   @ApiForbiddenResponse({ description: 'Unauthorized Request' })
@@ -20,11 +21,13 @@ export class AuthController {
   })
   @Public()
   @Post('login')
-  public async login(@Body() body: LoginDto, @Res() res: Response) {
-    // TODO add general logic
+  public async login(@Body() body: LoginDto, @Res() res: Response, @Next() next: NextFunction) {
+    const userIdentity = await this.identityService.findByKey({ address: body.address });
+
+    if (!userIdentity) return next(new ForbiddenException(`User with address ${body.address} was not found`));
 
     return res.status(200).send({
-      token: this.authService.jwtSign(1),
+      token: this.authService.jwtSign(userIdentity.id),
     });
   }
 
@@ -37,6 +40,7 @@ export class AuthController {
   @Post('logout')
   public async logout(@User() user: any, @Res() res: Response) {
     const { tokenData } = user;
+    Logger.log('user', user);
 
     await this.authService.jwtBlock(tokenData.token, tokenData.exp);
     // TODO add logic logout from securitize

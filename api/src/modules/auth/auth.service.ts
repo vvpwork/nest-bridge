@@ -1,13 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 
 import { config } from '@Common/config';
 import { InjectRedis } from '@liaoliaots/nestjs-redis';
 import Redis from 'ioredis';
-import { InjectModel } from '@nestjs/sequelize';
-import { Identity } from '@DB/models';
-import { ProfileService } from '@/modules/profile';
+import { IdentityService } from '../identity/identity.service';
 
 const { secret, ttl } = config.jwt;
 
@@ -16,8 +14,8 @@ export class AuthService {
   constructor(
     private jwt: JwtService,
     @InjectRedis() private readonly redis: Redis,
-    @InjectModel(Identity)
-    private identityModel: typeof Identity,
+
+    private identityService: IdentityService,
   ) {}
 
   private makeRedisKey(token: string) {
@@ -48,14 +46,15 @@ export class AuthService {
     return this.jwt.sign(IPayload, { expiresIn: ttl });
   }
 
-  public async isAuthenticated(req: Request) {
+  public async isAuthenticated(req: Request | any) {
     if (!req.headers.authorization || (req.headers.authorization && !req.headers.authorization.includes('Bearer'))) return false;
 
     const reqToken = req.headers.authorization.split(' ')[1];
+    Logger.log(reqToken);
     const tokenData = await this.jwtValidate(reqToken);
     if (!tokenData) return false;
 
-    const userFromDB = await this.identityModel.findByPk(tokenData.sub);
+    const userFromDB = await this.identityService.findByKey({ id: tokenData.sub });
     if (userFromDB) {
       req.user = {
         data: userFromDB.toJSON(),
@@ -78,6 +77,6 @@ export class AuthService {
     const tokenData = await this.jwtValidate(reqToken);
     if (!tokenData) return null;
 
-    return this.identityModel.findByPk(tokenData.sub);
+    return this.identityService.findByKey({ id: tokenData.sub });
   }
 }

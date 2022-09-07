@@ -25,7 +25,9 @@ module.exports = {
   },
   rabbit: {
     uri: process.env.RABBIT_URI,
-    exchangeName: process.env.RABBIT_EXCHANGE_NAME,
+    exchangeNameRpc: process.env.RABBIT_EXCHANGE_NAME_RPC,
+    exchangeNameDefault: process.env.RABBIT_EXCHANGE_NAME_DEFAULT,
+    timeoutDelay: process.env.MESSAGE_TIMEOUT || 6000,
   },
   securitize: {
     issuerId: process.env.SECURITIZE_ISSUER_ID,

@@ -7,6 +7,7 @@ import helmet from 'helmet';
 import compression from 'compression';
 import { AppModule } from './app.module';
 import { apiV1Alias } from './common/constants';
+import { config } from './common/config';
 
 async function bootstrap(): Promise<string> {
   const app = await NestFactory.create(AppModule);
@@ -26,11 +27,12 @@ async function bootstrap(): Promise<string> {
   // *******  global middlewares
   app.use(cors());
   app.use(helmet());
+  app.use(file);
   app.use(compression());
   app.use(morgan('combined'));
   // *******
 
-  await app.listen(8000);
+  await app.listen(config.port || 8000);
   return app.getUrl();
 }
 

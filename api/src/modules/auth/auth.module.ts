@@ -9,6 +9,7 @@ import { config } from '@/common/config';
 import { AuthService } from './auth.service';
 
 import { ProfileModule } from '../profile';
+import { IdentityModule } from '../identity';
 
 const { ttl, secret } = config.jwt;
 
@@ -19,6 +20,7 @@ const { ttl, secret } = config.jwt;
       signOptions: { expiresIn: ttl },
     }),
     ProfileModule,
+    IdentityModule,
     SequelizeModule.forFeature([Identity]),
   ],
   controllers: [AuthController],

@@ -11,6 +11,12 @@ export enum ACCOUNT_TYPES {
   // ADMIN = 'admin',
 }
 
+export enum PROFILE_STATUS {
+  PENDING = 'pending',
+  CONFIRMED = 'confirmed',
+  UNCONFIRMED = 'unconfirmed',
+}
+
 export enum BALANCE_STATUSES {
   UNLOCKED = 'unlocked',
   LOCKED = 'locked',

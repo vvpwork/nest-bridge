@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Param, Patch, Post, Get, Req } from '@nestjs/common';
 import { User } from '@Common/decorators/user.decorator';
-import { IIdentityModel } from '@Common/interfaces';
+import { IIdentityModel } from '@DB/interfaces';
 import { CreateLibraryDto, EditLibraryDto } from '@Modules/library/dtos';
 import { Library, News } from '@DB/models';
 import { Public } from '@Common/decorators';
@@ -27,8 +27,8 @@ export class NewsController {
     return this.newsService.delete(id);
   }
 
-  @Get(':id')
   @Public()
+  @Get(':id')
   async getOne(@Param('id') id: string, @Req() request: Request): Promise<News> {
     const user = await this.authService.getUserFromReqHeaders(request);
     return this.newsService.getOneById(id, user);

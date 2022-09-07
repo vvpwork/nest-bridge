@@ -4,13 +4,20 @@ const db = nodeConfig.get('db');
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable(
-      { tableName: 'Profile',  schema: db.schema   },
+      { tableName: 'Profile', schema: db.schema },
       {
         id: {
           type: Sequelize.BIGINT,
           autoIncrement: true,
           primaryKey: true,
         },
+
+        status: {
+          type: Sequelize.ENUM('pending', 'confirmed', 'unconfirmed'),
+          allowNull: false,
+          defaultValue: 'pending',
+        },
+
         cover: {
           type: Sequelize.STRING,
           allowNull: true,

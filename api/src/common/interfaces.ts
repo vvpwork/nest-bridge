@@ -1,7 +1,8 @@
-import { MetadataObject, ProfileSocials } from '@Common/types';
-import { ACCOUNT_TYPES, BALANCE_STATUSES, NOTIFICATION_TYPES, PROFILE_SECTIONS } from '@Common/enums';
+import { Request } from '@nestjs/common';
 
 export interface IConfig {
+  port: number;
+  nodeEnv: 'development' | 'production' | 'test';
   db: {
     host: string;
     port: number;
@@ -17,7 +18,9 @@ export interface IConfig {
   };
   rabbit: {
     uri: string;
-    exchangeName: string;
+    exchangeNameRpc: string;
+    exchangeNameDefault: string;
+    timeoutDelay: number;
   };
   jwt: {
     secret: string;
@@ -38,4 +41,8 @@ export interface IConfig {
     erc20proxy: string;
     secretKey: string;
   };
+}
+
+export interface IRequest extends Request {
+  user: any;
 }

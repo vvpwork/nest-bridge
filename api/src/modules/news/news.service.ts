@@ -4,7 +4,7 @@ import { NotificationService } from '@Modules/notification';
 import { NOTIFICATION_TYPES } from '@Common/enums';
 import { ProfileService } from '@Modules/profile';
 import { InjectModel } from '@nestjs/sequelize';
-import { IIdentityModel, INewsModel } from '@Common/interfaces';
+import { IIdentityModel, INewsModel } from '@DB/interfaces';
 import { JwtService } from '@nestjs/jwt';
 import { EditNewsDto, CreateNewsDto } from './dtos';
 

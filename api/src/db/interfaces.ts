@@ -1,9 +1,10 @@
-import { ACCOUNT_TYPES, BALANCE_STATUSES, NOTIFICATION_TYPES, PROFILE_SECTIONS } from './enums';
+import { ACCOUNT_TYPES, BALANCE_STATUSES, NOTIFICATION_TYPES, PROFILE_SECTIONS, PROFILE_STATUS } from './enums';
 import { MetadataObject, ProfileSocials } from './types';
 
 export interface IProfileModel {
   id: number;
   cover: string;
+  status: PROFILE_STATUS;
   avatar: string;
   userName: string;
   bio: string;

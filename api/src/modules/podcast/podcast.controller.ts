@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Param, Patch, Post } from '@nestjs/common';
 import { User } from '@Common/decorators/user.decorator';
-import { IIdentityModel } from '@Common/interfaces';
+import { IIdentityModel } from '@DB/interfaces';
 import { Podcast } from '@DB/models';
 import { CreatePodcastDto, EditPodcastDto } from './dtos';
 import { PodcastService } from './podcast.service';

@@ -1,13 +1,23 @@
-import { Module, ValidationPipe } from '@nestjs/common';
+import { Logger, Module, ValidationPipe } from '@nestjs/common';
 import { APP_FILTER, APP_PIPE, RouterModule, APP_GUARD } from '@nestjs/core';
 import { RedisModule } from '@liaoliaots/nestjs-redis';
 import { SequelizeModule } from '@nestjs/sequelize';
 
 import { config } from '@Common/config';
 import { ExceptionsFilter } from '@Common/filters';
-import { AuthModule, ExampleModule, RabbitExampleModule, ProfileModule, LibraryModule, PodcastModule, NewsModule } from './modules';
+import {
+  AuthModule,
+  ExampleModule,
+  ProfileModule,
+  LibraryModule,
+  PodcastModule,
+  NewsModule,
+  HealthCheckModule,
+  RabbitModule,
+} from './modules';
 import * as models from './db/models';
 import { SseModule } from './modules/sse/sse.module';
+import { BlockchainModule } from './modules/blockchain';
 
 const imports = [
   // DB postgres
@@ -16,9 +26,8 @@ const imports = [
   // Redis
   RedisModule.forRoot({ config: config.redis }),
 
-  // Rabbit
-  RabbitExampleModule,
-
+  RabbitModule,
+  BlockchainModule,
   // api
   AuthModule,
   ExampleModule,
@@ -27,6 +36,7 @@ const imports = [
   SseModule,
   PodcastModule,
   NewsModule,
+  HealthCheckModule,
   RouterModule.register([
     {
       path: '/example',

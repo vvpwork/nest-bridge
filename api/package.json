@@ -26,7 +26,7 @@
     "db:migrate:undo": "npx sequelize-cli db:migrate:undo",
     "db:seed": "npx sequelize-cli db:seed:all",
     "db:seed:undo": "npx sequelize-cli db:seed:undo:all",
-    "predev": "dotenv-checker --schema .env.example --env .env"
+    "predev": "dotenv-checker --schema .env.schema --env .env"
   },
   "dependencies": {
     "@golevelup/nestjs-rabbitmq": "^3.2.0",
@@ -40,8 +40,11 @@
     "@nestjs/platform-express": "^9.0.0",
     "@nestjs/sequelize": "^9.0.0",
     "@nestjs/swagger": "^6.1.0",
+    "@nestjs/terminus": "^9.1.1",
+    "@truffle/hdwallet-provider": "^2.0.14",
     "@types/axios": "^0.14.0",
     "@types/morgan": "^1.9.3",
+    "amqplib": "^0.10.3",
     "axios": "^0.27.2",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.2",
@@ -49,6 +52,8 @@
     "config": "^3.3.7",
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
+    "ethereum-protocol": "^1.0.1",
+    "express-fileupload": "^1.4.0",
     "helmet": "^6.0.0",
     "ioredis": "^5.2.3",
     "mariadb": "^3.0.1",
@@ -62,13 +67,18 @@
     "rxjs": "^7.2.0",
     "sequelize": "^6.21.4",
     "sequelize-cli": "^6.4.1",
-    "sequelize-typescript": "^2.1.3"
+    "sequelize-typescript": "^2.1.3",
+    "uuid": "^9.0.0",
+    "web3": "^1.7.5",
+    "web3-eth-contract": "^1.7.5",
+    "web3-utils": "^1.7.5"
   },
   "devDependencies": {
     "@compodoc/compodoc": "^1.1.19",
     "@nestjs/cli": "^9.0.0",
     "@nestjs/schematics": "^9.0.0",
     "@nestjs/testing": "^9.0.0",
+    "@types/amqplib": "^0.8.2",
     "@types/compression": "^1.7.2",
     "@types/config": "^3.3.0",
     "@types/cors": "^2.8.12",

@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Param, Patch, Post } from '@nestjs/common';
 import { User } from '@Common/decorators/user.decorator';
-import { IIdentityModel } from '@Common/interfaces';
+import { IIdentityModel } from '@DB/interfaces';
 import { CreateLibraryDto, EditLibraryDto } from '@Modules/library/dtos';
 import { Library } from '@DB/models';
 import { LibraryService } from './library.service';

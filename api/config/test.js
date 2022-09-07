@@ -7,14 +7,15 @@ module.exports = {
   nodeEnv: process.env.NODE_ENV,
   jwt: {
     secret: process.env.JWT_SECRET,
+    ttl: process.env.JWT_EXPIRE_TIME,
   },
   db: {
     host: process.env.DB_HOST,
-    port: Number.parseInt(process.env.DB_PORT || '5432', 10),
+    port: Number.parseInt(process.env.DB_PORT || '3306', 10),
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     username: process.env.DB_USER,
-    dialect: process.env.DB_TYPE,
+    dialect: process.env.DB_DIALECT,
     schema: process.env.DB_SCHEMA,
   },
   redis: {
@@ -25,5 +26,20 @@ module.exports = {
   rabbit: {
     uri: process.env.RABBIT_URI,
     exchangeName: process.env.RABBIT_EXCHANGE_NAME,
+  },
+  securitize: {
+    issuerId: process.env.SECURITIZE_ISSUER_ID,
+    secret: process.env.SECURITIZE_SECRET,
+    baseUrl: process.env.SECURITIZE_API_BASE_URL,
+    proxyAddress: process.env.SECURITIZE_REGISTRY_PROXY_ADDRESS,
+  },
+  blockChain: {
+    nodeUrl: process.env.NODE_URL,
+    erc1155Proxy: process.env.ERC1155_BRIDGE_TOWER_PROXY_ADDRESS,
+    exchangeV2Proxy: process.env.EXCHANGE_V2_PROXY_ADDRESS,
+    artemundiWallet: process.env.ARTEMUNDI_WALLET_ADDRESS,
+    transferProxy: process.env.TRANSFER_PROXY_ADDRESS,
+    erc20proxy: process.env.ERC_20_TRANSFER_PROXY_ADDRESS,
+    secretKey: process.env.WALLET_SECRET_KEY,
   },
 };

@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Patch, Query } from '@nestjs/common';
 import { User } from '@Common/decorators/user.decorator';
-import { IIdentityModel } from '@Common/interfaces';
+import { IIdentityModel } from '@DB/interfaces';
 import { Profile } from '@DB/models/Profile.entity';
 import { EditProfileDto } from '@Modules/profile/dtos/';
 import { PaginationQueryDto } from '@Common/utils/paginationQuery.dto';

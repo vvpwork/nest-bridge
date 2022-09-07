@@ -19,6 +19,9 @@ export class Profile extends Model<IProfileModel> {
   @Column(DataType.STRING)
   cover: string;
 
+  @Column(DataType.ENUM('pending', 'confirmed', 'unconfirmed'))
+  status: string;
+
   @AllowNull(true)
   @Column(DataType.STRING)
   avatar: string;

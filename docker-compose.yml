@@ -4,10 +4,10 @@ services:
     image: mariadb
     container_name: mariadb_bridge
     environment:
-      - MYSQL_ROOT_PASSWORD=test
-      - MYSQL_PASSWORD=test
-      - MYSQL_USER=test
-      - MYSQL_DATABASE=test_db
+      - MYSQL_ROOT_PASSWORD=bridge
+      - MYSQL_PASSWORD=bridge2022
+      - MYSQL_USER=bridge
+      - MYSQL_DATABASE=bridge_db
     logging:
       options:
         max-size: 10m
