@@ -23,7 +23,6 @@ export interface IIdentityModel {
   address: string;
   securitizeId: string;
   accountType: ACCOUNT_TYPES;
-  nonce: string;
   createdAt: any;
   updatedAt: any;
 }
@@ -42,21 +41,23 @@ export interface IBlockchainModel {
 }
 
 export interface ICollectionModel {
-  id: string;
+  id?: string;
   identityId: number;
   name: string;
   description: string;
+  masterAddress?: string;
   cover: string;
   logo: string;
+  symbol: string;
+  salt: number;
   chainId: number;
-  createdAt: any;
-  updatedAt: any;
+  createdAt?: any;
+  updatedAt?: any;
 }
 
 export interface INftModel {
   id: string;
   collectionId: string;
-  tokenId: string;
   thumbnail: string;
   amount: number;
   metadata: MetadataObject;
@@ -69,13 +70,13 @@ export interface INftModel {
 }
 
 export interface IIdentityBalanceModel {
-  id: number;
+  id: string;
   identityId: number;
   nftId: string;
   amount: number;
   status: BALANCE_STATUSES;
-  createdAt: any;
-  updatedAt: any;
+  createdAt?: any;
+  updatedAt?: any;
 }
 
 export interface IIdentityNftBalanceLock {
@@ -100,12 +101,11 @@ export interface ITransactionHistory {
 }
 
 export interface IOrderModel {
-  id: number;
-  identityId: number;
-  nftId: string;
+  id: string;
+  nftIdentityBalanceId: number;
   amount: number;
   price: string;
-  decimals: string;
+  currencyId: string;
   signature: string;
   metadata: any;
   createdAt: any;
@@ -170,4 +170,12 @@ export interface INotificationModel {
   isRead: boolean;
   createdAt: any;
   updatedAt: any;
+}
+
+export interface ICurrenciesModel {
+  id?: number;
+  name: string;
+  symbol: string;
+  decimals: number;
+  address: string;
 }

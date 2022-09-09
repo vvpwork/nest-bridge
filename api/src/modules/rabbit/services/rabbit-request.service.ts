@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/typedef */
+/* eslint-disable semi */
 import { Logger } from '@nestjs/common';
 import { EventEmitter } from 'events';
 import { v4 as uuidv4 } from 'uuid';
@@ -36,26 +38,26 @@ export class RabbitRPCRequest extends EventEmitter implements IRabbitRPCRequest 
   /**
    * this method should emit request finish event
    */
-  public complete(message: string) {
+  public complete = (message: string) => {
     Logger.log(`[x] get message ${message} to emit handler`);
     this.emit('complete', message);
     this.destroy();
     return message;
-  }
+  };
 
   /**
    * this method should manually clear memory
    */
-  public destroy() {
+  public destroy = () => {
     this.removeAllListeners();
     this._id = undefined;
     this.message = null;
-  }
+  };
 
-  private _errorHandler(error: any) {
+  private _errorHandler = (error: any) => {
     Logger.error('Error emitter', error);
     this.destroy();
-  }
+  };
 
   /**
    * This method should generate a specific id for each request

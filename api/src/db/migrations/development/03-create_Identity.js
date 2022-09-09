@@ -12,56 +12,48 @@ module.exports = {
           allowNull: false,
           primaryKey: true,
         },
-        address: {
-          type: Sequelize.STRING,
-          unique: true,
+
+        status: {
+          type: Sequelize.ENUM('in_progress', 'verified', 'contact_support', 'updates_required'),
           allowNull: false,
+          defaultValue: 'in_progress',
         },
+
         securitizeId: {
           type: Sequelize.STRING,
           allowNull: true,
         },
+
         accountType: {
-          type: Sequelize.STRING(16),
+          type: Sequelize.ENUM('user', 'partner'),
           allowNull: false,
           references: {
             model: 'AccountType',
             key: 'code',
           },
         },
+
         profileId: {
           type: Sequelize.BIGINT,
+          unique: true,
           allowNull: false,
           references: {
             model: 'Profile',
-            key: 'id',
+            key: 'id'
           },
-          onDelete: 'CASCADE',
-          onUpdate: 'CASCADE',
         },
-        nonce: {
-          type: Sequelize.BIGINT,
-          allowNull: false,
-        },
+
         createdAt: {
           type: Sequelize.DATE,
           allowNull: false,
           defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
         },
+
         updatedAt: {
           type: Sequelize.DATE,
           allowNull: false,
           defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
         },
-      },
-    );
-
-    await queryInterface.addConstraint(
-      { tableName: 'Identity', schema: db.schema },
-      {
-        type: 'UNIQUE',
-        fields: ['address'],
-        name: 'unique_address',
       },
     );
   },

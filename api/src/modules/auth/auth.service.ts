@@ -1,11 +1,13 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
+import { InjectModel } from '@nestjs/sequelize';
 
 import { config } from '@Common/config';
 import { InjectRedis } from '@liaoliaots/nestjs-redis';
 import Redis from 'ioredis';
 import { IdentityService } from '../identity/identity.service';
+import { IdentityModel } from '@/db/models';
 
 const { secret, ttl } = config.jwt;
 
@@ -15,8 +17,24 @@ export class AuthService {
     private jwt: JwtService,
     @InjectRedis() private readonly redis: Redis,
 
+    @InjectModel(IdentityModel) private identity: typeof IdentityModel,
+
     private identityService: IdentityService,
   ) {}
+
+  public async login(address: string, chainId: number): Promise<{ id: number }> {
+    try {
+      const rowQuery = `
+      SELECT d.id FROM  BlockchainIdentityAddress b
+        JOIN Identity d ON d.id = b.identityId
+      WHERE b.address = "${address}" && b.chainId = ${chainId}
+      `;
+      const [[result]] = await this.identity.sequelize.query(rowQuery);
+      return result as any;
+    } catch (err) {
+      Logger.error(err);
+    }
+  }
 
   private makeRedisKey(token: string) {
     return `black:${token}`;
@@ -47,7 +65,8 @@ export class AuthService {
   }
 
   public async isAuthenticated(req: Request | any) {
-    if (!req.headers.authorization || (req.headers.authorization && !req.headers.authorization.includes('Bearer'))) return false;
+    if (!req.headers.authorization || (req.headers.authorization && !req.headers.authorization.includes('Bearer')))
+      return false;
 
     const reqToken = req.headers.authorization.split(' ')[1];
     Logger.log(reqToken);
@@ -71,7 +90,8 @@ export class AuthService {
   }
 
   async getUserFromReqHeaders(req: Request) {
-    if (!req.headers.authorization || (req.headers.authorization && !req.headers.authorization.includes('Bearer'))) return null;
+    if (!req.headers.authorization || (req.headers.authorization && !req.headers.authorization.includes('Bearer')))
+      return null;
 
     const reqToken = req.headers.authorization.split(' ')[1];
     const tokenData = await this.jwtValidate(reqToken);

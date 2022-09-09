@@ -7,8 +7,8 @@ module.exports = {
       { tableName: 'AccountType', schema: db.schema },
       {
         code: {
-          type: Sequelize.STRING(16),
-          allowNull: false,
+          type: Sequelize.ENUM('user', 'partner'),
+          defaultValue: 'user',
           primaryKey: true,
         },
       },

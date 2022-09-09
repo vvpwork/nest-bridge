@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { Library, Notification } from '@DB/models';
+import { LibraryModel, NotificationModel } from '@DB/models';
 import { NotificationService } from '@Modules/notification';
 import { NOTIFICATION_TYPES } from '@Common/enums';
 import { ProfileService } from '@Modules/profile';
@@ -11,13 +11,13 @@ export class LibraryService {
   constructor(
     private readonly notificationService: NotificationService,
     private readonly profileService: ProfileService,
-    @InjectModel(Library)
-    private libraryModel: typeof Library,
-    @InjectModel(Notification)
-    private notificationModel: typeof Notification,
+    @InjectModel(LibraryModel)
+    private libraryModel: typeof LibraryModel,
+    @InjectModel(NotificationModel)
+    private notificationModel: typeof NotificationModel,
   ) {}
 
-  async create(profileId: number, params: CreateLibraryDto): Promise<Library> {
+  async create(profileId: number, params: CreateLibraryDto): Promise<LibraryModel> {
     const { image, source, title } = params;
 
     const newLibraryRecord = await this.libraryModel.create({ profileId, image, source, title });

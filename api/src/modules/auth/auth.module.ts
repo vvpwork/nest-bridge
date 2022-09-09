@@ -3,7 +3,7 @@ import { Request } from 'express';
 import { Reflector } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { Identity } from '@DB/models';
+import { IdentityModel } from '@DB/models';
 import { AuthController } from './auth.controller';
 import { config } from '@/common/config';
 import { AuthService } from './auth.service';
@@ -21,7 +21,7 @@ const { ttl, secret } = config.jwt;
     }),
     ProfileModule,
     IdentityModule,
-    SequelizeModule.forFeature([Identity]),
+    SequelizeModule.forFeature([IdentityModel]),
   ],
   controllers: [AuthController],
   providers: [AuthService],

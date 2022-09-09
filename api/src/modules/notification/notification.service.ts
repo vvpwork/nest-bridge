@@ -1,21 +1,26 @@
+/* eslint-disable no-loop-func */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { NOTIFICATION_TYPES } from '@Common/enums';
-import { Follower, Notification } from '@DB/models';
+import { FollowerModel, NotificationModel } from '@DB/models';
 
 @Injectable()
 export class NotificationService {
   constructor(
-    @InjectModel(Notification)
-    private notificationModel: typeof Notification,
+    @InjectModel(NotificationModel)
+    private notification: typeof NotificationModel,
   ) {}
 
   async addNotification(profileId: number, type: NOTIFICATION_TYPES, params: Record<string, unknown>) {
-    return this.notificationModel.create({ profileId, type, params });
+    return this.notification.create({ profileId, type, params });
   }
 
-  async addNotificationToAllIdentityFollowers(profileId: number, params: Record<string, unknown>, type: NOTIFICATION_TYPES) {
-    const allFollowers: Pick<Follower, 'profileId'>[] = await Follower.findAll({
+  async addNotificationToAllIdentityFollowers(
+    profileId: number,
+    params: Record<string, unknown>,
+    type: NOTIFICATION_TYPES,
+  ) {
+    const allFollowers: Pick<FollowerModel, 'profileId'>[] = await FollowerModel.findAll({
       where: { targetProfileId: profileId },
       attributes: ['profileId'],
       raw: true,
@@ -24,12 +29,16 @@ export class NotificationService {
     while (allFollowers.length) {
       const toProcess = allFollowers.splice(0, 100);
       // eslint-disable-next-line no-await-in-loop
-      await Promise.all(toProcess.map((follower: Pick<Follower, 'profileId'>) => this.addNotification(follower.profileId, type, params)));
+      await Promise.all(
+        toProcess.map((follower: Pick<FollowerModel, 'profileId'>) =>
+          this.addNotification(+follower.profileId, type, params),
+        ),
+      );
     }
   }
 
   async getAllNotificationIdsByTypeAndParams(params: any, type: NOTIFICATION_TYPES) {
-    const allNotifications: Pick<Notification, 'id'>[] = await this.notificationModel.findAll({
+    const allNotifications: Pick<NotificationModel, 'id'>[] = await this.notification.findAll({
       where: { type, params },
       attributes: ['id'],
     });

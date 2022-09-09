@@ -1,5 +1,11 @@
 import { Controller, Get } from '@nestjs/common';
-import { HealthCheck, HealthCheckResult, HealthCheckService, HealthIndicatorResult, SequelizeHealthIndicator } from '@nestjs/terminus';
+import {
+  HealthCheck,
+  HealthCheckResult,
+  HealthCheckService,
+  HealthIndicatorResult,
+  SequelizeHealthIndicator,
+} from '@nestjs/terminus';
 import { Public } from '@/common/decorators';
 
 /**
@@ -14,9 +20,9 @@ export class HealthController {
   @HealthCheck()
   public async check(): Promise<HealthCheckResult> {
     return this.health.check([
+      // TODO add rabbit redis indicator
       async (): Promise<HealthIndicatorResult> => this.db.pingCheck('database'),
-
-      async () => ({
+      async (): Promise<HealthIndicatorResult> => ({
         info: {
           status: 'up',
           uptime: process.uptime(),

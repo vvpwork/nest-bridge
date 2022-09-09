@@ -7,14 +7,16 @@ module.exports = {
       { tableName: 'Nft', schema: db.schema },
       {
         id: {
-          type: Sequelize.UUID,
-          defaultValue: Sequelize.UUIDV4,
+          type: Sequelize.STRING,
           allowNull: false,
           primaryKey: true,
         },
-        collectionId: {
-          type: Sequelize.UUID,
+        royalty: {
+          type: Sequelize.BIGINT,
           allowNull: false,
+        },
+        collectionId: {
+          type: Sequelize.STRING,
           references: {
             model: 'Collection',
             key: 'id',
@@ -22,10 +24,15 @@ module.exports = {
           onDelete: 'CASCADE',
           onUpdate: 'CASCADE',
         },
-        tokenId: {
-          type: Sequelize.STRING,
-          allowNull: false,
+        royaltyIds: {
+          type: Sequelize.JSON,
+          allowNull: true,
         },
+        creatorIds: {
+          type: Sequelize.JSON,
+          allowNull: true,
+        },
+
         metadata: {
           type: Sequelize.JSON,
           allowNull: true,
@@ -41,6 +48,7 @@ module.exports = {
           defaultValue: 0,
           description: 'The tokens amount that actually were minted',
         },
+
         thumbnail: {
           type: Sequelize.STRING,
           allowNull: true,
@@ -56,15 +64,6 @@ module.exports = {
           allowNull: false,
           defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
         },
-      },
-    );
-
-    await queryInterface.addConstraint(
-      { tableName: 'Nft', schema: db.schema },
-      {
-        type: 'UNIQUE',
-        fields: ['tokenId'],
-        name: 'unique_tokenId',
       },
     );
   },

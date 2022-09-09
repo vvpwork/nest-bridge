@@ -22,12 +22,13 @@ export class AuthController {
   @Public()
   @Post('login')
   public async login(@Body() body: LoginDto, @Res() res: Response, @Next() next: NextFunction) {
-    const userIdentity = await this.identityService.findByKey({ address: body.address });
+    const result = await this.authService.login(body.address, body.chainId);
+    console.log(result);
 
-    if (!userIdentity) return next(new ForbiddenException(`User with address ${body.address} was not found`));
+    if (!result) return next(new ForbiddenException(`User with address ${body.address} was not found`));
 
     return res.status(200).send({
-      token: this.authService.jwtSign(userIdentity.id),
+      token: this.authService.jwtSign(result.id),
     });
   }
 

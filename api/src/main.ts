@@ -10,6 +10,14 @@ import { apiV1Alias } from './common/constants';
 import { config } from './common/config';
 
 async function bootstrap(): Promise<string> {
+  process.on('unhandledRejection', (reason: any, promise: any) => {
+    Logger.log(reason, promise);
+  });
+
+  process.on('uncaughtException', (error: Error, source: any) => {
+    Logger.log(error, source);
+  });
+
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix(apiV1Alias);
 
@@ -27,7 +35,7 @@ async function bootstrap(): Promise<string> {
   // *******  global middlewares
   app.use(cors());
   app.use(helmet());
-  app.use(file);
+  // app.use(fileUpload());
   app.use(compression());
   app.use(morgan('combined'));
   // *******

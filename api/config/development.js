@@ -44,4 +44,10 @@ module.exports = {
     erc20proxy: process.env.ERC_20_TRANSFER_PROXY_ADDRESS,
     secretKey: process.env.WALLET_SECRET_KEY,
   },
+
+  cloudinary: {
+    name: process.env.CLOUD_NAME,
+    apiKey: process.env.CLOUD_API_KEY,
+    apiSecret: process.env.CLOUD_API_SECRET,
+  },
 };

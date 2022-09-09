@@ -4,10 +4,10 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { NotificationService } from '@Modules/notification';
 import { PodcastController } from './podcast.controller';
 import { PodcastService } from './podcast.service';
-import { Notification, Podcast } from '@/db/models';
+import { NotificationModel, PodcastModel } from '@/db/models';
 
 @Module({
-  imports: [SequelizeModule.forFeature([Notification, Podcast])],
+  imports: [SequelizeModule.forFeature([NotificationModel, PodcastModel])],
   controllers: [PodcastController],
   providers: [PodcastService, NotificationService],
 })

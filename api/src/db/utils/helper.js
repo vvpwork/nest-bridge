@@ -12,9 +12,11 @@ const upsertData = (nameTable, dataKeys, dataValues) => {
 };
 
 const resetSequence = async (queryInterface, table) => {
-  const sql = `ALTER TABLE ${table} AUTO_INCREMENT = 1`;
+  const sql = `  
 
-  console.log(sql);
+    SELECT setval('${table}_id_seq', COALESCE((SELECT MAX(id)+1 FROM ${table}), 1), false);
+  
+    `;
 
   return queryInterface.sequelize.query(sql);
 };

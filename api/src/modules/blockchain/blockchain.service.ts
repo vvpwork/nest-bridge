@@ -15,7 +15,10 @@ export class BlockchainService {
   private web3Instance: Web3;
   constructor() {
     this.web3Instance = new Web3(new HDWalletProvider(secretKey, nodeUrl));
-    this.securitizeRegistryContract = new this.web3Instance.eth.Contract(securitizeRegistryAbi, config.securitize.proxyAddress);
+    this.securitizeRegistryContract = new this.web3Instance.eth.Contract(
+      securitizeRegistryAbi,
+      config.securitize.proxyAddress,
+    );
     this.web3Instance.eth.net.isListening().catch(Logger.error);
   }
 

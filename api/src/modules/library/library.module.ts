@@ -4,10 +4,10 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { NotificationService } from '@Modules/notification';
 import { LibraryController } from './library.controller';
 import { LibraryService } from './library.service';
-import { Library, Notification } from '@/db/models';
+import { LibraryModel, NotificationModel } from '@/db/models';
 
 @Module({
-  imports: [SequelizeModule.forFeature([Notification, Library])],
+  imports: [SequelizeModule.forFeature([NotificationModel, LibraryModel])],
   controllers: [LibraryController],
   providers: [LibraryService, NotificationService],
 })

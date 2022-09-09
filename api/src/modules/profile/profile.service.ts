@@ -1,40 +1,48 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { Profile } from '@DB/models/Profile.entity';
+
 import { EditProfileDto } from '@Modules/profile/dtos/editProfile.dto';
-import { Identity, Library, Podcast } from '@DB/models';
+import { IdentityModel, LibraryModel, PodcastModel, ProfileModel } from '@DB/models';
 import { InjectModel } from '@nestjs/sequelize';
 import { paginate } from '@Common/utils/pagination.util';
 
 @Injectable()
 export class ProfileService {
   constructor(
-    @InjectModel(Profile)
-    private profileModel: typeof Profile,
+    @InjectModel(ProfileModel)
+    private profileModel: typeof ProfileModel,
 
-    @InjectModel(Identity)
-    private identityModel: typeof Identity,
+    @InjectModel(IdentityModel)
+    private identityModel: typeof IdentityModel,
 
-    @InjectModel(Library)
-    private libraryModel: typeof Library,
+    @InjectModel(LibraryModel)
+    private libraryModel: typeof LibraryModel,
 
-    @InjectModel(Podcast)
-    private podcastModel: typeof Podcast,
+    @InjectModel(PodcastModel)
+    private podcastModel: typeof PodcastModel,
   ) {}
 
-  async getById(id: number): Promise<Profile> {
+  async getById(id: number): Promise<ProfileModel> {
     return this.profileModel.findOne({ where: { id } });
   }
 
   async updateById(id: number, params: EditProfileDto): Promise<{ success: true }> {
     if (params.userName && params.userName !== '') {
-      const alreadyExists = await this.profileModel.findOne({ where: { userName: params.userName }, attributes: ['id'], raw: true });
+      const alreadyExists = await this.profileModel.findOne({
+        where: { userName: params.userName },
+        attributes: ['id'],
+        raw: true,
+      });
       if (alreadyExists) {
         throw new HttpException('USERNAME_ALREADY_EXISTS', HttpStatus.BAD_REQUEST);
       }
     }
 
     if (params.email && params.email !== '') {
-      const alreadyExists = await this.profileModel.findOne({ where: { email: params.email }, attributes: ['id'], raw: true });
+      const alreadyExists = await this.profileModel.findOne({
+        where: { email: params.email },
+        attributes: ['id'],
+        raw: true,
+      });
       if (alreadyExists) {
         throw new HttpException('EMAIL_ALREADY_EXISTS', HttpStatus.BAD_REQUEST);
       }
@@ -53,7 +61,7 @@ export class ProfileService {
   }
 
   async getUserNameByProfileId(profileId: number): Promise<string | null> {
-    const user = await this.identityModel.findOne({
+    const user: any = await this.identityModel.findOne({
       where: { id: profileId },
       include: [
         {

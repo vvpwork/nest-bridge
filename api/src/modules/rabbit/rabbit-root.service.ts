@@ -14,6 +14,10 @@ export class RabbitRootService {
     this.rabbitInstance.run();
   }
 
+  async getProcessResult() {
+    return this.rabbitInstance.getMessageProcessingResult({ test: '***** test rpc*******}' });
+  }
+
   async handleMessage(message: string) {
     Logger.log(message);
     return 'ok';

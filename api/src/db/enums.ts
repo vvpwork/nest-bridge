@@ -8,20 +8,18 @@ export enum PROFILE_SECTIONS {
 export enum ACCOUNT_TYPES {
   USER = 'user',
   PARTNER = 'partner',
-  // ADMIN = 'admin',
 }
 
 export enum PROFILE_STATUS {
-  PENDING = 'pending',
-  CONFIRMED = 'confirmed',
-  UNCONFIRMED = 'unconfirmed',
+  IN_PROGRESS = 'in_progress',
+  VERIFIED = 'verified',
+  CONTACT_SUPPORT = 'contact_support',
+  UPDATES_REQUIRED = 'updates_required',
 }
 
 export enum BALANCE_STATUSES {
   UNLOCKED = 'unlocked',
   LOCKED = 'locked',
-  // TODO this status is deprecated
-  UNLOCKING_SOON = 'unlockingSoon',
 }
 
 export enum NOTIFICATION_TYPES {

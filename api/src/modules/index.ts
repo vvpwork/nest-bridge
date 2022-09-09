@@ -1,4 +1,3 @@
-export * from './example';
 export * from './auth';
 export * from './profile';
 export * from './library';
@@ -7,3 +6,5 @@ export * from './news';
 export * from './identity';
 export * from './health-check';
 export * from './rabbit';
+export * from './collection';
+export * from './nft';

@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { Notification, Podcast } from '@DB/models';
+import { NotificationModel, PodcastModel } from '@DB/models';
 import { NotificationService } from '@Modules/notification';
 import { NOTIFICATION_TYPES } from '@Common/enums';
 import { ProfileService } from '@Modules/profile';
@@ -11,13 +11,13 @@ export class PodcastService {
   constructor(
     private readonly notificationService: NotificationService,
     private readonly profileService: ProfileService,
-    @InjectModel(Podcast)
-    private podcastModel: typeof Podcast,
-    @InjectModel(Notification)
-    private notificationModel: typeof Notification,
+    @InjectModel(PodcastModel)
+    private podcastModel: typeof PodcastModel,
+    @InjectModel(NotificationModel)
+    private notificationModel: typeof NotificationModel,
   ) {}
 
-  async create(profileId: number, params: CreatePodcastDto): Promise<Podcast> {
+  async create(profileId: number, params: CreatePodcastDto): Promise<PodcastModel> {
     const { image, source, title } = params;
 
     const newPodcastRecord = await this.podcastModel.create({ profileId, image, source, title });

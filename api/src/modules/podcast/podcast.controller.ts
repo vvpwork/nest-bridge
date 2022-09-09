@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Param, Patch, Post } from '@nestjs/common';
 import { User } from '@Common/decorators/user.decorator';
 import { IIdentityModel } from '@DB/interfaces';
-import { Podcast } from '@DB/models';
+import { PodcastModel } from '@DB/models';
 import { CreatePodcastDto, EditPodcastDto } from './dtos';
 import { PodcastService } from './podcast.service';
 
@@ -10,7 +10,7 @@ export class PodcastController {
   constructor(private readonly podcastService: PodcastService) {}
 
   @Post()
-  async create(@User() user: IIdentityModel, @Body() body: CreatePodcastDto): Promise<Podcast> {
+  async create(@User() user: IIdentityModel, @Body() body: CreatePodcastDto): Promise<PodcastModel> {
     return this.podcastService.create(user.profileId, body);
   }
 

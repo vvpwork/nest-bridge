@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Param, Patch, Post, Get, Req } from '@nestjs/
 import { User } from '@Common/decorators/user.decorator';
 import { IIdentityModel } from '@DB/interfaces';
 import { CreateLibraryDto, EditLibraryDto } from '@Modules/library/dtos';
-import { Library, News } from '@DB/models';
+import { LibraryModel, NewsModel } from '@DB/models';
 import { Public } from '@Common/decorators';
 import { Request } from 'express';
 import { NewsService } from './news.service';
@@ -13,7 +13,7 @@ export class NewsController {
   constructor(private readonly newsService: NewsService, private readonly authService: AuthService) {}
 
   @Post()
-  async create(@User() user: IIdentityModel, @Body() body: CreateLibraryDto): Promise<Library> {
+  async create(@User() user: IIdentityModel, @Body() body: CreateLibraryDto): Promise<LibraryModel> {
     return this.newsService.create(user.profileId, body);
   }
 
@@ -29,7 +29,7 @@ export class NewsController {
 
   @Public()
   @Get(':id')
-  async getOne(@Param('id') id: string, @Req() request: Request): Promise<News> {
+  async getOne(@Param('id') id: string, @Req() request: Request): Promise<NewsModel> {
     const user = await this.authService.getUserFromReqHeaders(request);
     return this.newsService.getOneById(id, user);
   }

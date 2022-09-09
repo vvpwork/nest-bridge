@@ -8,7 +8,6 @@ module.exports = {
       {
         id: {
           type: Sequelize.STRING,
-          defaultValue: Sequelize.STRING,
           allowNull: false,
           primaryKey: true,
         },
@@ -26,7 +25,6 @@ module.exports = {
 
         name: {
           type: Sequelize.STRING,
-          allowNull: true,
         },
 
         symbol: {
@@ -49,12 +47,11 @@ module.exports = {
 
         cover: {
           type: Sequelize.STRING,
-          allowNull: true,
+
         },
 
         logo: {
           type: Sequelize.STRING,
-          allowNull: true,
         },
 
         chainId: {

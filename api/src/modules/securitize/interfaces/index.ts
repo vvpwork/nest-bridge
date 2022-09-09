@@ -34,5 +34,8 @@ export interface ISecuritizeService {
    * @param accessToken
    * @param walletAddress
    */
-  getTransactionForWhitelist(accessToken: string, walletAddress: string): Promise<ISecuritizeGetPreparedTransactionResponseData | null>;
+  getTransactionForWhitelist(
+    accessToken: string,
+    walletAddress: string,
+  ): Promise<ISecuritizeGetPreparedTransactionResponseData | null>;
 }

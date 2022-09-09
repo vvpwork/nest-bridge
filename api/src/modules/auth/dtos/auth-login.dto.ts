@@ -1,4 +1,4 @@
-import { IsString } from 'class-validator';
+import { IsNumber, IsString } from 'class-validator';
 import { Type } from 'class-transformer';
 import { ApiProperty, ApiHeaderOptions, ApiHeader } from '@nestjs/swagger';
 
@@ -6,7 +6,9 @@ export class LoginDto {
   @IsString()
   public address!: string;
 
-  @Type(() => String)
+  @IsNumber()
+  public chainId!: number;
+
   @IsString()
   public code!: string;
 }

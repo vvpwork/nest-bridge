@@ -3,10 +3,10 @@ import { SequelizeModule } from '@nestjs/sequelize';
 
 import { NotificationController } from './notification.controller';
 import { NotificationService } from './notification.service';
-import { Notification } from '@/db/models';
+import { NotificationModel } from '@/db/models';
 
 @Module({
-  imports: [SequelizeModule.forFeature([Notification])],
+  imports: [SequelizeModule.forFeature([NotificationModel])],
   controllers: [NotificationController],
   providers: [NotificationService],
   exports: [NotificationService],

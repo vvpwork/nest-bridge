@@ -28,11 +28,11 @@ export class RabbitConnect implements IRabbitConnect {
   /**
    * This function connects to rabbitMQ server and does basic setting
    */
-  public async connect(type: ConnectRabbitType = ConnectRabbitType.RPC) {
+  public connect: any = async (type: ConnectRabbitType = ConnectRabbitType.RPC) => {
     try {
       this._connection = await connect(this._uri);
-      this._connection.on('error', this.errorHandler);
-      this._connection.on('close', this.errorHandler);
+      this._connection.on('error', this.errorHandler.bind(this));
+      this._connection.on('close', this.errorHandler.bind(this));
 
       this._channel = await this._connection.createChannel();
       this._channel.assertExchange(this.exchange, 'fanout', {
@@ -52,7 +52,7 @@ export class RabbitConnect implements IRabbitConnect {
     } catch (error: any) {
       Logger.error('Error rabbit connect');
     }
-  }
+  };
 
   /**
    * This function is logging error to console

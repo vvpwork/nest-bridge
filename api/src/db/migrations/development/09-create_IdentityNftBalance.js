@@ -7,11 +7,12 @@ module.exports = {
       { tableName: 'IdentityNftBalance', schema: db.schema },
       {
         id: {
-          type: Sequelize.BIGINT,
-          autoIncrement: true,
+          type: Sequelize.UUID,
+          defaultValue: Sequelize.UUIDV4,
           allowNull: false,
           primaryKey: true,
         },
+
         identityId: {
           type: Sequelize.BIGINT,
           allowNull: false,
@@ -22,9 +23,9 @@ module.exports = {
           onDelete: 'CASCADE',
           onUpdate: 'CASCADE',
         },
+
         nftId: {
-          type: Sequelize.UUID,
-          allowNull: false,
+          type: Sequelize.STRING,
           references: {
             model: 'Nft',
             key: 'id',
@@ -36,9 +37,9 @@ module.exports = {
           type: Sequelize.INTEGER,
           allowNull: false,
         },
+
         status: {
-          type: Sequelize.STRING(16),
-          allowNull: true,
+          type: Sequelize.STRING,
           references: {
             model: 'IdentityNftBalanceStatus',
             key: 'code',
@@ -46,6 +47,7 @@ module.exports = {
           onDelete: 'CASCADE',
           onUpdate: 'CASCADE',
         },
+        
         createdAt: {
           type: Sequelize.DATE,
           allowNull: false,
@@ -56,6 +58,15 @@ module.exports = {
           allowNull: false,
           defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
         },
+      },
+    );
+
+    await queryInterface.addConstraint(
+      { tableName: 'IdentityNftBalance', schema: db.schema },
+      {
+        type: 'UNIQUE',
+        fields: ['identityId', 'nftId'],
+        name: 'unique_identityNftBalance',
       },
     );
   },

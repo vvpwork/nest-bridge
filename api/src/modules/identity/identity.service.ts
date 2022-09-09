@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { Identity } from '@/db/models';
+import { IdentityModel } from '@/db/models';
 import { IIdentityModel } from '@/db/interfaces';
 
 @Injectable()
 export class IdentityService {
   constructor(
-    @InjectModel(Identity)
-    private identityRepository: typeof Identity,
+    @InjectModel(IdentityModel)
+    private identityRepository: typeof IdentityModel,
   ) {}
 
   async findByKey(searchKey: Partial<IIdentityModel>) {

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/typedef */
-import { Logger } from '@nestjs/common';
+import { HttpException, Logger } from '@nestjs/common';
 import { Message } from 'amqplib';
 import { IRabbitRPCRequest, IRabbitService, ConnectRabbitType } from '../interfaces';
 import { config } from '@/common/config';
@@ -60,6 +60,7 @@ export class RabbitService implements IRabbitService {
    * @returns - void
    */
   private messageHandler = (message: Message | null) => {
+    console.log(message);
     const currentHandler = this.requestSequence.get(message!.properties.correlationId);
     if (currentHandler) {
       currentHandler.complete(message!.content.toString());
@@ -108,7 +109,7 @@ export class RabbitService implements IRabbitService {
   private timeoutHandler(request: IRabbitRPCRequest, reject: (reason: any) => void) {
     return setTimeout(() => {
       request.destroy();
-      reject(new Error('Error TIMEOUT'));
+      reject(new Error('Error TIMEOUT rabbit'));
     }, timeoutDelay);
   }
 
@@ -120,18 +121,25 @@ export class RabbitService implements IRabbitService {
    * @param {number} priority - priority of message
    * @returns
    */
-  public async getMessageProcessingResult(message: { [key: string]: any }, priority: number = 10): Promise<string | any> {
-    const newRequest = new RabbitRPCRequest(message, priority);
+  public async getMessageProcessingResult(
+    message: { [key: string]: any },
+    priority: number = 10,
+  ): Promise<string | any> {
+    try {
+      const newRequest = new RabbitRPCRequest(message, priority);
 
-    this.requestSequence.set(newRequest.id!, { complete: newRequest.complete });
+      this.requestSequence.set(newRequest.id!, { complete: newRequest.complete });
 
-    await newRequest.publish(this.rpc_connection);
+      await newRequest.publish(this.rpc_connection);
 
-    return new Promise((resolve, reject) => {
-      this.timeoutHandler(newRequest, reject);
+      return new Promise((resolve, reject) => {
+        this.timeoutHandler(newRequest, reject);
 
-      newRequest.on('complete', resolve);
-    });
+        newRequest.on('complete', resolve);
+      });
+    } catch (e) {
+      Logger.error(e);
+    }
   }
 
   /**

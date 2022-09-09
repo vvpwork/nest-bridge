@@ -1,11 +1,10 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { Identity, News, NewsLike, Notification } from '@DB/models';
+import { IdentityModel, NewsModel, NewsLikeModel, NotificationModel } from '@DB/models';
 import { NotificationService } from '@Modules/notification';
 import { NOTIFICATION_TYPES } from '@Common/enums';
 import { ProfileService } from '@Modules/profile';
 import { InjectModel } from '@nestjs/sequelize';
-import { IIdentityModel, INewsModel } from '@DB/interfaces';
-import { JwtService } from '@nestjs/jwt';
+
 import { EditNewsDto, CreateNewsDto } from './dtos';
 
 @Injectable()
@@ -13,15 +12,15 @@ export class NewsService {
   constructor(
     private readonly notificationService: NotificationService,
     private readonly profileService: ProfileService,
-    @InjectModel(News)
-    private newsModel: typeof News,
-    @InjectModel(Notification)
-    private notificationModel: typeof Notification,
-    @InjectModel(NewsLike)
-    private newsLikeModel: typeof NewsLike,
+    @InjectModel(NewsModel)
+    private newsModel: typeof NewsModel,
+    @InjectModel(NotificationModel)
+    private notificationModel: typeof NotificationModel,
+    @InjectModel(NewsLikeModel)
+    private newsLikeModel: typeof NewsLikeModel,
   ) {}
 
-  async create(profileId: number, params: CreateNewsDto): Promise<News> {
+  async create(profileId: number, params: CreateNewsDto): Promise<NewsModel> {
     const { image, source, title } = params;
 
     const newNewsRecord = await this.newsModel.create({ profileId, image, source, title });
@@ -90,7 +89,7 @@ export class NewsService {
     return { success: true };
   }
 
-  async getOneById(id: string, viewerUser: Identity | null) {
+  async getOneById(id: string, viewerUser: IdentityModel | null) {
     const newsRecord = await this.newsModel.findByPk(id);
     if (!newsRecord) {
       throw new HttpException('NEWS_NOT_FOUND', HttpStatus.NOT_FOUND);
@@ -99,14 +98,14 @@ export class NewsService {
     return this.injectLikesToNewsRecord(newsRecord, viewerUser);
   }
 
-  async injectLikesToNewsRecord(newsRecord: News, viewerUser: Identity) {
+  async injectLikesToNewsRecord(newsRecord: NewsModel, viewerUser: IdentityModel) {
     const result = newsRecord;
     result.isLiked = false;
 
     result.likesCount = await this.getLikesCount(newsRecord.id);
 
     if (viewerUser) {
-      result.isLiked = await this.isLiked(newsRecord.id, viewerUser.profileId);
+      result.isLiked = await this.isLiked(newsRecord.id, +viewerUser.profileId);
     }
 
     return newsRecord;

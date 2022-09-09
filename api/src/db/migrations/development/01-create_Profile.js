@@ -11,13 +11,6 @@ module.exports = {
           autoIncrement: true,
           primaryKey: true,
         },
-
-        status: {
-          type: Sequelize.ENUM('pending', 'confirmed', 'unconfirmed'),
-          allowNull: false,
-          defaultValue: 'pending',
-        },
-
         cover: {
           type: Sequelize.STRING,
           allowNull: true,
@@ -71,9 +64,12 @@ module.exports = {
       },
     );
 
-    await queryInterface.addIndex({ tableName: 'Profile', schema: db.schema }, ['userName'], {
-      indexName: 'userName',
-    });
+    // await queryInterface.addIndex({ tableName: 'Profile', schema: db.schema }, ['userName'], {
+    //   indexName: 'userName',
+    // });
+    // await queryInterface.addIndex({ tableName: 'Profile', schema: db.schema }, ['id'], {
+    //   indexName: 'id',
+    // });
   },
 
   down: queryInterface => queryInterface.dropTable({ tableName: 'Profile', schema: db.schema }),
