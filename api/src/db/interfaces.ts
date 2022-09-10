@@ -18,10 +18,10 @@ export interface IProfileModel {
 }
 
 export interface IIdentityModel {
-  id: number;
+  id: string;
   profileId: number;
-  address: string;
   securitizeId: string;
+  status: PROFILE_STATUS;
   accountType: ACCOUNT_TYPES;
   createdAt: any;
   updatedAt: any;
@@ -178,4 +178,12 @@ export interface ICurrenciesModel {
   symbol: string;
   decimals: number;
   address: string;
+}
+
+export interface IBlockchainIdentityAddress {
+  id?: number;
+  chainId: number;
+  identityId: number;
+  address: string;
+  description?: string;
 }

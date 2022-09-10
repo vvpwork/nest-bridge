@@ -6,6 +6,11 @@ module.exports = {
     await queryInterface.createTable(
       { tableName: 'BlockchainIdentityAddress', schema: db.schema },
       {
+        id: {
+          primaryKey: true,
+          autoIncrement: true,
+          type: Sequelize.BIGINT,
+        },
         chainId: {
           type: Sequelize.INTEGER,
           allowNull: false,
@@ -18,7 +23,7 @@ module.exports = {
         },
 
         IdentityId: {
-          type: Sequelize.BIGINT,
+          type: Sequelize.UUID,
           allowNull: false,
           references: {
             model: 'Identity',

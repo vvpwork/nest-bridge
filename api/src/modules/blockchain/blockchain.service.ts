@@ -13,16 +13,21 @@ const { secretKey, nodeUrl } = config.blockChain;
 export class BlockchainService {
   private securitizeRegistryContract: Contract;
   private web3Instance: Web3;
-  constructor() {
+  constructor() {}
+
+  connect() {
     this.web3Instance = new Web3(new HDWalletProvider(secretKey, nodeUrl));
     this.securitizeRegistryContract = new this.web3Instance.eth.Contract(
       securitizeRegistryAbi,
       config.securitize.proxyAddress,
     );
-    this.web3Instance.eth.net.isListening().catch(Logger.error);
   }
 
   async isWalletWhitelistedOnSecuritize(address: string): Promise<boolean> {
     return this.securitizeRegistryContract.methods.isWhitelistedWallet(address).call();
+  }
+
+  isEthAddress(address: string) {
+    return Web3.utils.isAddress(address);
   }
 }

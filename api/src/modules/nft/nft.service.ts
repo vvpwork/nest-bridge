@@ -1,8 +1,7 @@
 import { Get, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { NftModel } from '@/db/models';
-import { Public } from '@/common/decorators';
-import { INftQueryDto } from './dtos/nft-query.dto';
+import { INftQueryDto, SortTypes } from './dtos/nft-query.dto';
 
 @Injectable()
 export class NftService {
@@ -10,7 +9,10 @@ export class NftService {
 
   async getAll(search?: INftQueryDto) {
     try {
-      const { limit, offset, identityId, collectionId, status } = search || { limit: 50, offset: 0 };
+      const { limit, offset, identityId, collectionId, status, sortType, sortValue, nftId } = search || {
+        limit: 50,
+        offset: 0,
+      };
 
       const rawQuery = `
         SELECT
@@ -22,13 +24,8 @@ export class NftService {
         n.thumbnail,
         n.totalSupply, 
         b.amount as identityBalance,
-        IFNULL(sum(l.amount), 0) as lockedBalance,
-        IF ( sum(l.amount) is NULL, NULL, JSON_ARRAYAGG(
-          JSON_OBJECT(
-            'id', l.id,
-            'amount', l.amount, 
-            'unlockTime', l.unlockTime
-            ))) as lockedData,
+        l.lockedData,
+        l.lockedBalance,
         IFNULL(sum(o.amount), 0) as onSale,
         IF ( sum(o.amount) is NULL, NULL, JSON_ARRAYAGG(
           JSON_OBJECT(
@@ -40,15 +37,29 @@ export class NftService {
             'currency', cur.symbol 
             ))) as onSalesData
         from Nft n
+       
+
         JOIN Collection c ON c.id = n.collectionId 
         ${collectionId ? `&& c.id = '${collectionId}'` : ''}
 
         JOIN IdentityNftBalance b ON b.nftId = n.id ${identityId ? `&&  b.identityId = ${identityId}` : ''}    
         ${status === 'onSale' ? `JOIN` : `LEFT JOIN`} \`Orders\` o ON o.nftIdentityBalanceId = b.id
-        ${status === 'onLocked' ? `JOIN` : `LEFT JOIN`} IdentityNftBalanceLock l ON b.id = l.identityNftBalanceId
+
+
+        ${status === 'onLocked' ? `JOIN` : `LEFT JOIN`} (
+          SELECT lk.identityNftBalanceId,
+                  sum(lk.amount) as lockedBalance, 
+          JSON_ARRAYAGG(JSON_OBJECT( 'amount', lk.amount, 'unlockTime', lk.unlockTime )) as lockedData  
+          FROM IdentityNftBalanceLock lk
+          GROUP BY lk.identityNftBalanceId
+          ) l ON b.id = l.identityNftBalanceId
+
         LEFT JOIN Currencies cur ON o.currencyId = cur.id
+        ${nftId ? `WHERE n.id = '${nftId}'` : ``}
         GROUP BY b.id
-        ORDER BY  CONVERT(o.price, INTEGER) DESC
+        ${sortValue === 'price' ? `ORDER BY  CONVERT(o.price, INTEGER) ${sortType}` : ``}
+        ${sortValue === 'created' ? `ORDER BY  o.createdAt  ${sortType}` : ``}
+        ${sortValue === 'unlockTime' ? `ORDER BY l.unlockTime  ${sortType}` : ``}
         ${limit ? `LIMIT ${limit}` : ''}
         ${offset ? `OFFSET ${offset}` : ''}
         `;

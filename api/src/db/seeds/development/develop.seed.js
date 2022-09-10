@@ -186,15 +186,16 @@ module.exports = {
 
     const identities = [
       {
-        id: 1,
+        id: '626b881ce1358f001420e238',
         status: 'verified',
         securitizeId: 'dfgdhfjg33333ukjthdrgsefa',
         accountType: 'user',
+        status: 'in_progress',
         profileId: 1,
         nonce: 123456,
       },
       {
-        id: 2,
+        id: '626b881ce1358f001420e888',
         securitizeId: 'dfgdhfjg33333ukjthdrgsefa',
         status: 'in_progress',
         accountType: 'user',
@@ -227,7 +228,7 @@ module.exports = {
     const collections = [
       {
         id: '0x8dcF19AeE31F9624FCe35F61037c80f2CA346467',
-        identityId: 1,
+        identityId: '626b881ce1358f001420e238',
         description: 'BridgeTower Permissioned Market Token',
         name: 'BridgeTower Permissioned Market Token',
         cover: 'test',
@@ -239,7 +240,7 @@ module.exports = {
       },
       {
         id: '0x8dcF19AeE31F9624FCe35F61037c80f2CA346489',
-        identityId: 2,
+        identityId: '626b881ce1358f001420e888',
         description: 'BridgeTower Permissioned Market Token Test',
         name: 'BridgeTower Permissioned Market Token Test',
         cover: 'test',
@@ -251,7 +252,7 @@ module.exports = {
       },
       {
         id: '0x8dcF19AeE31F9624FCe35F61037c80f2CA346400',
-        identityId: 2,
+        identityId: '626b881ce1358f001420e888',
         description: 'BridgeTower Permissioned Market Token Test2',
         name: 'BridgeTower Permissioned Market Token Test2',
         cover: 'test',
@@ -267,7 +268,7 @@ module.exports = {
       'Collection',
       ['id', 'identityId', 'name', 'description', 'cover', 'logo', 'symbol', 'salt', 'chainId', 'masterAddress'],
       collections.map(tr => [
-        `'${tr.id}',${tr.identityId},'${tr.name}','${tr.description}', '${tr.cover}', '${tr.logo}','${tr.symbol}',${tr.salt}, '${tr.chainId}', '${tr.masterAddress}'`,
+        `'${tr.id}','${tr.identityId}','${tr.name}','${tr.description}', '${tr.cover}', '${tr.logo}','${tr.symbol}',${tr.salt}, '${tr.chainId}', '${tr.masterAddress}'`,
       ]),
     );
 
@@ -322,19 +323,19 @@ module.exports = {
     const balances = [
       {
         id: '0x8dcF19AeE31F9624F',
-        identityId: 1,
+        identityId: '626b881ce1358f001420e238',
         nftId: '0x8dcF19AeE31F9624FCe35F61037c80f2CA3464nft_1',
         amount: 200,
       },
       {
         id: '0x8dcF19AeE31F96443',
-        identityId: 1,
+        identityId: '626b881ce1358f001420e238',
         nftId: '0x8dcF19AeE31F9624FCe35F61037c80f2CA3464nft_1',
         amount: 200,
       },
       {
         id: '0x8dcF19AeE31F9dw3',
-        identityId: 2,
+        identityId: '626b881ce1358f001420e888',
         nftId: '0x8dcF19AeE31F9624FCe35F61037c80f2CA3464nft_3',
         amount: 200,
       },

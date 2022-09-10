@@ -11,10 +11,10 @@ export enum ACCOUNT_TYPES {
 }
 
 export enum PROFILE_STATUS {
-  IN_PROGRESS = 'in_progress',
-  VERIFIED = 'verified',
-  CONTACT_SUPPORT = 'contact_support',
-  UPDATES_REQUIRED = 'updates_required',
+  IN_PROGRESS = 'IN_PROGRESS',
+  VERIFIED = 'VERIFIED',
+  CONTACT_SUPPORT = 'CONTACT_SUPPORT',
+  UPDATES_REQUIRED = 'UPDATES_REQUIRED',
 }
 
 export enum BALANCE_STATUSES {

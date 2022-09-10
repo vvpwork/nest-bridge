@@ -9,15 +9,14 @@ import { AppModule } from './app.module';
 import { apiV1Alias } from './common/constants';
 import { config } from './common/config';
 
+process.on('unhandledRejection', (reason: any, promise: any) => {
+  Logger.log(reason, promise);
+});
+
+process.on('uncaughtException', (error: Error, source: any) => {
+  Logger.log(error, source);
+});
 async function bootstrap(): Promise<string> {
-  process.on('unhandledRejection', (reason: any, promise: any) => {
-    Logger.log(reason, promise);
-  });
-
-  process.on('uncaughtException', (error: Error, source: any) => {
-    Logger.log(error, source);
-  });
-
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix(apiV1Alias);
 

@@ -8,10 +8,12 @@ export class ExceptionsFilter extends BaseExceptionFilter {
 
   public override catch(exception: unknown, host: ArgumentsHost): void {
     let args: unknown;
+    const ctx = host.switchToHttp();
 
     super.catch(exception, host);
 
     const status = this.getHttpStatus(exception);
+
     if (status === HttpStatus.INTERNAL_SERVER_ERROR) {
       if (exception instanceof Error) {
         this.logger.error(`${exception.message}: ${args}`, exception.stack);

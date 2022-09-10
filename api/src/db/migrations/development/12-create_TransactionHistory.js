@@ -13,7 +13,7 @@ module.exports = {
           primaryKey: true,
         },
         identityId: {
-          type: Sequelize.BIGINT,
+          type: Sequelize.UUID,
           allowNull: true,
           references: {
             model: 'Identity',

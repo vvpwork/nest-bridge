@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { HttpException, Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 import { InjectModel } from '@nestjs/sequelize';
@@ -7,7 +7,9 @@ import { config } from '@Common/config';
 import { InjectRedis } from '@liaoliaots/nestjs-redis';
 import Redis from 'ioredis';
 import { IdentityService } from '../identity/identity.service';
-import { IdentityModel } from '@/db/models';
+import { BlockchainIdentityAddressModel, BlockchainModel, IdentityModel, ProfileModel } from '@/db/models';
+import { BlockchainService } from '../blockchain/blockchain.service';
+import { SecuritizeService } from '../securitize';
 
 const { secret, ttl } = config.jwt;
 
@@ -16,24 +18,59 @@ export class AuthService {
   constructor(
     private jwt: JwtService,
     @InjectRedis() private readonly redis: Redis,
-
-    @InjectModel(IdentityModel) private identity: typeof IdentityModel,
-
+    @InjectModel(BlockchainIdentityAddressModel) private bcIdentityAddressModel: typeof BlockchainIdentityAddressModel,
+    @InjectModel(IdentityModel) private identityModel: typeof IdentityModel,
+    @InjectModel(BlockchainModel) private bcModel: typeof BlockchainModel,
+    @InjectModel(ProfileModel) private profileModel: typeof ProfileModel,
     private identityService: IdentityService,
+    private bcService: BlockchainService,
+    private securitizeService: SecuritizeService,
   ) {}
 
-  public async login(address: string, chainId: number): Promise<{ id: number }> {
-    try {
-      const rowQuery = `
-      SELECT d.id FROM  BlockchainIdentityAddress b
-        JOIN Identity d ON d.id = b.identityId
-      WHERE b.address = "${address}" && b.chainId = ${chainId}
-      `;
-      const [[result]] = await this.identity.sequelize.query(rowQuery);
-      return result as any;
-    } catch (err) {
-      Logger.error(err);
+  public async login(address: string, code: string, chainId: number): Promise<any> {
+    if (!this.bcService.isEthAddress(address)) throw new HttpException('Invalid blockchain address', 403);
+    const { investorId, statusKyc } = await this.securitizeService.login(code, address);
+
+    if (
+      !(await this.bcModel.findOne({
+        where: {
+          chainId,
+        },
+      }))
+    )
+      throw new HttpException(`Chain with id ${chainId} was not found `, 404);
+
+    let identity = await this.identityModel.findOne({
+      where: {
+        securitizeId: investorId,
+      },
+    });
+
+    if (!identity) {
+      const profile = await this.profileModel.create({ userName: 'new user' });
+      identity = await this.identityModel.create({
+        securitizeId: investorId,
+        profileId: profile.id,
+        status: statusKyc,
+      });
     }
+
+    await this.bcIdentityAddressModel.findOrCreate({
+      where: {
+        chainId,
+        address,
+        identityId: identity.id,
+      },
+      defaults: {
+        chainId,
+        address,
+        identityId: identity.id,
+      },
+    });
+
+    return {
+      id: identity.id,
+    };
   }
 
   private makeRedisKey(token: string) {
@@ -44,7 +81,7 @@ export class AuthService {
     await this.redis.set(this.makeRedisKey(token), token, 'EX', expire);
   }
 
-  public async jwtValidate(token: string): Promise<null | { sub: number }> {
+  public async jwtValidate(token: string): Promise<null | { sub: string }> {
     try {
       if (!this.jwt.verify(token, { secret })) return null;
 
@@ -52,8 +89,7 @@ export class AuthService {
       const jwtFromBlackList = await this.redis.get(this.makeRedisKey(token));
       if (jwtFromBlackList) return null;
 
-      const decodedToken = <{ sub: number }>this.jwt.decode(token);
-      return decodedToken;
+      return <{ sub: string }>this.jwt.decode(token);
     } catch (err) {
       return null;
     }

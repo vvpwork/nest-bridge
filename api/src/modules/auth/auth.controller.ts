@@ -21,12 +21,9 @@ export class AuthController {
   })
   @Public()
   @Post('login')
-  public async login(@Body() body: LoginDto, @Res() res: Response, @Next() next: NextFunction) {
-    const result = await this.authService.login(body.address, body.chainId);
-    console.log(result);
-
-    if (!result) return next(new ForbiddenException(`User with address ${body.address} was not found`));
-
+  public async login(@Body() body: LoginDto, @Res() res: Response) {
+    const { address, code, chainId } = body;
+    const result = await this.authService.login(address, code, chainId);
     return res.status(200).send({
       token: this.authService.jwtSign(result.id),
     });

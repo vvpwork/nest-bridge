@@ -7,10 +7,16 @@ module.exports = {
       { tableName: 'Identity', schema: db.schema },
       {
         id: {
-          type: Sequelize.BIGINT,
-          autoIncrement: true,
+          type: Sequelize.UUID,
+          defaultValue: Sequelize.UUIDV4,
           allowNull: false,
           primaryKey: true,
+        },
+
+        securitizeId: {
+          type: Sequelize.STRING,
+          unique: true,
+          allowNull: true,
         },
 
         status: {
@@ -19,14 +25,10 @@ module.exports = {
           defaultValue: 'in_progress',
         },
 
-        securitizeId: {
-          type: Sequelize.STRING,
-          allowNull: true,
-        },
-
         accountType: {
           type: Sequelize.ENUM('user', 'partner'),
           allowNull: false,
+          defaultValue: 'user',
           references: {
             model: 'AccountType',
             key: 'code',
@@ -39,7 +41,7 @@ module.exports = {
           allowNull: false,
           references: {
             model: 'Profile',
-            key: 'id'
+            key: 'id',
           },
         },
 

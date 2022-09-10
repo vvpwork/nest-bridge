@@ -8,6 +8,7 @@ import {
   ForeignKey,
   DefaultScope,
   AutoIncrement,
+  Default,
 } from 'sequelize-typescript';
 import { IIdentityModel } from '../interfaces';
 import { ProfileModel } from '@/db/models/profile.model';
@@ -23,8 +24,9 @@ import { ACCOUNT_TYPES, PROFILE_STATUS } from '../enums';
 })
 export class IdentityModel extends Model<IIdentityModel> {
   @PrimaryKey
-  @AutoIncrement
-  @Column(DataType.BIGINT)
+  @AllowNull(false)
+  @Default(DataType.UUIDV4)
+  @Column(DataType.UUID)
   id: number;
 
   @Column(
@@ -37,10 +39,6 @@ export class IdentityModel extends Model<IIdentityModel> {
   )
   status: string;
 
-  @AllowNull(false)
-  @Column(DataType.STRING)
-  address: string;
-
   @ForeignKey(() => ProfileModel)
   @Column(DataType.BIGINT)
   profileId: ProfileModel;
@@ -49,6 +47,7 @@ export class IdentityModel extends Model<IIdentityModel> {
   securitizeId: string;
 
   @ForeignKey(() => AccountTypeModel)
+  @Default(ACCOUNT_TYPES.USER)
   @Column(DataType.ENUM(ACCOUNT_TYPES.PARTNER, ACCOUNT_TYPES.USER))
   accountType: ACCOUNT_TYPES;
 }

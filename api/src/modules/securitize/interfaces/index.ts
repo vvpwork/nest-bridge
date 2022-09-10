@@ -7,6 +7,11 @@ export interface ISecuritizeAuthorizeResponseData {
 
 export interface ISecuritizeKycStatusResponseData {
   status: string;
+  investorId: string;
+  createDate: Date;
+  updateDate: Date;
+  errors: any[];
+  isManual: boolean;
 }
 
 export interface ISecuritizeGetPreparedTransactionResponseData {

@@ -14,7 +14,7 @@ module.exports = {
         },
 
         identityId: {
-          type: Sequelize.BIGINT,
+          type: Sequelize.UUID,
           allowNull: false,
           references: {
             model: 'Identity',

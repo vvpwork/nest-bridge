@@ -18,5 +18,6 @@ export class ILoginResponse {
     type: String,
     example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9. ...',
   })
+  @IsString()
   token: string;
 }
