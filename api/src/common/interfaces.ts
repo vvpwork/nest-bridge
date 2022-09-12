@@ -114,3 +114,8 @@ export interface IBigNumberUtile {
    */
   toUnitAmount(decimal?: number, type?: 'bn' | 'string'): string | BigNumber;
 }
+
+export interface IUserInterface {
+  data: { [key: string]: any };
+  tokenData: { sub: string; token: string; [key: string]: any };
+}

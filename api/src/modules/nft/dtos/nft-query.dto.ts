@@ -55,7 +55,7 @@ export class INftQueryDto {
   @IsOptional()
   @Type(() => Number)
   @IsNumber()
-  limit: number;
+  limit: number = 50;
 
   @ApiProperty({
     required: false,
@@ -63,7 +63,7 @@ export class INftQueryDto {
   @Type(() => Number)
   @IsNumber()
   @IsOptional()
-  offset: number;
+  offset: number = 0;
 
   @ApiProperty({
     required: false,

@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 /* eslint-disable @typescript-eslint/no-empty-interface */
 import {
   Table,
@@ -11,14 +12,18 @@ import {
   ForeignKey,
   AutoIncrement,
   Default,
+  HasMany,
+  BelongsToMany,
 } from 'sequelize-typescript';
 import { Optional } from 'sequelize';
-import { IIdentityModel } from '../interfaces';
+import { IIdentityBalanceModel } from '../interfaces';
 import { IdentityModel } from '@/db/models/identity.model';
 import { NftModel } from '@/db/models/nft.model';
 import { IdentityNftBalanceStatusModel } from '@/db/models/identity-nft-balance-status.model';
+import { IdentityNftBalanceLock } from './identity-nft-balance-lock.model';
+import { OrdersModel } from './order.model';
 
-interface IIdentityAttributes extends Optional<IIdentityModel, 'id'> {}
+interface IIdentityAttributes extends Optional<IIdentityBalanceModel, 'id'> {}
 
 @DefaultScope(() => ({
   order: [['createdAt', 'DESC']],
@@ -36,8 +41,8 @@ export class IdentityNftBalanceModel extends Model<IIdentityAttributes> {
 
   @ForeignKey(() => IdentityModel)
   @AllowNull(false)
-  @Column(DataType.BIGINT)
-  identityId: number;
+  @Column(DataType.UUID)
+  identityId: string;
 
   @ForeignKey(() => NftModel)
   @Column(DataType.STRING)
@@ -51,4 +56,10 @@ export class IdentityNftBalanceModel extends Model<IIdentityAttributes> {
   @AllowNull(false)
   @Column(DataType.STRING)
   status: IdentityNftBalanceStatusModel;
+
+  @HasMany(() => IdentityNftBalanceLock)
+  locked: IdentityNftBalanceLock[];
+
+  @HasMany(() => OrdersModel, 'nftIdentityBalanceId')
+  orders: OrdersModel[];
 }

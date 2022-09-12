@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import {
   Table,
   Column,
@@ -7,14 +8,12 @@ import {
   AllowNull,
   ForeignKey,
   DefaultScope,
-  BelongsTo,
-  AutoIncrement,
   Default,
 } from 'sequelize-typescript';
 import { IOrderModel } from '../interfaces';
-import { IdentityModel } from '@/db/models/identity.model';
-import { NftModel } from '@/db/models/nft.model';
+
 import { CurrenciesModel } from './currencies.model';
+import { IdentityNftBalanceModel } from './identity-nft-balance.model';
 
 @DefaultScope(() => ({
   order: [['createdAt', 'DESC']],
@@ -23,20 +22,17 @@ import { CurrenciesModel } from './currencies.model';
   tableName: 'Orders',
   timestamps: true,
 })
-export class Order extends Model<IOrderModel> {
+export class OrdersModel extends Model<IOrderModel> {
+  [x: string]: any;
   @PrimaryKey
   @Default(DataType.UUIDV4)
   @AllowNull(false)
   @Column(DataType.UUID)
   id: string;
 
-  @ForeignKey(() => IdentityModel)
-  @Column(DataType.BIGINT)
-  identityId: number;
-
-  @ForeignKey(() => NftModel)
-  @Column(DataType.STRING)
-  nftId: string;
+  @ForeignKey(() => IdentityNftBalanceModel)
+  @Column(DataType.UUID)
+  nftIdentityBalanceId: IdentityNftBalanceModel;
 
   @AllowNull(false)
   @Column(DataType.INTEGER)
@@ -51,7 +47,10 @@ export class Order extends Model<IOrderModel> {
   signature: string;
 
   @AllowNull(true)
+  @Column(DataType.JSON)
+  metadata: string;
+
   @ForeignKey(() => CurrenciesModel)
-  @Column(DataType.BIGINT)
-  currencyId: number;
+  @Column(DataType.STRING)
+  currency: CurrenciesModel;
 }

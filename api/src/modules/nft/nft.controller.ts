@@ -24,7 +24,7 @@ export class NftController {
     try {
       const result = await this.nftService.getAll(query);
       return res.status(200).send({
-        data: result,
+        ...result,
       });
     } catch (e) {
       Logger.error(e);

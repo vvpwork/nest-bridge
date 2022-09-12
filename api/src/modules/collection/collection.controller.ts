@@ -25,6 +25,7 @@ import { Public } from '@/common/decorators';
 import { CollectionService } from './collection.service';
 import { ICollectionQueryDto, ICollectionReadDto } from './dtos';
 import { ICollectionModel } from '@/db/interfaces';
+import { BlockchainService } from '../blockchain/blockchain.service';
 
 @ApiTags('Collection')
 @Controller()
@@ -33,6 +34,7 @@ export class CollectionController {
 
   constructor(
     @InjectModel(CollectionModel) private collection: typeof CollectionModel,
+    private bcService: BlockchainService,
     private service: CollectionService,
   ) {
     this.cloudinary = new CloudinaryService();
@@ -60,6 +62,7 @@ export class CollectionController {
       const coverImage = cover.status === 'fulfilled' ? cover.value.url : '';
       const logoImage = logo.status === 'fulfilled' ? logo.value.url : '';
 
+      if (!this.bcService.isEthAddress(body.id)) return new HttpException('Address not valid', 400);
       const result = await this.service.create({ ...body, logo: logoImage, cover: coverImage } as ICollectionModel);
 
       return res.status(201).send({
@@ -83,12 +86,12 @@ export class CollectionController {
   }
 
   @Public()
-  @Get('')
-  public async getAll(@Res() res: Response, @Next() next: NextFunction, @Query() query: ICollectionQueryDto) {
+  @Get()
+  public async getAll(@Res() res: Response, @Query() query: ICollectionQueryDto) {
     try {
-      const result = await this.service.findAll(query.identityId);
+      const result = await this.service.findAll(query);
       res.status(200).send({
-        data: result,
+        ...result,
       });
     } catch (er) {
       Logger.error(er);

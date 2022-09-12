@@ -6,14 +6,9 @@ module.exports = {
     await queryInterface.createTable(
       { tableName: 'Currencies', schema: db.schema },
       {
-        id: {
-          primaryKey: true,
-          autoIncrement: true,
-          type: Sequelize.BIGINT,
-        },
-
         symbol: {
           type: Sequelize.STRING,
+          primaryKey: true,
           allowNull: false,
         },
 
@@ -21,7 +16,7 @@ module.exports = {
           type: Sequelize.STRING,
           allowNull: false,
         },
-        
+
         address: {
           type: Sequelize.STRING,
           allowNull: false,

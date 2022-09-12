@@ -9,11 +9,13 @@ import {
   BelongsTo,
   DefaultScope,
   Default,
+  HasMany,
 } from 'sequelize-typescript';
 import { randomBytes } from 'node:crypto';
 import { ICollectionModel } from '../interfaces';
 import { IdentityModel } from '@/db/models/identity.model';
 import { BlockchainModel } from '@/db/models/blockchain.model';
+import { NftModel } from './nft.model';
 
 @DefaultScope(() => ({
   order: [['createdAt', 'DESC']],
@@ -63,4 +65,7 @@ export class CollectionModel extends Model<ICollectionModel> {
   @ForeignKey(() => BlockchainModel)
   @Column(DataType.INTEGER)
   chainId: BlockchainModel;
+
+  @HasMany(() => NftModel)
+  nfts: NftModel[];
 }

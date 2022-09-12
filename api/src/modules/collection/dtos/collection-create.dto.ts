@@ -7,8 +7,7 @@ export class ICollectionCreateDto {
   id!: string;
 
   @IsNumber()
-  @Type(() => Number)
-  identityId!: number;
+  identityId!: string;
 
   @IsString()
   name!: string;

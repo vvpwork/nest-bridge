@@ -13,7 +13,7 @@ import { IIdentityNftBalanceLock } from '../interfaces';
 import { IdentityNftBalanceModel } from '@/db/models/identity-nft-balance.model';
 
 @Table({
-  tableName: 'IdentityNftBalanceStatus',
+  tableName: 'IdentityNftBalanceLock',
   timestamps: false,
 })
 export class IdentityNftBalanceLock extends Model<IIdentityNftBalanceLock> {
@@ -24,7 +24,7 @@ export class IdentityNftBalanceLock extends Model<IIdentityNftBalanceLock> {
   id: number;
 
   @ForeignKey(() => IdentityNftBalanceModel)
-  @Column(DataType.BIGINT)
+  @Column(DataType.UUID)
   identityNftBalanceId: IdentityNftBalanceModel;
 
   @AllowNull(false)

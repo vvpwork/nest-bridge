@@ -16,6 +16,7 @@ import {
   RabbitModule,
   CollectionModule,
   NftModule,
+  OrderModule,
 } from './modules';
 import * as models from './db/models';
 import { SseModule } from './modules/sse/sse.module';
@@ -54,6 +55,10 @@ const routes = RouterModule.register([
     path: '/nft',
     module: NftModule,
   },
+  {
+    path: '/orders',
+    module: OrderModule,
+  },
 ]);
 
 const imports = [
@@ -79,6 +84,7 @@ const imports = [
   HealthCheckModule,
   CollectionModule,
   NftModule,
+  OrderModule,
   routes,
 ];
 

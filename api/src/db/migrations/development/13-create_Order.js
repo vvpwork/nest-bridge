@@ -27,12 +27,12 @@ module.exports = {
           type: Sequelize.INTEGER,
           allowNull: false,
         },
-        currencyId: {
-          type: Sequelize.BIGINT,
+        currency: {
+          type: Sequelize.STRING,
           allowNull: false,
           references: {
             model: 'Currencies',
-            key: 'id',
+            key: 'symbol',
           },
           onDelete: 'CASCADE',
           onUpdate: 'CASCADE',

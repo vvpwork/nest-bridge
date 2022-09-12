@@ -10,6 +10,8 @@ import { IdentityService } from '../identity/identity.service';
 import { BlockchainIdentityAddressModel, BlockchainModel, IdentityModel, ProfileModel } from '@/db/models';
 import { BlockchainService } from '../blockchain/blockchain.service';
 import { SecuritizeService } from '../securitize';
+import { IUserInterface } from '@/common/interfaces';
+import { PROFILE_STATUS } from '@/db/enums';
 
 const { secret, ttl } = config.jwt;
 
@@ -29,8 +31,6 @@ export class AuthService {
 
   public async login(address: string, code: string, chainId: number): Promise<any> {
     if (!this.bcService.isEthAddress(address)) throw new HttpException('Invalid blockchain address', 403);
-    const { investorId, statusKyc } = await this.securitizeService.login(code, address);
-
     if (
       !(await this.bcModel.findOne({
         where: {
@@ -39,6 +39,22 @@ export class AuthService {
       }))
     )
       throw new HttpException(`Chain with id ${chainId} was not found `, 404);
+
+    const userDataFromDB = await this.bcIdentityAddressModel.findOne({
+      where: {
+        address,
+      },
+    });
+
+    if (userDataFromDB)
+      return {
+        id: userDataFromDB.toJSON().identityId,
+      };
+
+    const { investorId, statusKyc } =
+      config.nodeEnv === 'development'
+        ? { investorId: 'develop', statusKyc: PROFILE_STATUS.VERIFIED }
+        : await this.securitizeService.login(code, address);
 
     let identity = await this.identityModel.findOne({
       where: {
@@ -57,11 +73,6 @@ export class AuthService {
 
     await this.bcIdentityAddressModel.findOrCreate({
       where: {
-        chainId,
-        address,
-        identityId: identity.id,
-      },
-      defaults: {
         chainId,
         address,
         identityId: identity.id,
@@ -105,11 +116,12 @@ export class AuthService {
       return false;
 
     const reqToken = req.headers.authorization.split(' ')[1];
-    Logger.log(reqToken);
+
     const tokenData = await this.jwtValidate(reqToken);
-    if (!tokenData) return false;
+    if (!tokenData || !tokenData.sub) return false;
 
     const userFromDB = await this.identityService.findByKey({ id: tokenData.sub });
+
     if (userFromDB) {
       req.user = {
         data: userFromDB.toJSON(),
@@ -117,7 +129,7 @@ export class AuthService {
           token: reqToken,
           ...tokenData,
         },
-      };
+      } as IUserInterface;
 
       return true;
     }

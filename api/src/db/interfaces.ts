@@ -42,7 +42,7 @@ export interface IBlockchainModel {
 
 export interface ICollectionModel {
   id?: string;
-  identityId: number;
+  identityId: string;
   name: string;
   description: string;
   masterAddress?: string;
@@ -70,8 +70,8 @@ export interface INftModel {
 }
 
 export interface IIdentityBalanceModel {
-  id: string;
-  identityId: number;
+  id?: string;
+  identityId: string;
   nftId: string;
   amount: number;
   status: BALANCE_STATUSES;
@@ -101,19 +101,20 @@ export interface ITransactionHistory {
 }
 
 export interface IOrderModel {
-  id: string;
-  nftIdentityBalanceId: number;
+  id?: string;
+  nftIdentityBalanceId: string;
   amount: number;
   price: string;
-  currencyId: string;
-  signature: string;
+  currency: string;
+  signature: any;
   metadata: any;
+  total?: number;
   createdAt: any;
   updatedAt: any;
 }
 
 export interface INftLikeModel {
-  id: number;
+  id?: number;
   identityId: number;
   nftId: string;
   createdAt: any;
@@ -173,7 +174,6 @@ export interface INotificationModel {
 }
 
 export interface ICurrenciesModel {
-  id?: number;
   name: string;
   symbol: string;
   decimals: number;

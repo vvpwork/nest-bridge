@@ -9,12 +9,11 @@ export class NftService {
 
   async getAll(search?: INftQueryDto) {
     try {
-      const { limit, offset, identityId, collectionId, status, sortType, sortValue, nftId } = search || {
-        limit: 50,
-        offset: 0,
-      };
+      const { limit, offset, identityId, collectionId, status, sortType, sortValue, nftId } = search;
 
       const rawQuery = `
+      WITH temptable as (
+
         SELECT
         b.identityId as identityId,
         n.id as nftId, 
@@ -23,6 +22,7 @@ export class NftService {
         n.amount  as totalNftAmount,
         n.thumbnail,
         n.totalSupply, 
+        n.creatorIds as creators,
         b.amount as identityBalance,
         l.lockedData,
         l.lockedBalance,
@@ -37,7 +37,6 @@ export class NftService {
             'currency', cur.symbol 
             ))) as onSalesData
         from Nft n
-       
 
         JOIN Collection c ON c.id = n.collectionId 
         ${collectionId ? `&& c.id = '${collectionId}'` : ''}
@@ -54,19 +53,37 @@ export class NftService {
           GROUP BY lk.identityNftBalanceId
           ) l ON b.id = l.identityNftBalanceId
 
-        LEFT JOIN Currencies cur ON o.currencyId = cur.id
+        LEFT JOIN Currencies cur ON o.currency = cur.symbol
         ${nftId ? `WHERE n.id = '${nftId}'` : ``}
         GROUP BY b.id
         ${sortValue === 'price' ? `ORDER BY  CONVERT(o.price, INTEGER) ${sortType}` : ``}
         ${sortValue === 'created' ? `ORDER BY  o.createdAt  ${sortType}` : ``}
         ${sortValue === 'unlockTime' ? `ORDER BY l.unlockTime  ${sortType}` : ``}
+        )
+        
+        
+        select tb.*, p.count from temptable tb
+        JOIN (select count(t.nftId) as count from temptable t) p
         ${limit ? `LIMIT ${limit}` : ''}
         ${offset ? `OFFSET ${offset}` : ''}
         `;
 
-      const [result] = await this.repository.sequelize.query(rawQuery);
+      const data = await this.repository.sequelize.query(rawQuery);
+      let total = 0;
+      const result = data[0].map((r: any) => {
+        const { count, ...resultData } = r;
+        total = count;
+        return resultData;
+      });
 
-      return result;
+      return {
+        data: result,
+        pagination: {
+          total,
+          limit,
+          offset,
+        },
+      };
     } catch (e) {
       Logger.error('Error nft service', e);
       throw e;

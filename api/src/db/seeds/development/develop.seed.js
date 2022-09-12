@@ -192,15 +192,14 @@ module.exports = {
         accountType: 'user',
         status: 'in_progress',
         profileId: 1,
-        nonce: 123456,
       },
       {
-        id: '626b881ce1358f001420e888',
-        securitizeId: 'dfgdhfjg33333ukjthdrgsefa',
-        status: 'in_progress',
+        id: '756b354ce1358f001420e238',
+        status: 'verified',
+        securitizeId: 'dfgdhfjg33333434r4343fa',
         accountType: 'user',
+        status: 'in_progress',
         profileId: 2,
-        nonce: 123456,
       },
     ];
 
@@ -209,17 +208,38 @@ module.exports = {
       ['id', 'securitizeId', 'status', 'accountType', 'profileId'],
       identities.map(tr => [`'${tr.id}','${tr.securitizeId}','${tr.status}','${tr.accountType}','${tr.profileId}'`]),
     );
-
     await queryInterface.sequelize.query(identitiesQuery);
+    const bcIdentityAddress = [
+      {
+        id: 1,
+        chainId: 43113,
+        IdentityId: '626b881ce1358f001420e238',
+        address: '0x3C865AC4Bd0B7652Aab04e94E1a14ED39c868879',
+      },
+      {
+        id: 2,
+        chainId: 43113,
+        IdentityId: '756b354ce1358f001420e238',
+        address: '0x0aFD4FCef8C90E822fadE0472d7f4b31496Cf2e8',
+      },
+    ];
+
+    const bcIdentityQuery = upsertData(
+      'BlockchainIdentityAddress',
+      ['id', 'chainId', 'IdentityId', 'address'],
+      bcIdentityAddress.map(tr => [`'${tr.id}','${tr.chainId}','${tr.IdentityId}', '${tr.address}'`]),
+    );
+
+    await queryInterface.sequelize.query(bcIdentityQuery);
     // await resetSequence(queryInterface, 'Identity');
 
     const currencies = [
-      { id: 1, name: 'USDC token', symbol: 'USDC', decimals: 6, address: '0xAF82969ECF299c1f1Bb5e1D12dDAcc9027431160' },
+      { name: 'USDC token', symbol: 'USDC', decimals: 6, address: '0xAF82969ECF299c1f1Bb5e1D12dDAcc9027431160' },
     ];
     const currenciesQuery = upsertData(
       'Currencies',
-      ['id', 'name', 'symbol', 'decimals', 'address'],
-      currencies.map(tr => [`'${tr.id}','${tr.name}','${tr.symbol}','${tr.decimals}','${tr.address}'`]),
+      ['name', 'symbol', 'decimals', 'address'],
+      currencies.map(tr => [`'${tr.name}','${tr.symbol}','${tr.decimals}','${tr.address}'`]),
     );
 
     await queryInterface.sequelize.query(currenciesQuery);
@@ -240,7 +260,7 @@ module.exports = {
       },
       {
         id: '0x8dcF19AeE31F9624FCe35F61037c80f2CA346489',
-        identityId: '626b881ce1358f001420e888',
+        identityId: '756b354ce1358f001420e238',
         description: 'BridgeTower Permissioned Market Token Test',
         name: 'BridgeTower Permissioned Market Token Test',
         cover: 'test',
@@ -252,7 +272,7 @@ module.exports = {
       },
       {
         id: '0x8dcF19AeE31F9624FCe35F61037c80f2CA346400',
-        identityId: '626b881ce1358f001420e888',
+        identityId: '756b354ce1358f001420e238',
         description: 'BridgeTower Permissioned Market Token Test2',
         name: 'BridgeTower Permissioned Market Token Test2',
         cover: 'test',
@@ -308,6 +328,61 @@ module.exports = {
         royalty: 2000,
         totalSupply: 1000,
       },
+      {
+        id: '0x8dcF19AeE31F9624FCe35F61037c80f2CA3464nft_4',
+        collectionId: '0x8dcF19AeE31F9624FCe35F61037c80f2CA346400',
+        thumbnail: 'test',
+        amount: 1000,
+        metadata: JSON.stringify({ name: 'test' }),
+        creatorIds: JSON.stringify(['0x8dcF19AeE31F9624FCe35F61037c80f2CA3464creator']),
+        royaltyIds: JSON.stringify(['0x8dcF19AeE31F9624FCe35F61037c80f2CA3464creator']),
+        royalty: 2000,
+        totalSupply: 1000,
+      },
+      {
+        id: '0x8dcF19AeE31F9624FCe35F61037c80f2CA3464nft_5',
+        collectionId: '0x8dcF19AeE31F9624FCe35F61037c80f2CA346400',
+        thumbnail: 'test',
+        amount: 1000,
+        metadata: JSON.stringify({ name: 'test' }),
+        creatorIds: JSON.stringify(['0x8dcF19AeE31F9624FCe35F61037c80f2CA3464creator']),
+        royaltyIds: JSON.stringify(['0x8dcF19AeE31F9624FCe35F61037c80f2CA3464creator']),
+        royalty: 2000,
+        totalSupply: 1000,
+      },
+      {
+        id: '0x8dcF19AeE31F9624FCe35F61037c80f2CA3464nft_6',
+        collectionId: '0x8dcF19AeE31F9624FCe35F61037c80f2CA346400',
+        thumbnail: 'test',
+        amount: 1000,
+        metadata: JSON.stringify({ name: 'test' }),
+        creatorIds: JSON.stringify(['0x8dcF19AeE31F9624FCe35F61037c80f2CA3464creator']),
+        royaltyIds: JSON.stringify(['0x8dcF19AeE31F9624FCe35F61037c80f2CA3464creator']),
+        royalty: 2000,
+        totalSupply: 1000,
+      },
+      {
+        id: '0x8dcF19AeE31F9624FCe35F61037c80f2CA3464nft_7',
+        collectionId: '0x8dcF19AeE31F9624FCe35F61037c80f2CA346400',
+        thumbnail: 'test',
+        amount: 1000,
+        metadata: JSON.stringify({ name: 'test' }),
+        creatorIds: JSON.stringify(['0x8dcF19AeE31F9624FCe35F61037c80f2CA3464creator']),
+        royaltyIds: JSON.stringify(['0x8dcF19AeE31F9624FCe35F61037c80f2CA3464creator']),
+        royalty: 2000,
+        totalSupply: 1000,
+      },
+      {
+        id: '0x8dcF19AeE31F9624FCe35F61037c80f2CA3464nft_8',
+        collectionId: '0x8dcF19AeE31F9624FCe35F61037c80f2CA346400',
+        thumbnail: 'test',
+        amount: 1000,
+        metadata: JSON.stringify({ name: 'test' }),
+        creatorIds: JSON.stringify(['0x8dcF19AeE31F9624FCe35F61037c80f2CA3464creator']),
+        royaltyIds: JSON.stringify(['0x8dcF19AeE31F9624FCe35F61037c80f2CA3464creator']),
+        royalty: 2000,
+        totalSupply: 1000,
+      },
     ];
 
     const nftsQuery = upsertData(
@@ -335,8 +410,32 @@ module.exports = {
       },
       {
         id: '0x8dcF19AeE31F9dw3',
-        identityId: '626b881ce1358f001420e888',
+        identityId: '756b354ce1358f001420e238',
         nftId: '0x8dcF19AeE31F9624FCe35F61037c80f2CA3464nft_3',
+        amount: 200,
+      },
+      {
+        id: '0x8dcF19AeE31F9dw4',
+        identityId: '756b354ce1358f001420e238',
+        nftId: '0x8dcF19AeE31F9624FCe35F61037c80f2CA3464nft_4',
+        amount: 200,
+      },
+      {
+        id: '0x8dcF19AeE31F9dw5',
+        identityId: '756b354ce1358f001420e238',
+        nftId: '0x8dcF19AeE31F9624FCe35F61037c80f2CA3464nft_5',
+        amount: 200,
+      },
+      {
+        id: '0x8dcF19AeE31F9dw6',
+        identityId: '756b354ce1358f001420e238',
+        nftId: '0x8dcF19AeE31F9624FCe35F61037c80f2CA3464nft_6',
+        amount: 200,
+      },
+      {
+        id: '0x8dcF19AeE31F9dw7',
+        identityId: '756b354ce1358f001420e238',
+        nftId: '0x8dcF19AeE31F9624FCe35F61037c80f2CA3464nft_7',
         amount: 200,
       },
     ];
@@ -354,7 +453,7 @@ module.exports = {
         nftIdentityBalanceId: '0x8dcF19AeE31F9624F',
         amount: 20,
         price: '10000000',
-        currencyId: 1,
+        currency: 'USDC',
         signature: JSON.stringify({ test: 'test' }),
         metadata: JSON.stringify({ test: 'test' }),
       },
@@ -363,7 +462,7 @@ module.exports = {
         nftIdentityBalanceId: '0x8dcF19AeE31F9dw3',
         amount: 10,
         price: '600000',
-        currencyId: 1,
+        currency: 'USDC',
         signature: JSON.stringify({ test: 'test' }),
         metadata: JSON.stringify({ test: 'test' }),
       },
@@ -371,9 +470,9 @@ module.exports = {
 
     const ordersQuery = upsertData(
       'Orders',
-      ['id', 'nftIdentityBalanceId', 'amount', 'price', 'currencyId', 'signature', 'metadata'],
+      ['id', 'nftIdentityBalanceId', 'amount', 'price', 'currency', 'signature', 'metadata'],
       orders.map(tr => [
-        `'${tr.id}','${tr.nftIdentityBalanceId}','${tr.amount}','${tr.price}', '${tr.currencyId}', '${tr.signature}', '${tr.metadata}'`,
+        `'${tr.id}','${tr.nftIdentityBalanceId}','${tr.amount}','${tr.price}', '${tr.currency}', '${tr.signature}', '${tr.metadata}'`,
       ]),
     );
     await queryInterface.sequelize.query(ordersQuery);

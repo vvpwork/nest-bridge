@@ -8,3 +8,4 @@ export * from './health-check';
 export * from './rabbit';
 export * from './collection';
 export * from './nft';
+export * from './orders';
