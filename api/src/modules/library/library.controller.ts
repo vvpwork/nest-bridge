@@ -3,8 +3,10 @@ import { User } from '@Common/decorators/user.decorator';
 import { IIdentityModel } from '@DB/interfaces';
 import { CreateLibraryDto, EditLibraryDto } from '@Modules/library/dtos';
 import { LibraryModel } from '@DB/models';
+import { ApiTags } from '@nestjs/swagger';
 import { LibraryService } from './library.service';
 
+@ApiTags('Libraries')
 @Controller()
 export class LibraryController {
   constructor(private readonly libraryService: LibraryService) {}

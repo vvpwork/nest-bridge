@@ -1,12 +1,19 @@
-import { Body, Controller, Get, Param, Patch, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Query, Post } from '@nestjs/common';
 import { User } from '@Common/decorators/user.decorator';
 import { IIdentityModel } from '@DB/interfaces';
-import { EditProfileDto } from '@Modules/profile/dtos/';
+import {
+  EditProfileDto,
+  IProfileLibrariesResponseDto,
+  IProfileNewsResponseDto,
+  IProfilePodcastResponseDto,
+} from '@Modules/profile/dtos/';
 import { PaginationQueryDto } from '@Common/utils/paginationQuery.dto';
 import { Public } from '@Common/decorators';
+import { ApiTags } from '@nestjs/swagger';
 import { ProfileModel } from '@/db/models/profile.model';
 import { ProfileService } from './profile.service';
 
+@ApiTags('Profiles')
 @Controller()
 export class ProfileController {
   constructor(private readonly profileService: ProfileService) {}
@@ -17,19 +24,39 @@ export class ProfileController {
   }
 
   @Patch()
-  async editMy(@User() user: IIdentityModel, @Body() body: EditProfileDto): Promise<{ success: true }> {
+  async editMy(@User() user: IIdentityModel, @Body() body: EditProfileDto): Promise<{ success: boolean }> {
     return this.profileService.updateById(user.profileId, body);
   }
 
   @Public()
   @Get(':id/libraries')
-  async getLibraries(@Param('id') id: number, @Query() query: PaginationQueryDto): Promise<any> {
+  async getLibraries(
+    @Param('id') id: number,
+    @Query() query: PaginationQueryDto,
+  ): Promise<IProfileLibrariesResponseDto> {
+    console.log('scv_query', query);
     return this.profileService.getLibrariesByProfileId(id, query.limit, query.offset);
   }
 
   @Public()
   @Get(':id/podcasts')
-  async getPodcasts(@Param('id') id: number, @Query() query: PaginationQueryDto): Promise<any> {
+  async getPodcasts(@Param('id') id: number, @Query() query: PaginationQueryDto): Promise<IProfilePodcastResponseDto> {
     return this.profileService.getPodcastsByProfileId(id, query.limit, query.offset);
+  }
+
+  @Public()
+  @Get(':id/news')
+  async getNews(@Param('id') id: number, @Query() query: PaginationQueryDto): Promise<IProfileNewsResponseDto> {
+    return this.profileService.getNewsByProfileId(id, query.limit, query.offset);
+  }
+
+  @Post(':id/follow')
+  async followByProfileId(@User() user: IIdentityModel, @Param('id') id: number): Promise<{ success: boolean }> {
+    return this.profileService.followByProfileId(user.profileId, id);
+  }
+
+  @Post(':id/unfollow')
+  async unFollowByProfileId(@User() user: IIdentityModel, @Param('id') id: number): Promise<{ success: boolean }> {
+    return this.profileService.unFollowByProfileId(user.profileId, id);
   }
 }
