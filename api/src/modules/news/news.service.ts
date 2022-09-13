@@ -90,7 +90,7 @@ export class NewsService {
   }
 
   async getOneById(id: string, viewerUser: IdentityModel | null) {
-    const newsRecord = await this.newsModel.findByPk(id);
+    const newsRecord: NewsModel = await this.newsModel.findByPk(id);
     if (!newsRecord) {
       throw new HttpException('NEWS_NOT_FOUND', HttpStatus.NOT_FOUND);
     }
@@ -108,16 +108,16 @@ export class NewsService {
       result.isLiked = await this.isLiked(newsRecord.id, +viewerUser.profileId);
     }
 
-    return newsRecord;
+    return result;
   }
 
-  async getLikesCount(newsId: string) {
+  async getLikesCount(newsId: string): Promise<number> {
     return this.newsLikeModel.count({
       where: { newsId },
     });
   }
 
-  async isLiked(newsId: string, profileId: number) {
+  async isLiked(newsId: string, profileId: number): Promise<boolean> {
     const newsLikeRecord = await this.newsLikeModel.findOne({
       where: { newsId, profileId },
       attributes: ['id'],

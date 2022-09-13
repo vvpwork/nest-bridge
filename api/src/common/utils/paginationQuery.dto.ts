@@ -11,5 +11,5 @@ export class PaginationQueryDto {
 
   @IsNumber()
   @IsOptional()
-  public offset?: number;
+  offset?: number;
 }

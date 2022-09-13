@@ -33,6 +33,7 @@ export class LibraryService {
       },
       NOTIFICATION_TYPES.FOLLOWING_PERSON_ADDED_LIBRARY,
     );
+
     return newLibraryRecord;
   }
 

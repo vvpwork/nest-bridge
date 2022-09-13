@@ -2,9 +2,11 @@ import { Body, Controller, Delete, Param, Patch, Post } from '@nestjs/common';
 import { User } from '@Common/decorators/user.decorator';
 import { IIdentityModel } from '@DB/interfaces';
 import { PodcastModel } from '@DB/models';
+import { ApiTags } from '@nestjs/swagger';
 import { CreatePodcastDto, EditPodcastDto } from './dtos';
 import { PodcastService } from './podcast.service';
 
+@ApiTags('Podcasts')
 @Controller()
 export class PodcastController {
   constructor(private readonly podcastService: PodcastService) {}
