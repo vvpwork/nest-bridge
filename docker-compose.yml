@@ -1,6 +1,6 @@
 version: '3.2'
 services:
-  postgres:
+  mariadb:
     image: mariadb
     container_name: mariadb_bridge
     environment:
@@ -38,3 +38,14 @@ services:
     command: redis-server --appendonly yes
     ports:
       - 6379:6379
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    environment:
+      - PMA_PASSWORD=bridge2022
+      - MYSQL_ROOT_PASSWORD=bridge
+      - MYSQL_PASSWORD
+      - PMA_HOST=postgres
+    ports:
+      - 8085:80
+
