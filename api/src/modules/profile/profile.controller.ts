@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Query, Post } from '@nestjs/common';
 import { User } from '@Common/decorators/user.decorator';
 import { IIdentityModel } from '@DB/interfaces';
 import {
@@ -24,7 +24,7 @@ export class ProfileController {
   }
 
   @Patch()
-  async editMy(@User() user: IIdentityModel, @Body() body: EditProfileDto): Promise<{ success: true }> {
+  async editMy(@User() user: IIdentityModel, @Body() body: EditProfileDto): Promise<{ success: boolean }> {
     return this.profileService.updateById(user.profileId, body);
   }
 
@@ -47,6 +47,16 @@ export class ProfileController {
   @Public()
   @Get(':id/news')
   async getNews(@Param('id') id: number, @Query() query: PaginationQueryDto): Promise<IProfileNewsResponseDto> {
-    return this.profileService.getPodcastsByProfileId(id, query.limit, query.offset);
+    return this.profileService.getNewsByProfileId(id, query.limit, query.offset);
+  }
+
+  @Post(':id/follow')
+  async followByProfileId(@User() user: IIdentityModel, @Param('id') id: number): Promise<{ success: boolean }> {
+    return this.profileService.followByProfileId(user.profileId, id);
+  }
+
+  @Post(':id/unfollow')
+  async unFollowByProfileId(@User() user: IIdentityModel, @Param('id') id: number): Promise<{ success: boolean }> {
+    return this.profileService.unFollowByProfileId(user.profileId, id);
   }
 }
