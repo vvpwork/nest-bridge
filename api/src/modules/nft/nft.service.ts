@@ -13,7 +13,6 @@ export class NftService {
 
       const rawQuery = `
       WITH temptable as (
-
         SELECT
         b.identityId as identityId,
         n.id as nftId, 
@@ -41,7 +40,7 @@ export class NftService {
         JOIN Collection c ON c.id = n.collectionId 
         ${collectionId ? `&& c.id = '${collectionId}'` : ''}
 
-        JOIN IdentityNftBalance b ON b.nftId = n.id ${identityId ? `&&  b.identityId = ${identityId}` : ''}    
+        JOIN IdentityNftBalance b ON b.nftId = n.id ${identityId ? `&&  b.identityId = '${identityId}'` : ''}    
         ${status === 'onSale' ? `JOIN` : `LEFT JOIN`} \`Orders\` o ON o.nftIdentityBalanceId = b.id
 
 

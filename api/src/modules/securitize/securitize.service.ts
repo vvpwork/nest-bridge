@@ -85,6 +85,10 @@ export class SecuritizeService implements ISecuritizeService {
     }
   }
 
+  async isPartner(address: string) {
+    return this.bcService.isAddressPartner(address);
+  }
+
   private verifyKycStatus(status: string): PROFILE_STATUS {
     switch (true) {
       case statuses.IN_PROGRESS.includes(status):

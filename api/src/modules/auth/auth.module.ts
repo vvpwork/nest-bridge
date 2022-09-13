@@ -10,8 +10,9 @@ import { AuthService } from './auth.service';
 
 import { ProfileModule } from '../profile';
 import { IdentityModule } from '../identity';
-import { BlockchainModule } from '../blockchain';
 import { SecuritizeModule } from '../securitize';
+import { BlockchainService } from '../blockchain/blockchain.service';
+import { BlockchainModule } from '../blockchain';
 
 const { ttl, secret } = config.jwt;
 
@@ -23,8 +24,8 @@ const { ttl, secret } = config.jwt;
     }),
     ProfileModule,
     IdentityModule,
-    BlockchainModule,
     SecuritizeModule,
+    BlockchainModule,
     SequelizeModule.forFeature([IdentityModel, BlockchainIdentityAddressModel, BlockchainModel, ProfileModel]),
   ],
   controllers: [AuthController],

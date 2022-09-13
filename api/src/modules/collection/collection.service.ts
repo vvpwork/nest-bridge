@@ -4,9 +4,8 @@ import { InjectModel } from '@nestjs/sequelize';
 import { ApiTags } from '@nestjs/swagger';
 import { CollectionModel, NftModel } from '@/db/models';
 import { ICollectionModel } from '@/db/interfaces';
-import { ICollectionCreateDto } from './dtos/collection-create.dto';
 import { ICollectionQueryDto } from './dtos';
-import { NftModule } from '../nft';
+import { BlockchainService } from '../blockchain/blockchain.service';
 
 @ApiTags('Collection')
 @Injectable()
@@ -14,6 +13,7 @@ export class CollectionService {
   constructor(
     @InjectModel(CollectionModel) private repository: typeof CollectionModel,
     @InjectModel(NftModel) private nftModel: typeof NftModel,
+    private bcService: BlockchainService,
   ) {}
 
   async create(collection: ICollectionModel) {
@@ -24,6 +24,8 @@ export class CollectionService {
       throw new HttpException('Error save to db', 502);
     }
   }
+
+  // async fillCollectionByNfts(collectionAddress: string) {}
 
   async findOne(id: string) {
     return this.repository.findOne({ where: { id } });

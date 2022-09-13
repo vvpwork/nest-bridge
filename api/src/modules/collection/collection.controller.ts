@@ -20,12 +20,15 @@ import { InjectModel } from '@nestjs/sequelize';
 import { CollectionModel } from '@/db/models';
 import { ICollectionCreateDto } from './dtos/collection-create.dto';
 import { CloudinaryService } from '@/common/services/cloudinary.service';
-import { Public } from '@/common/decorators';
+import { Public, User } from '@/common/decorators';
 
 import { CollectionService } from './collection.service';
 import { ICollectionQueryDto, ICollectionReadDto } from './dtos';
 import { ICollectionModel } from '@/db/interfaces';
 import { BlockchainService } from '../blockchain/blockchain.service';
+import { RabbitRootService } from '../rabbit/rabbit-root.service';
+import { TypeRpcCommand, TypeRpcMessage } from '../rabbit/interfaces/enums';
+import { IUserInterface } from '@/common/interfaces';
 
 @ApiTags('Collection')
 @Controller()
@@ -36,50 +39,57 @@ export class CollectionController {
     @InjectModel(CollectionModel) private collection: typeof CollectionModel,
     private bcService: BlockchainService,
     private service: CollectionService,
+    private rabbit: RabbitRootService,
   ) {
     this.cloudinary = new CloudinaryService();
   }
 
-  @Public()
   @Post()
   @UseInterceptors(AnyFilesInterceptor())
   public async post(
     @Body() body: ICollectionCreateDto,
     @UploadedFiles() files: Array<Express.Multer.File>,
-    @Next() next: NextFunction,
     @Res() res: Response,
+    @User() user: IUserInterface,
   ) {
-    try {
-      const isExist = await this.service.findOne(body.id);
+    if (!this.bcService.isEthAddress(body.id)) throw new HttpException('Address is not valid', 400);
+    const isExist = await this.service.findOne(body.id);
+    if (isExist) throw new HttpException('Collection is already exist', 409);
 
-      if (isExist) return next(new HttpException('Collection is already exist', 409));
+    // upload images to cloudinary
+    const [cover, logo] = await Promise.allSettled([
+      this.cloudinary.uploadFile(files.find((v: Express.Multer.File) => v.fieldname === 'cover')),
+      this.cloudinary.uploadFile(files.find((v: Express.Multer.File) => v.fieldname === 'logo')),
+    ]);
+    const coverImage = cover.status === 'fulfilled' ? cover.value.url : '';
+    const logoImage = logo.status === 'fulfilled' ? logo.value.url : '';
 
-      // upload images to cloudinary
-      const [cover, logo] = await Promise.allSettled([
-        this.cloudinary.uploadFile(files.find((v: Express.Multer.File) => v.fieldname === 'cover')),
-        this.cloudinary.uploadFile(files.find((v: Express.Multer.File) => v.fieldname === 'logo')),
-      ]);
-      const coverImage = cover.status === 'fulfilled' ? cover.value.url : '';
-      const logoImage = logo.status === 'fulfilled' ? logo.value.url : '';
+    const result = await this.service.create({
+      ...body,
+      logo: logoImage,
+      cover: coverImage,
+      identityId: user.data.id,
+    } as ICollectionModel);
 
-      if (!this.bcService.isEthAddress(body.id)) return new HttpException('Address not valid', 400);
-      const result = await this.service.create({ ...body, logo: logoImage, cover: coverImage } as ICollectionModel);
+    await this.rabbit.getProcessResult({
+      type: TypeRpcMessage.BLOCKCHAIN,
+      command: TypeRpcCommand.ADD_COLLECTION,
+      data: {
+        addresses: [body.id],
+      },
+    });
 
-      return res.status(201).send({
-        data: result,
-      });
-    } catch (err) {
-      Logger.error(err);
-      throw new Error(err);
-    }
+    return res.status(201).send({
+      data: result,
+    });
   }
 
   @Public()
   @Get(':id')
-  public async getBuId(@Param() param: ICollectionReadDto, @Res() res: Response, @Next() next: NextFunction) {
+  public async getBuId(@Param() param: ICollectionReadDto, @Res() res: Response) {
     const result = await this.service.findOne(param.id);
 
-    if (!result) return next(new HttpException('Collection was not found', 404));
+    if (!result) throw new HttpException('Collection was not found', 404);
     return res.status(200).send({
       data: result,
     });
@@ -88,14 +98,9 @@ export class CollectionController {
   @Public()
   @Get()
   public async getAll(@Res() res: Response, @Query() query: ICollectionQueryDto) {
-    try {
-      const result = await this.service.findAll(query);
-      res.status(200).send({
-        ...result,
-      });
-    } catch (er) {
-      Logger.error(er);
-      throw er;
-    }
+    const result = await this.service.findAll(query);
+    res.status(200).send({
+      ...result,
+    });
   }
 }

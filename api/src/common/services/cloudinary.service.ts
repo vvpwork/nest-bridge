@@ -30,6 +30,15 @@ export class CloudinaryService {
     });
   }
 
+  async uploadFromUri(uri: string, isThumbnail: boolean = false) {
+    const cloudImageUrl = await this.iclInstance.uploader.upload(uri);
+    const thumbnail = cloudImageUrl.url.split('/')[cloudImageUrl.url.split('/').length - 1];
+    return {
+      url: cloudImageUrl,
+      thumbnail,
+    };
+  }
+
   async uploadFile(file: Express.Multer.File): Promise<ICloudinaryUploadFileResponseData> {
     return this.streamUpload(file);
   }

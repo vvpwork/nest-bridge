@@ -1,4 +1,5 @@
 import { Connection, Channel, ConsumeMessage } from 'amqplib';
+import { TypeRpcCommand, TypeRpcMessage } from './enums';
 
 export interface IRabbitConnect {
   exchange: string;
@@ -36,4 +37,11 @@ export interface IRabbitService {
 
 export interface IConsumer<T> {
   consume(message: T): Promise<void>;
+}
+
+export interface IMessageRabbit {
+  type: TypeRpcMessage;
+  command: TypeRpcCommand;
+  // TODO add generic type
+  data: { [key: string]: any };
 }

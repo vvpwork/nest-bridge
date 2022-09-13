@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import Web3 from 'web3';
 import { BlockchainService } from './blockchain.service';
 

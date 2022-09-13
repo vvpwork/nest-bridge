@@ -1,4 +1,6 @@
-const erc1155bridgeTowerProxyAbi = [
+import { AbiItem } from 'web3-utils';
+
+export const erc1155abi: AbiItem[] = [
   {
     anonymous: false,
     inputs: [
@@ -148,31 +150,6 @@ const erc1155bridgeTowerProxyAbi = [
       },
     ],
     name: 'Initialized',
-    type: 'event',
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: 'address',
-        name: 'user',
-        type: 'address',
-      },
-      {
-        indexed: true,
-        internalType: 'uint256',
-        name: 'id',
-        type: 'uint256',
-      },
-      {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'amount',
-        type: 'uint256',
-      },
-    ],
-    name: 'Locked',
     type: 'event',
   },
   {
@@ -376,31 +353,6 @@ const erc1155bridgeTowerProxyAbi = [
     type: 'event',
   },
   {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: 'address',
-        name: 'user',
-        type: 'address',
-      },
-      {
-        indexed: true,
-        internalType: 'uint256',
-        name: 'id',
-        type: 'uint256',
-      },
-      {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'amount',
-        type: 'uint256',
-      },
-    ],
-    name: 'Unlocked',
-    type: 'event',
-  },
-  {
     inputs: [
       {
         internalType: 'string',
@@ -441,16 +393,6 @@ const erc1155bridgeTowerProxyAbi = [
         internalType: 'address',
         name: 'securitizeRegistryProxy',
         type: 'address',
-      },
-      {
-        internalType: 'address',
-        name: 'contractsRegistryProxy',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: 'lockPeriod',
-        type: 'uint256',
       },
     ],
     name: '__ERC1155BridgeTowerUser_init',
@@ -494,16 +436,6 @@ const erc1155bridgeTowerProxyAbi = [
         internalType: 'address',
         name: 'securitizeRegistryProxy',
         type: 'address',
-      },
-      {
-        internalType: 'address',
-        name: 'contractsRegistryProxy',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: 'lockPeriod',
-        type: 'uint256',
       },
     ],
     name: '__ERC1155BridgeTower_init',
@@ -612,19 +544,6 @@ const erc1155bridgeTowerProxyAbi = [
     type: 'function',
   },
   {
-    inputs: [],
-    name: 'contractsRegistryProxy',
-    outputs: [
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
     inputs: [
       {
         internalType: 'uint256',
@@ -690,100 +609,6 @@ const erc1155bridgeTowerProxyAbi = [
     inputs: [
       {
         internalType: 'address',
-        name: 'user',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: 'id',
-        type: 'uint256',
-      },
-    ],
-    name: 'getLockedAmount',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'user',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: 'id',
-        type: 'uint256',
-      },
-    ],
-    name: 'getLocksInfo',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-      {
-        components: [
-          {
-            internalType: 'uint256',
-            name: 'amount',
-            type: 'uint256',
-          },
-          {
-            internalType: 'uint256',
-            name: 'start',
-            type: 'uint256',
-          },
-          {
-            internalType: 'uint256',
-            name: 'end',
-            type: 'uint256',
-          },
-        ],
-        internalType: 'struct ERC1155Lockable.Lock[]',
-        name: '',
-        type: 'tuple[]',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'user',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: 'id',
-        type: 'uint256',
-      },
-    ],
-    name: 'getUnlockableAmount',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
         name: '_owner',
         type: 'address',
       },
@@ -837,19 +662,6 @@ const erc1155bridgeTowerProxyAbi = [
         internalType: 'bool',
         name: '',
         type: 'bool',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'lockPeriod',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
       },
     ],
     stateMutability: 'view',
@@ -944,19 +756,6 @@ const erc1155bridgeTowerProxyAbi = [
         type: 'string',
       },
     ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'addr',
-        type: 'address',
-      },
-    ],
-    name: 'onlyWhitelistedAddress',
-    outputs: [],
     stateMutability: 'view',
     type: 'function',
   },
@@ -1149,19 +948,6 @@ const erc1155bridgeTowerProxyAbi = [
     inputs: [
       {
         internalType: 'address',
-        name: 'newContractsRegistryProxy',
-        type: 'address',
-      },
-    ],
-    name: 'setContractsRegistryProxy',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
         name: 'newSecuritizeRegistryProxy',
         type: 'address',
       },
@@ -1303,24 +1089,6 @@ const erc1155bridgeTowerProxyAbi = [
   {
     inputs: [
       {
-        internalType: 'address',
-        name: 'user',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: 'id',
-        type: 'uint256',
-      },
-    ],
-    name: 'unlock',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
         internalType: 'uint256',
         name: 'id',
         type: 'uint256',
@@ -1361,5 +1129,3 @@ const erc1155bridgeTowerProxyAbi = [
     type: 'function',
   },
 ];
-
-export { erc1155bridgeTowerProxyAbi };

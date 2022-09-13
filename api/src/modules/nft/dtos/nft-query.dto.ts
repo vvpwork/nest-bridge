@@ -24,9 +24,8 @@ export class INftQueryDto {
     required: false,
   })
   @IsOptional()
-  @Type(() => Number)
-  @IsNumber()
-  identityId: number;
+  @IsString()
+  identityId: string;
 
   @ApiProperty({
     required: false,

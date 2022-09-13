@@ -1,4 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
+import { IMessageRabbit } from './interfaces';
 import { RabbitService } from './services';
 
 @Injectable()
@@ -14,8 +15,8 @@ export class RabbitRootService {
     this.rabbitInstance.run();
   }
 
-  async getProcessResult() {
-    return this.rabbitInstance.getMessageProcessingResult({ test: '***** test rpc*******}' });
+  async getProcessResult(message: IMessageRabbit) {
+    return this.rabbitInstance.getMessageProcessingResult(message);
   }
 
   async handleMessage(message: string) {

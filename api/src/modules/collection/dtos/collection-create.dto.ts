@@ -6,7 +6,7 @@ export class ICollectionCreateDto {
   @IsString()
   id!: string;
 
-  @IsNumber()
+  @IsString()
   identityId!: string;
 
   @IsString()

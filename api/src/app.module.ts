@@ -21,6 +21,7 @@ import {
 import * as models from './db/models';
 import { SseModule } from './modules/sse/sse.module';
 import { BlockchainModule } from './modules/blockchain';
+// import { BlockchainModule } from './modules/blockchain';
 
 const routes = RouterModule.register([
   {
@@ -72,7 +73,7 @@ const imports = [
   RedisModule.forRoot({ config: config.redis }),
 
   RabbitModule,
-  // BlockchainModule,
+  BlockchainModule,
 
   // api
   AuthModule,

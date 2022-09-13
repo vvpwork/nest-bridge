@@ -11,7 +11,7 @@ import { BlockchainIdentityAddressModel, BlockchainModel, IdentityModel, Profile
 import { BlockchainService } from '../blockchain/blockchain.service';
 import { SecuritizeService } from '../securitize';
 import { IUserInterface } from '@/common/interfaces';
-import { PROFILE_STATUS } from '@/db/enums';
+import { ACCOUNT_TYPES, PROFILE_STATUS } from '@/db/enums';
 
 const { secret, ttl } = config.jwt;
 
@@ -56,6 +56,8 @@ export class AuthService {
         ? { investorId: 'develop', statusKyc: PROFILE_STATUS.VERIFIED }
         : await this.securitizeService.login(code, address);
 
+    const isPartner = await this.securitizeService.isPartner(address);
+
     let identity = await this.identityModel.findOne({
       where: {
         securitizeId: investorId,
@@ -64,10 +66,12 @@ export class AuthService {
 
     if (!identity) {
       const profile = await this.profileModel.create({ userName: 'new user' });
+
       identity = await this.identityModel.create({
         securitizeId: investorId,
         profileId: profile.id,
         status: statusKyc,
+        accountType: isPartner ? ACCOUNT_TYPES.PARTNER : ACCOUNT_TYPES.USER,
       });
     }
 
