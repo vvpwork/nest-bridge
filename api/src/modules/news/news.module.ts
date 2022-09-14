@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 
 import { NotificationService } from '@Modules/notification';
@@ -12,5 +12,6 @@ import { AuthModule } from '@/modules';
   imports: [SequelizeModule.forFeature([NotificationModel, NewsModel, NewsLikeModel]), AuthModule],
   controllers: [NewsController],
   providers: [NewsService, NotificationService],
+  exports: [NewsService],
 })
 export class NewsModule {}

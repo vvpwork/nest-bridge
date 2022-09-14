@@ -1,10 +1,11 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { forwardRef, HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 
 import { EditProfileDto } from '@Modules/profile/dtos/editProfile.dto';
 import {
   FollowerModel,
   IdentityModel,
   LibraryModel,
+  NewsLikeModel,
   NewsModel,
   NotificationModel,
   PodcastModel,
@@ -13,6 +14,9 @@ import {
 import { InjectModel } from '@nestjs/sequelize';
 import { paginate } from '@Common/utils/pagination.util';
 import { NOTIFICATION_TYPES } from '@Common/enums';
+import { IUserInterface } from '@Common/interfaces';
+import { IIdentityModel } from '@DB/interfaces';
+import { NewsService } from '@/modules';
 
 @Injectable()
 export class ProfileService {
@@ -35,8 +39,11 @@ export class ProfileService {
     @InjectModel(FollowerModel)
     private followerModel: typeof FollowerModel,
 
+    @InjectModel(NewsLikeModel)
+    private newsLikeModel: typeof NewsLikeModel,
+
     @InjectModel(NotificationModel)
-    private notificationModel: typeof NotificationModel,
+    private notificationModel: typeof NotificationModel, // @Inject(forwardRef(() => NewsService)) // private readonly newsService: NewsService,
   ) {}
 
   async getById(id: number): Promise<ProfileModel> {
@@ -78,8 +85,13 @@ export class ProfileService {
     return paginate(this.podcastModel, { query: { where: { profileId } }, limit, offset });
   }
 
-  async getNewsByProfileId(profileId: number, limit?: number, offset?: number) {
-    return paginate(this.newsModel, { query: { where: { profileId } }, limit, offset });
+  async getNewsByProfileId(profileId: number, viewerUser?: IdentityModel | null, limit?: number, offset?: number) {
+    const paginatedData = await paginate(this.newsModel, { query: { where: { profileId } }, limit, offset });
+    paginatedData.data = await Promise.all(
+      paginatedData.data.map((news: NewsModel) => this.injectLikesToNewsRecord(news, viewerUser)),
+    );
+
+    return paginatedData;
   }
 
   async followByProfileId(sourceProfileId: number, targetProfileId: number): Promise<{ success: boolean }> {
@@ -114,7 +126,7 @@ export class ProfileService {
     }
 
     const isFollower = await this.isFollower(sourceProfileId, targetProfileId);
-    if (isFollower) {
+    if (!isFollower) {
       throw new HttpException('IS_NOT_FOLLOWER', HttpStatus.BAD_REQUEST);
     }
 
@@ -132,23 +144,39 @@ export class ProfileService {
   }
 
   async getUserNameByProfileId(profileId: number): Promise<string | null> {
-    const user: any = await this.identityModel.findOne({
+    const profile: ProfileModel = await this.profileModel.findOne({
       where: { id: profileId },
-      include: [
-        {
-          model: this.profileModel,
-          as: 'profile',
-          attributes: ['userName'],
-        },
-      ],
-      attributes: ['address'],
+      attributes: ['userName'],
     });
-    if (user.profile.userName) {
-      return user.profile.userName;
+
+    return profile.userName;
+  }
+
+  async injectLikesToNewsRecord(newsRecord: NewsModel, viewerUser: IdentityModel) {
+    const result = newsRecord;
+    result.isLiked = false;
+
+    result.likesCount = await this.getLikesCount(newsRecord.id);
+
+    if (viewerUser) {
+      result.isLiked = await this.isLiked(newsRecord.id, +viewerUser.profileId);
     }
-    if (user.address) {
-      return user.address;
-    }
-    return null;
+
+    return result;
+  }
+
+  async getLikesCount(newsId: string): Promise<number> {
+    return this.newsLikeModel.count({
+      where: { newsId },
+    });
+  }
+
+  async isLiked(newsId: string, profileId: number): Promise<boolean> {
+    const newsLikeRecord = await this.newsLikeModel.findOne({
+      where: { newsId, profileId },
+      attributes: ['id'],
+      raw: true,
+    });
+    return !!newsLikeRecord;
   }
 }

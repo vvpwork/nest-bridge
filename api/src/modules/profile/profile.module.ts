@@ -8,11 +8,14 @@ import {
   FollowerModel,
   IdentityModel,
   LibraryModel,
+  NewsLikeModel,
   NewsModel,
   NotificationModel,
   PodcastModel,
   ProfileModel,
 } from '@/db/models';
+import { NewsModule } from '../news/news.module';
+import { AuthModule, AuthService, NewsService } from '@/modules';
 
 @Global()
 @Module({
@@ -25,7 +28,9 @@ import {
       NewsModel,
       FollowerModel,
       NotificationModel,
+      NewsLikeModel,
     ]),
+    AuthModule,
   ],
   controllers: [ProfileController],
   providers: [ProfileService],

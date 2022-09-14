@@ -9,7 +9,9 @@ import {
   DefaultScope,
   AutoIncrement,
   Default,
+  BelongsTo,
 } from 'sequelize-typescript';
+import { BlockchainModel } from '@DB/models/blockchain.model';
 import { IIdentityModel } from '../interfaces';
 import { ProfileModel } from '@/db/models/profile.model';
 import { AccountTypeModel } from '@/db/models/account-type.model';
@@ -50,4 +52,7 @@ export class IdentityModel extends Model<IIdentityModel> {
   @Default(ACCOUNT_TYPES.USER)
   @Column(DataType.ENUM(ACCOUNT_TYPES.PARTNER, ACCOUNT_TYPES.USER))
   accountType: ACCOUNT_TYPES;
+
+  @BelongsTo(() => ProfileModel, 'profileId')
+  profile: ProfileModel;
 }

@@ -12,11 +12,6 @@ export class EditLibraryDto {
 
   @IsString()
   @IsOptional()
-  @Length(1, 254)
-  public image?: string;
-
-  @IsString()
-  @IsOptional()
   @Length(1, 30)
   public source?: string;
 }

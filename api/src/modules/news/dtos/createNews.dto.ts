@@ -10,10 +10,6 @@ export class CreateNewsDto {
   public title!: string;
 
   @IsString()
-  @Length(1, 254)
-  public image!: string;
-
-  @IsString()
   @Length(1, 30)
   public source!: string;
 }
