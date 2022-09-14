@@ -41,6 +41,7 @@ export class NotificationModel extends Model<INotificationModel> {
   @Column(DataType.STRING)
   type: NotificationTypeModel;
 
+  @Default(false)
   @AllowNull(false)
   @Column(DataType.BOOLEAN)
   isRead: boolean;

@@ -1,10 +1,11 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { forwardRef, HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { IdentityModel, NewsModel, NewsLikeModel, NotificationModel } from '@DB/models';
 import { NotificationService } from '@Modules/notification';
 import { NOTIFICATION_TYPES } from '@Common/enums';
 import { ProfileService } from '@Modules/profile';
 import { InjectModel } from '@nestjs/sequelize';
 
+import { IIdentityModel, ILibraryModel, INewsModel } from '@DB/interfaces';
 import { EditNewsDto, CreateNewsDto } from './dtos';
 
 @Injectable()
@@ -20,36 +21,32 @@ export class NewsService {
     private newsLikeModel: typeof NewsLikeModel,
   ) {}
 
-  async create(profileId: number, params: CreateNewsDto): Promise<NewsModel> {
-    const { image, source, title } = params;
-
-    const newNewsRecord = await this.newsModel.create({ profileId, image, source, title });
+  async create(params: INewsModel): Promise<NewsModel> {
+    const newNewsRecord = await this.newsModel.create(params);
 
     await this.notificationService.addNotificationToAllIdentityFollowers(
-      profileId,
+      params.profileId,
       {
         id: newNewsRecord.id,
-        image,
-        source,
-        title,
-        name: await this.profileService.getUserNameByProfileId(profileId),
+        ...params,
+        name: await this.profileService.getUserNameByProfileId(params.profileId),
       },
       NOTIFICATION_TYPES.FOLLOWING_PERSON_ADDED_LIBRARY,
     );
     return newNewsRecord;
   }
 
-  async update(libraryId: number, params: EditNewsDto): Promise<{ success: true }> {
-    await this.newsModel.update(params, { where: { id: libraryId } });
+  async update(newsId: string, params: INewsModel): Promise<{ success: true }> {
+    await this.newsModel.update(params, { where: { id: newsId } });
 
-    const newsRecord = await this.newsModel.findByPk(libraryId);
+    const newsRecord = await this.newsModel.findByPk(newsId);
 
     if (!newsRecord) {
       throw new HttpException('NEWS_NOT_FOUND', HttpStatus.NOT_FOUND);
     }
 
     const allNotificationIds = await this.notificationService.getAllNotificationIdsByTypeAndParams(
-      { id: libraryId },
+      { id: newsId },
       NOTIFICATION_TYPES.FOLLOWING_PERSON_ADDED_LIBRARY,
     );
     if (allNotificationIds.length) {
@@ -69,7 +66,7 @@ export class NewsService {
     return { success: true };
   }
 
-  async delete(libraryId: number): Promise<{ success: true }> {
+  async delete(libraryId: string): Promise<{ success: true }> {
     const newsRecord = await this.newsModel.findByPk(libraryId, { attributes: ['id'] });
     if (!newsRecord) {
       throw new HttpException('NEWS_NOT_FOUND', HttpStatus.NOT_FOUND);
@@ -89,8 +86,8 @@ export class NewsService {
     return { success: true };
   }
 
-  async getOneById(id: string, viewerUser: IdentityModel | null) {
-    const newsRecord: NewsModel = await this.newsModel.findByPk(id);
+  async getOneById(id: string, viewerUser?: IIdentityModel | null) {
+    const newsRecord = await this.newsModel.findByPk(id);
     if (!newsRecord) {
       throw new HttpException('NEWS_NOT_FOUND', HttpStatus.NOT_FOUND);
     }
@@ -98,7 +95,31 @@ export class NewsService {
     return this.injectLikesToNewsRecord(newsRecord, viewerUser);
   }
 
-  async injectLikesToNewsRecord(newsRecord: NewsModel, viewerUser: IdentityModel) {
+  async likeById(newsId: string, profileId: number): Promise<void> {
+    const alreadyExists = await this.newsLikeModel.findOne({
+      where: { newsId, profileId },
+      attributes: ['id'],
+      raw: true,
+    });
+
+    if (alreadyExists) {
+      throw new HttpException('ALREADY_LIKED', HttpStatus.BAD_REQUEST);
+    }
+
+    await this.newsLikeModel.create({ newsId, profileId });
+  }
+
+  async unLikeById(newsId: string, profileId: number): Promise<void> {
+    const likeRecord = await this.newsLikeModel.findOne({ where: { newsId, profileId }, attributes: ['id'] });
+
+    if (!likeRecord) {
+      throw new HttpException('NOT_LIKED_YET', HttpStatus.BAD_REQUEST);
+    }
+
+    await likeRecord.destroy();
+  }
+
+  async injectLikesToNewsRecord(newsRecord: NewsModel, viewerUser?: IIdentityModel) {
     const result = newsRecord;
     result.isLiked = false;
 

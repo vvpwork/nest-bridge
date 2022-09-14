@@ -4,6 +4,7 @@ import { NotificationService } from '@Modules/notification';
 import { NOTIFICATION_TYPES } from '@Common/enums';
 import { ProfileService } from '@Modules/profile';
 import { InjectModel } from '@nestjs/sequelize';
+import { IPodcastModel } from '@DB/interfaces';
 import { EditPodcastDto, CreatePodcastDto } from './dtos';
 
 @Injectable()
@@ -17,26 +18,26 @@ export class PodcastService {
     private notificationModel: typeof NotificationModel,
   ) {}
 
-  async create(profileId: number, params: CreatePodcastDto): Promise<PodcastModel> {
+  async create(params: PodcastModel): Promise<PodcastModel> {
     const { image, source, title } = params;
 
-    const newPodcastRecord = await this.podcastModel.create({ profileId, image, source, title });
+    const newPodcastRecord = await this.podcastModel.create(params);
 
     await this.notificationService.addNotificationToAllIdentityFollowers(
-      profileId,
+      params.profileId,
       {
         id: newPodcastRecord.id,
         image,
         source,
         title,
-        name: await this.profileService.getUserNameByProfileId(profileId),
+        name: await this.profileService.getUserNameByProfileId(params.profileId),
       },
       NOTIFICATION_TYPES.FOLLOWING_PERSON_ADDED_LIBRARY,
     );
     return newPodcastRecord;
   }
 
-  async update(podcastId: number, params: EditPodcastDto): Promise<{ success: true }> {
+  async update(podcastId: string, params: IPodcastModel): Promise<{ success: true }> {
     await this.podcastModel.update(params, { where: { id: podcastId } });
 
     const podcastRecord = await this.podcastModel.findByPk(podcastId);
@@ -66,7 +67,7 @@ export class PodcastService {
     return { success: true };
   }
 
-  async delete(podcastId: number): Promise<{ success: true }> {
+  async delete(podcastId: string): Promise<{ success: true }> {
     const podcastRecord = await this.podcastModel.findByPk(podcastId, { attributes: ['id'] });
     if (!podcastRecord) {
       throw new HttpException('PODCAST_NOT_FOUND', HttpStatus.NOT_FOUND);

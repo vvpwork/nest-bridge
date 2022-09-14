@@ -121,6 +121,7 @@ export class AuthService {
     return this.jwt.sign(IPayload, { expiresIn: ttl });
   }
 
+  // TODO add request interface
   public async isAuthenticated(req: Request | any) {
     if (!req.headers.authorization || (req.headers.authorization && !req.headers.authorization.includes('Bearer')))
       return false;
@@ -147,7 +148,7 @@ export class AuthService {
     return false;
   }
 
-  async getUserFromReqHeaders(req: Request) {
+  async getUserFromReqHeaders(req: Request | any) {
     if (!req.headers.authorization || (req.headers.authorization && !req.headers.authorization.includes('Bearer')))
       return null;
 
@@ -155,6 +156,8 @@ export class AuthService {
     const tokenData = await this.jwtValidate(reqToken);
     if (!tokenData) return null;
 
-    return this.identityService.findByKey({ id: tokenData.sub });
+    const identity = await this.identityService.findByKey({ id: tokenData.sub });
+    req.user = { data: identity };
+    return true;
   }
 }

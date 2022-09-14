@@ -1,10 +1,10 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
-import { EditProfileDto } from '@Modules/profile/dtos/editProfile.dto';
 import {
   FollowerModel,
   IdentityModel,
   LibraryModel,
+  NewsLikeModel,
   NewsModel,
   NotificationModel,
   PodcastModel,
@@ -13,6 +13,7 @@ import {
 import { InjectModel } from '@nestjs/sequelize';
 import { paginate } from '@Common/utils/pagination.util';
 import { NOTIFICATION_TYPES } from '@Common/enums';
+import { IIdentityModel, IProfileModel } from '@DB/interfaces';
 
 @Injectable()
 export class ProfileService {
@@ -35,6 +36,9 @@ export class ProfileService {
     @InjectModel(FollowerModel)
     private followerModel: typeof FollowerModel,
 
+    @InjectModel(NewsLikeModel)
+    private newsLikeModel: typeof NewsLikeModel,
+
     @InjectModel(NotificationModel)
     private notificationModel: typeof NotificationModel,
   ) {}
@@ -43,7 +47,7 @@ export class ProfileService {
     return this.profileModel.findOne({ where: { id } });
   }
 
-  async updateById(id: number, params: EditProfileDto): Promise<{ success: true }> {
+  async updateById(id: number, params: IProfileModel): Promise<void> {
     if (params.userName && params.userName !== '') {
       const alreadyExists = await this.profileModel.findOne({
         where: { userName: params.userName },
@@ -67,7 +71,6 @@ export class ProfileService {
     }
 
     await this.profileModel.update(params, { where: { id } });
-    return { success: true };
   }
 
   async getLibrariesByProfileId(profileId: number, limit?: number, offset?: number) {
@@ -78,8 +81,13 @@ export class ProfileService {
     return paginate(this.podcastModel, { query: { where: { profileId } }, limit, offset });
   }
 
-  async getNewsByProfileId(profileId: number, limit?: number, offset?: number) {
-    return paginate(this.newsModel, { query: { where: { profileId } }, limit, offset });
+  async getNewsByProfileId(profileId: number, viewerUser?: IIdentityModel | null, limit?: number, offset?: number) {
+    const paginatedData = await paginate(this.newsModel, { query: { where: { profileId } }, limit, offset });
+    paginatedData.data = await Promise.all(
+      paginatedData.data.map((news: NewsModel) => this.injectLikesToNewsRecord(news, viewerUser)),
+    );
+
+    return paginatedData;
   }
 
   async followByProfileId(sourceProfileId: number, targetProfileId: number): Promise<{ success: boolean }> {
@@ -114,7 +122,7 @@ export class ProfileService {
     }
 
     const isFollower = await this.isFollower(sourceProfileId, targetProfileId);
-    if (isFollower) {
+    if (!isFollower) {
       throw new HttpException('IS_NOT_FOLLOWER', HttpStatus.BAD_REQUEST);
     }
 
@@ -132,23 +140,40 @@ export class ProfileService {
   }
 
   async getUserNameByProfileId(profileId: number): Promise<string | null> {
-    const user: any = await this.identityModel.findOne({
+    const profile: ProfileModel = await this.profileModel.findOne({
       where: { id: profileId },
-      include: [
-        {
-          model: this.profileModel,
-          as: 'profile',
-          attributes: ['userName'],
-        },
-      ],
-      attributes: ['address'],
+      attributes: ['userName'],
     });
-    if (user.profile.userName) {
-      return user.profile.userName;
+
+    return profile.userName;
+  }
+
+  // ToDo move this and the same code to service, when circular dependencies are resolved
+  async injectLikesToNewsRecord(newsRecord: NewsModel, viewerUser?: IIdentityModel) {
+    const result = newsRecord;
+    result.isLiked = false;
+
+    result.likesCount = await this.getLikesCount(newsRecord.id);
+
+    if (viewerUser) {
+      result.isLiked = await this.isLiked(newsRecord.id, +viewerUser.profileId);
     }
-    if (user.address) {
-      return user.address;
-    }
-    return null;
+
+    return result;
+  }
+
+  async getLikesCount(newsId: string): Promise<number> {
+    return this.newsLikeModel.count({
+      where: { newsId },
+    });
+  }
+
+  async isLiked(newsId: string, profileId: number): Promise<boolean> {
+    const newsLikeRecord = await this.newsLikeModel.findOne({
+      where: { newsId, profileId },
+      attributes: ['id'],
+      raw: true,
+    });
+    return !!newsLikeRecord;
   }
 }

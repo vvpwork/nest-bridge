@@ -24,8 +24,8 @@ import { ProfileModel } from '@/db/models/profile.model';
 export class NewsModel extends Model<INewsModel> {
   @PrimaryKey
   @AllowNull(false)
-  @Default(randomBytes(20).toString('hex').slice(0, 60))
-  @Column(DataType.UUIDV4)
+  @Default(DataType.UUIDV4)
+  @Column(DataType.UUID)
   id: string;
 
   @ForeignKey(() => ProfileModel)
