@@ -1,5 +1,4 @@
 import { Body, Controller, Get, Param, Patch, Query, Post, Req, UseInterceptors, UploadedFiles } from '@nestjs/common';
-import { User } from '@Common/decorators/user.decorator';
 import { IProfileModel } from '@DB/interfaces';
 import {
   EditProfileDto,
@@ -7,14 +6,15 @@ import {
   IProfileNewsResponseDto,
   IProfilePodcastResponseDto,
 } from '@Modules/profile/dtos/';
-import { PaginationQueryDto } from '@Common/utils/paginationQuery.dto';
-import { Public } from '@Common/decorators';
 import { ApiTags } from '@nestjs/swagger';
 import { IUserInterface, IUserRequest } from '@Common/interfaces';
 import { CloudinaryService } from '@Common/services/cloudinary.service';
+import { User } from '@Common/decorators/user.decorator';
+import { Public } from '@Common/decorators';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { ProfileModel } from '@/db/models/profile.model';
 import { ProfileService } from './profile.service';
+import { PaginationQueryDto } from '@/common/utils/dtos/paginationQuery.dto';
 
 @ApiTags('Profiles')
 @Controller()
@@ -53,26 +53,20 @@ export class ProfileController {
 
   @Public()
   @Get(':id/libraries')
-  async getLibraries(
-    @Param('id') id: number,
-    @Query() query: PaginationQueryDto,
-  ): Promise<IProfileLibrariesResponseDto> {
+  async getLibraries(@Param('id') id: number, @Query() query: PaginationQueryDto) {
+    // TODO use response.status(200 | 201).send(data)
     return this.profileService.getLibrariesByProfileId(id, query.limit, query.offset);
   }
 
   @Public()
   @Get(':id/podcasts')
-  async getPodcasts(@Param('id') id: number, @Query() query: PaginationQueryDto): Promise<IProfilePodcastResponseDto> {
+  async getPodcasts(@Param('id') id: number, @Query() query: PaginationQueryDto) {
     return this.profileService.getPodcastsByProfileId(id, query.limit, query.offset);
   }
 
   @Public()
   @Get(':id/news')
-  async getNews(
-    @Param('id') id: number,
-    @Query() query: PaginationQueryDto,
-    @Req() request: IUserRequest,
-  ): Promise<IProfileNewsResponseDto> {
+  async getNews(@Param('id') id: number, @Query() query: PaginationQueryDto, @Req() request: IUserRequest) {
     return this.profileService.getNewsByProfileId(id, request?.user?.data, query.limit, query.offset);
   }
 

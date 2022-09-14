@@ -123,6 +123,6 @@ export interface IBigNumberUtile {
 }
 
 export interface IUserInterface {
-  data: { [key: string]: any };
+  data: IIdentityModel;
   tokenData: { sub: string; token: string; [key: string]: any };
 }

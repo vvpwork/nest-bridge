@@ -2,11 +2,11 @@ import { Controller, Delete, Get, Logger, Param, Post, Query, Req, Res } from '@
 import { Response } from 'express';
 import { ApiForbiddenResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { IUserInterface, IUserRequest } from '@Common/interfaces';
-import { PaginationQueryDto } from '@Common/utils/paginationQuery.dto';
+import { PaginationQueryDto } from '@Common/utils/dtos';
 import { IProfileLibrariesResponseDto, IProfileNewsResponseDto } from '@Modules/profile/dtos';
-import { Public, User } from '@/common/decorators';
 import { NftService } from './nft.service';
 import { INftQueryDto } from './dtos/nft-query.dto';
+import { Public, User } from '@/common/decorators';
 import { RabbitRootService } from '../rabbit/rabbit-root.service';
 import { INftResponse } from './dtos/nft-responese.dto';
 
@@ -36,46 +36,49 @@ export class NftController {
   }
 
   @Post(':id/like')
-  async like(@Param('id') id: string, @User() user: IUserInterface): Promise<void> {
+  async like(@Param('id') id: string, @User() user: IUserInterface) {
     return this.nftService.likeById(id, user.data.profileId);
   }
 
   @Delete(':id/like')
-  async unLike(@Param('id') id: string, @User() user: IUserInterface): Promise<void> {
+  async unLike(@Param('id') id: string, @User() user: IUserInterface) {
     return this.nftService.unLikeById(id, user.data.profileId);
   }
 
   @Public()
   @Get('/library')
   async getLibraries(
+    // TODO add dto, interface can't be validated
     @Param('id') id: number,
     @Query() query: PaginationQueryDto,
-  ): Promise<IProfileLibrariesResponseDto> {
-    return this.nftService.getLibrariesForMarketplace(query.limit, query.offset);
+  ) {
+    return this.nftService.getNftInfo('libraries', query);
   }
 
   @Public()
   @Get('/podcasts')
   async getPodcasts(
+    // TODO add dto, interface can't be validated
     @Param('id') id: number,
     @Query() query: PaginationQueryDto,
-  ): Promise<IProfileLibrariesResponseDto> {
-    return this.nftService.getPodcastsForMarketplace(query.limit, query.offset);
+  ) {
+    return this.nftService.getNftInfo('podcast', query);
   }
 
   @Public()
   @Get('/news')
   async getNews(
+    // TODO add dto, interface can't be validated
     @Param('id') id: number,
     @Query() query: PaginationQueryDto,
-    @Req() request: IUserRequest,
+    @User() user: IUserInterface,
   ): Promise<IProfileNewsResponseDto> {
-    return this.nftService.getNewsForMarketplace(request?.user?.data, query.limit, query.offset);
+    return this.nftService.getNftInfo('news', query, user.data);
   }
 
   @Public()
   @Get('/community')
-  async getCommunityLink(@Param('id') id: number, @Query() query: PaginationQueryDto): Promise<string> {
+  async getCommunityLink(@Param('id') id: number) {
     return this.nftService.getCommunityLinkForMarketplace();
   }
 }

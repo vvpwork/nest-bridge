@@ -5,9 +5,11 @@ export const paginate = async (
   const { count, rows } = await model.findAndCountAll({ options });
 
   return {
-    offset: options.offset,
-    limit: options.limit,
-    total: count,
+    pagination: {
+      offset: options.offset,
+      limit: options.limit,
+      total: count,
+    },
     data: rows,
   };
 };

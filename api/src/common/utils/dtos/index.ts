@@ -1,0 +1,1 @@
+export * from './paginationQuery.dto';

@@ -27,6 +27,7 @@ export class PodcastController {
     const image = await this.cloudinary.uploadFile(files.find((v: Express.Multer.File) => v.fieldname === 'image'));
     const imageUrl = image.url ? image.url : '';
 
+    // TODO use response.status().send()
     return this.podcastService.create({ profileId: user.data.profileId, ...body, image: imageUrl } as PodcastModel);
   }
 

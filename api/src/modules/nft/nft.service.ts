@@ -157,33 +157,59 @@ export class NftService {
     await this.repository.sequelize.query(balancesQuery);
   }
 
-  async getLibrariesForMarketplace(profileId: number, limit?: number, offset?: number) {
+  async getNftInfo(
+    type: 'libraries' | 'podcast' | 'news',
+    pagination: { limit?: number; offset?: number },
+    viewerUser?: IIdentityModel | null,
+  ): Promise<any> {
+    const { limit, offset } = pagination;
     const artemundiIdentity = await this.getArtemundiIdentity();
-    return paginate(this.libraryModel, {
+    const modelsMap = {
+      libraries: this.libraryModel,
+      podcast: this.podcastModel,
+      news: this.newsModel,
+    };
+    // eslint-disable-next-line security/detect-object-injection
+    let result: any = await paginate(modelsMap[type], {
       query: { where: { profileId: artemundiIdentity.profileId } },
       limit,
       offset,
     });
+    if (type === 'news') {
+      result = await Promise.all(
+        result.data.map(async (news: NewsModel) => this.injectLikesToNewsRecord(news, viewerUser)),
+      );
+    }
+    return result;
   }
 
-  async getPodcastsForMarketplace(limit?: number, offset?: number) {
-    const artemundiIdentity = await this.getArtemundiIdentity();
-    return paginate(this.podcastModel, { query: { where: { profileId: artemundiIdentity.profileId } }, limit, offset });
-  }
+  // async getLibrariesForMarketplace(limit?: number, offset?: number) {
+  //   const artemundiIdentity = await this.getArtemundiIdentity();
+  //   return paginate(this.libraryModel, {
+  //     query: { where: { profileId: artemundiIdentity.profileId } },
+  //     limit,
+  //     offset,
+  //   });
+  // }
 
-  async getNewsForMarketplace(viewerUser?: IIdentityModel | null, limit?: number, offset?: number) {
-    const artemundiIdentity = await this.getArtemundiIdentity();
-    const paginatedData = await paginate(this.newsModel, {
-      query: { where: { profileId: artemundiIdentity.profileId } },
-      limit,
-      offset,
-    });
-    paginatedData.data = await Promise.all(
-      paginatedData.data.map((news: NewsModel) => this.injectLikesToNewsRecord(news, viewerUser)),
-    );
+  // async getPodcastsForMarketplace(limit?: number, offset?: number) {
+  //   const artemundiIdentity = await this.getArtemundiIdentity();
+  //   return paginate(this.podcastModel, { query: { where: { profileId: artemundiIdentity.profileId } }, limit, offset });
+  // }
 
-    return paginatedData;
-  }
+  // async getNewsForMarketplace(viewerUser?: IIdentityModel | null, limit?: number, offset?: number) {
+  //   const artemundiIdentity = await this.getArtemundiIdentity();
+  //   const paginatedData = await paginate(this.newsModel, {
+  //     query: { where: { profileId: artemundiIdentity.profileId } },
+  //     limit,
+  //     offset,
+  //   });
+  //   paginatedData.data = await Promise.all(
+  //     paginatedData.data.map((news: NewsModel) => this.injectLikesToNewsRecord(news, viewerUser)),
+  //   );
+
+  //   return paginatedData;
+  // }
 
   async getCommunityLinkForMarketplace(): Promise<string> {
     const artemundiIdentity = await this.getArtemundiIdentity();
