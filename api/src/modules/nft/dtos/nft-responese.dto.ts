@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 import { ApiProperty, PartialType } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsNumber, IsString, ValidateNested } from 'class-validator';
@@ -23,6 +24,13 @@ class IOnSalesData {
   currency: string;
 }
 
+class IProfileData {
+  id: number;
+  cover: string;
+  avatar: string;
+  name: string;
+}
+
 export class INftResponse {
   @ApiProperty({
     type: Number,
@@ -30,6 +38,18 @@ export class INftResponse {
   })
   @IsNumber()
   identityId: string;
+
+  @ApiProperty({
+    example: {
+      id: 1,
+      avatar: 'http://logo-url',
+      cover: 'http://cover-url',
+      name: 'test',
+    },
+  })
+  @Type(() => IProfileData)
+  @ValidateNested()
+  profile: IProfileData;
 
   @ApiProperty({
     type: String,
@@ -86,6 +106,12 @@ export class INftResponse {
   @Type(() => ILockDataDto)
   @ValidateNested()
   lockedData: ILockDataDto[];
+
+  @IsNumber()
+  isLiked: number = 0;
+
+  @IsNumber()
+  likesCount: number = 0;
 
   @ApiProperty({
     example: 2,

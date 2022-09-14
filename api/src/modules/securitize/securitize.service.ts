@@ -21,11 +21,34 @@ const statuses = {
 @Injectable()
 export class SecuritizeService implements ISecuritizeService {
   private api: Axios;
+  private kycUrl: string = '/api/v1/securitize/kyc';
   constructor(private bcService: BlockchainService) {
     this.api = getAxiosInstance(baseUrl, {
       clientId: issuerId,
       Authorization: `Bearer ${secret}`,
     });
+  }
+
+  async subscribeToWebHookEvent(
+    accessToken: string,
+    domainId: string,
+    eventType: string = 'domain-investor-kyc-update',
+    isActive: boolean = true,
+  ) {
+    const payload = {
+      domainId,
+      eventType,
+      payloadUrl: `${this.kycUrl}/${domainId}`,
+      isActive,
+    };
+
+    const data = await this.api.post('v1/webhooks/subscriptions', payload, {
+      headers: {
+        'access-token': accessToken,
+      },
+    });
+
+    return data;
   }
 
   async authorize(code: string) {
@@ -110,7 +133,7 @@ export class SecuritizeService implements ISecuritizeService {
     let statusKyc: PROFILE_STATUS = this.verifyKycStatus(kycResult.status);
     const isAddressOnWList = this.bcService.isWalletWhitelistedOnSecuritize(address);
 
-    let whiteListTransaction;
+    let whiteListTransaction: any = null;
     if (statusKyc === 'VERIFIED' && !isAddressOnWList) {
       try {
         whiteListTransaction = await this.getTransactionForWhitelist(accessToken, address);
@@ -119,6 +142,7 @@ export class SecuritizeService implements ISecuritizeService {
         statusKyc = PROFILE_STATUS.CONTACT_SUPPORT;
       }
     }
+    const isPartner = await this.isPartner(address);
 
     return {
       whiteListTransaction,
@@ -127,6 +151,7 @@ export class SecuritizeService implements ISecuritizeService {
       refreshToken,
       accessToken,
       statusKyc,
+      isPartner,
     };
   }
 }

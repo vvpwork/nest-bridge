@@ -29,7 +29,7 @@ export class AuthService {
     private securitizeService: SecuritizeService,
   ) {}
 
-  public async login(address: string, code: string, chainId: number): Promise<any> {
+  public async login(address: string, code: string, chainId: number) {
     if (!this.bcService.isEthAddress(address)) throw new HttpException('Invalid blockchain address', 403);
     if (
       !(await this.bcModel.findOne({
@@ -51,12 +51,10 @@ export class AuthService {
         id: userDataFromDB.toJSON().identityId,
       };
 
-    const { investorId, statusKyc } =
+    const { investorId, statusKyc, isPartner, whiteListTransaction } =
       config.nodeEnv === 'development'
-        ? { investorId: 'develop', statusKyc: PROFILE_STATUS.VERIFIED }
+        ? { investorId: 'develop', statusKyc: PROFILE_STATUS.VERIFIED, isPartner: false, whiteListTransaction: null }
         : await this.securitizeService.login(code, address);
-
-    const isPartner = await this.securitizeService.isPartner(address);
 
     let identity = await this.identityModel.findOne({
       where: {
@@ -75,6 +73,9 @@ export class AuthService {
       });
     }
 
+    identity.status = statusKyc;
+    await identity.save();
+
     await this.bcIdentityAddressModel.findOrCreate({
       where: {
         chainId,
@@ -83,9 +84,14 @@ export class AuthService {
       },
     });
 
-    return {
-      id: identity.id,
-    };
+    return whiteListTransaction
+      ? {
+          id: identity.id,
+          whiteListTransaction,
+        }
+      : {
+          id: identity.id,
+        };
   }
 
   private makeRedisKey(token: string) {

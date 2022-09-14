@@ -38,6 +38,7 @@ module.exports = {
   blockChain: {
     nodeUrl: process.env.NODE_URL,
     erc1155Proxy: process.env.ERC1155_BRIDGE_TOWER_PROXY_ADDRESS,
+    erc1155proxyC2: process.env.ERC1155_BRIDGE_TOWER_FACTORY_C2_ADDRESS,
     exchangeV2Proxy: process.env.EXCHANGE_V2_PROXY_ADDRESS,
     artemundiWallet: process.env.ARTEMUNDI_WALLET_ADDRESS,
     transferProxy: process.env.TRANSFER_PROXY_ADDRESS,

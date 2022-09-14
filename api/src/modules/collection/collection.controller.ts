@@ -75,13 +75,13 @@ export class CollectionController {
     } as ICollectionModel);
 
     // inform another service
-    await this.rabbit.getProcessResult({
-      type: TypeRpcMessage.BLOCKCHAIN,
-      command: TypeRpcCommand.ADD_COLLECTION,
-      data: {
-        addresses: [body.id],
-      },
-    });
+    // await this.rabbit.getProcessResult({
+    //   type: TypeRpcMessage.BLOCKCHAIN,
+    //   command: TypeRpcCommand.ADD_COLLECTION,
+    //   data: {
+    //     addresses: [body.id],
+    //   },
+    // });
 
     return res.status(201).send({
       data: result,

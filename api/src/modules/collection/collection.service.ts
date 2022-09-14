@@ -22,7 +22,7 @@ export class CollectionService {
     try {
       const newCollection = await this.repository.create(collection);
       const nfts = await this.bcService.getPastCollectionNfts(newCollection.id);
-      await this.nftService.fillNftsByCollection(nfts);
+      await this.nftService.fillNftsByCollection(nfts, collection.identityId);
       return newCollection;
     } catch (err) {
       Logger.error('Controller service', err);

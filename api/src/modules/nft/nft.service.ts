@@ -15,10 +15,12 @@ export class NftService {
     try {
       const { limit, offset, identityId, collectionId, status, sortType, sortValue, nftId } = search;
 
+      // One select for all nft requirements
       const rawQuery = `
       WITH temptable as (
         SELECT
         b.identityId as identityId,
+        JSON_OBJECT('id', pr.id, 'cover', pr.cover, 'avatar', pr.avatar, 'name', pr.name ) as profile,
         n.id as nftId, 
         JSON_OBJECT('id', c.id, 'logo', c.logo, 'cover', c.cover, 'symbol', c.symbol ) as collection,
         n.royalty,
@@ -29,6 +31,8 @@ export class NftService {
         b.amount as identityBalance,
         l.lockedData,
         l.lockedBalance,
+        IF(pr.id = lk.profileId, 1, 0) as isLiked,
+        count(lk.id) as likesCount,
         IFNULL(sum(o.amount), 0) as onSale,
         IF ( sum(o.amount) is NULL, NULL, JSON_ARRAYAGG(
           JSON_OBJECT(
@@ -44,9 +48,13 @@ export class NftService {
         JOIN Collection c ON c.id = n.collectionId 
         ${collectionId ? `&& c.id = '${collectionId}'` : ''}
 
+
         JOIN IdentityNftBalance b ON b.nftId = n.id ${identityId ? `&&  b.identityId = '${identityId}'` : ''}    
         ${status === 'onSale' ? `JOIN` : `LEFT JOIN`} \`Orders\` o ON o.nftIdentityBalanceId = b.id
+        LEFT JOIN Identity  ident ON ident.id = b.identityId
+        LEFT JOIN Profile  pr ON pr.id = ident.profileId
 
+        LEFT JOIN NftLike lk ON lk.nftId = n.id
 
         ${status === 'onLocked' ? `JOIN` : `LEFT JOIN`} (
           SELECT lk.identityNftBalanceId,
