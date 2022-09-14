@@ -9,3 +9,4 @@ export * from './rabbit';
 export * from './collection';
 export * from './nft';
 export * from './orders';
+export * from './transaction-history';

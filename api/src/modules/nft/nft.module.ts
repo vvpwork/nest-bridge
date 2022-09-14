@@ -9,5 +9,6 @@ import { RabbitModule } from '../rabbit';
   imports: [SequelizeModule.forFeature([NftModel]), RabbitModule],
   controllers: [NftController],
   providers: [NftService],
+  exports: [NftService],
 })
 export class NftModule {}

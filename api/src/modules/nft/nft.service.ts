@@ -1,7 +1,11 @@
+/* eslint-disable max-len */
 import { Get, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { NftModel } from '@/db/models';
 import { INftQueryDto, SortTypes } from './dtos/nft-query.dto';
+import { upsertData } from '@/db/utils/helper';
+import { INftModel } from '@/db/interfaces';
+import { getShortHash } from '@/common/utils/short-hash.utile';
 
 @Injectable()
 export class NftService {
@@ -87,5 +91,35 @@ export class NftService {
       Logger.error('Error nft service', e);
       throw e;
     }
+  }
+
+  /**
+   * fill nfts after add collection, only ones
+   * @param nfts
+   */
+  public async fillNftsByCollection(nfts: INftModel[], identityId?: string) {
+    const { tableName } = this.repository;
+    const nftsQuery = upsertData(
+      tableName,
+      ['id', 'collectionId', 'thumbnail', 'amount', 'metadata', 'creatorIds', 'royaltyIds', 'royalty', 'totalSupply'],
+      nfts.map((nft: INftModel) => [
+        `'${nft.id}','${nft.collectionId}','${nft.thumbnail}','${nft.amount}', '${JSON.stringify(
+          nft.metadata,
+        )}', '${JSON.stringify(nft.creatorIds)}','${JSON.stringify(nft.royaltyIds)}',${nft.royalty}, '${
+          nft.totalSupply
+        }'`,
+      ]),
+    );
+    await this.repository.sequelize.query(nftsQuery);
+
+    const balancesQuery = upsertData(
+      'IdentityNftBalance',
+      ['id', 'identityId', 'nftId', 'amount'],
+      nfts.map((nft: INftModel) => [
+        `'${getShortHash(identityId, nft.id)}','${identityId}','${nft.id}','${nft.amount}'`,
+      ]),
+    );
+
+    await this.repository.sequelize.query(balancesQuery);
   }
 }

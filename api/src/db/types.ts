@@ -4,4 +4,5 @@ export type MetadataObject = {
   name: string;
   description: string;
   image: string;
+  [key: string]: any;
 };

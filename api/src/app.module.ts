@@ -17,10 +17,12 @@ import {
   CollectionModule,
   NftModule,
   OrderModule,
+  TransactionHistoryModule,
 } from './modules';
 import * as models from './db/models';
 import { SseModule } from './modules/sse/sse.module';
 import { BlockchainModule } from './modules/blockchain';
+import { TransactionHistoryService } from './modules/transaction-history/transaction-history.service';
 // import { BlockchainModule } from './modules/blockchain';
 
 const routes = RouterModule.register([
@@ -86,6 +88,7 @@ const imports = [
   CollectionModule,
   NftModule,
   OrderModule,
+  TransactionHistoryModule,
   routes,
 ];
 

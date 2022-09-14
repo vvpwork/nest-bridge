@@ -65,8 +65,8 @@ export interface INftModel {
   royaltyIds: string[];
   royalty: number;
   totalSupply: number;
-  createdAt: any;
-  updatedAt: any;
+  createdAt?: any;
+  updatedAt?: any;
 }
 
 export interface IIdentityBalanceModel {
@@ -89,15 +89,15 @@ export interface IIdentityNftBalanceLock {
 }
 
 export interface ITransactionHistory {
-  id: number;
+  id?: number;
   identityId: number;
   nftId: string;
   amount: number;
   price: string;
   txHash: string;
   type: string;
-  createdAt: any;
-  updatedAt: any;
+  createdAt?: any;
+  updatedAt?: any;
 }
 
 export interface IOrderModel {

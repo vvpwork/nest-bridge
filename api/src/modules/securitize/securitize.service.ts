@@ -110,9 +110,10 @@ export class SecuritizeService implements ISecuritizeService {
     let statusKyc: PROFILE_STATUS = this.verifyKycStatus(kycResult.status);
     const isAddressOnWList = this.bcService.isWalletWhitelistedOnSecuritize(address);
 
+    let whiteListTransaction;
     if (statusKyc === 'VERIFIED' && !isAddressOnWList) {
       try {
-        await this.getTransactionForWhitelist(accessToken, address);
+        whiteListTransaction = await this.getTransactionForWhitelist(accessToken, address);
       } catch (e) {
         Logger.error('[Securitize service] error add white list', e);
         statusKyc = PROFILE_STATUS.CONTACT_SUPPORT;
@@ -120,6 +121,7 @@ export class SecuritizeService implements ISecuritizeService {
     }
 
     return {
+      whiteListTransaction,
       address,
       investorId,
       refreshToken,

@@ -6,6 +6,7 @@ import { CollectionModel, NftModel } from '@/db/models';
 import { ICollectionModel } from '@/db/interfaces';
 import { ICollectionQueryDto } from './dtos';
 import { BlockchainService } from '../blockchain/blockchain.service';
+import { NftService } from '../nft/nft.service';
 
 @ApiTags('Collection')
 @Injectable()
@@ -14,11 +15,15 @@ export class CollectionService {
     @InjectModel(CollectionModel) private repository: typeof CollectionModel,
     @InjectModel(NftModel) private nftModel: typeof NftModel,
     private bcService: BlockchainService,
+    private nftService: NftService,
   ) {}
 
   async create(collection: ICollectionModel) {
     try {
-      return this.repository.create(collection);
+      const newCollection = await this.repository.create(collection);
+      const nfts = await this.bcService.getPastCollectionNfts(newCollection.id);
+      await this.nftService.fillNftsByCollection(nfts);
+      return newCollection;
     } catch (err) {
       Logger.error('Controller service', err);
       throw new HttpException('Error save to db', 502);

@@ -29,6 +29,8 @@ import { BlockchainService } from '../blockchain/blockchain.service';
 import { RabbitRootService } from '../rabbit/rabbit-root.service';
 import { TypeRpcCommand, TypeRpcMessage } from '../rabbit/interfaces/enums';
 import { IUserInterface } from '@/common/interfaces';
+import { getShortHash } from '@/common/utils/short-hash.utile';
+import { TransactionHistoryService } from '../transaction-history/transaction-history.service';
 
 @ApiTags('Collection')
 @Controller()
@@ -40,6 +42,7 @@ export class CollectionController {
     private bcService: BlockchainService,
     private service: CollectionService,
     private rabbit: RabbitRootService,
+    private historyService: TransactionHistoryService,
   ) {
     this.cloudinary = new CloudinaryService();
   }
@@ -71,6 +74,7 @@ export class CollectionController {
       identityId: user.data.id,
     } as ICollectionModel);
 
+    // inform another service
     await this.rabbit.getProcessResult({
       type: TypeRpcMessage.BLOCKCHAIN,
       command: TypeRpcCommand.ADD_COLLECTION,
@@ -84,14 +88,14 @@ export class CollectionController {
     });
   }
 
-  @Public()
   @Get(':id')
-  public async getBuId(@Param() param: ICollectionReadDto, @Res() res: Response) {
+  public async getBuId(@Param() param: ICollectionReadDto, @User() user: IUserInterface, @Res() res: Response) {
     const result = await this.service.findOne(param.id);
-
+    this.historyService.create({ identityId: user.data.id });
     if (!result) throw new HttpException('Collection was not found', 404);
     return res.status(200).send({
       data: result,
+      hash: getShortHash(param.id, user.data.id),
     });
   }
 

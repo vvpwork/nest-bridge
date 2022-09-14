@@ -5,9 +5,10 @@ import { CollectionController } from './collection.controller';
 import { CollectionService } from './collection.service';
 import { BlockchainService } from '../blockchain/blockchain.service';
 import { BlockchainModule } from '../blockchain';
+import { NftModule } from '../nft';
 
 @Module({
-  imports: [SequelizeModule.forFeature([CollectionModel, NftModel]), BlockchainModule],
+  imports: [SequelizeModule.forFeature([CollectionModel, NftModel]), BlockchainModule, NftModule],
   providers: [CollectionService],
   controllers: [CollectionController],
 })

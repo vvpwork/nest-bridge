@@ -3,7 +3,6 @@ const db = nodeConfig.get('db');
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    
     await queryInterface.sequelize.query(`
     CREATE TRIGGER amount_order_trigger
     BEFORE INSERT ON Orders
@@ -26,10 +25,19 @@ module.exports = {
       END IF;
     END;
     `);
+
+    await queryInterface.sequelize.query(`
+    CREATE TRIGGER delete_empty_orders
+    BEFORE INSERT ON TransactionHistory 
+    FOR EACH ROW BEGIN 
+      DELETE FROM Orders where amount = 0;
+    END;
+    `);
   },
 
   down: async queryInterface => {
     await queryInterface.sequelize.query('DROP TRIGGER  amount_order_trigger');
     await queryInterface.sequelize.query('DROP TRIGGER lock_balance_trigger');
+    await queryInterface.sequelize.query('DROP TRIGGER delete_empty_orders');
   },
 };
