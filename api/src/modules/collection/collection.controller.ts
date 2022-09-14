@@ -12,13 +12,13 @@ import {
   UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiConsumes, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Multer } from 'multer';
 import { NextFunction, Response } from 'express';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { InjectModel } from '@nestjs/sequelize';
 import { CollectionModel } from '@/db/models';
-import { ICollectionCreateDto } from './dtos/collection-create.dto';
+import { ICollectionCreate, ICollectionCreateDto } from './dtos/collection-create.dto';
 import { CloudinaryService } from '@/common/services/cloudinary.service';
 import { Public, User } from '@/common/decorators';
 
@@ -49,6 +49,36 @@ export class CollectionController {
 
   @Post()
   @UseInterceptors(AnyFilesInterceptor())
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        comment: { type: 'string' },
+        outletId: { type: 'integer' },
+        logo: {
+          type: 'string',
+          format: 'binary',
+        },
+        cover: {
+          type: 'string',
+          format: 'binary',
+        },
+        id: { type: 'string' },
+        identityId: { type: 'string' },
+        name: { type: 'string' },
+        description: { type: 'string' },
+        symbol: { type: 'string' },
+        salt: { type: 'number' },
+        chainId: { type: 'number' },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'Collection was added',
+    type: ICollectionCreate,
+  })
   public async post(
     @Body() body: ICollectionCreateDto,
     @UploadedFiles() files: Array<Express.Multer.File>,

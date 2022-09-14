@@ -1,2 +1,2 @@
-export * from './axios.utile';
-export * from './bignumber.utile';
+export * from './axios.util';
+export * from './bignumber.util';

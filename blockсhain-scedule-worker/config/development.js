@@ -23,6 +23,7 @@ module.exports = {
     transferProxy: process.env.TRANSFER_PROXY_ADDRESS,
     erc20proxy: process.env.ERC_20_TRANSFER_PROXY_ADDRESS,
     secretKey: process.env.WALLET_SECRET_KEY,
+    erc1155proxyC2: process.env.ERC1155_BRIDGE_TOWER_FACTORY_C2_ADDRESS,
   },
   rabbit: {
     uri: process.env.RABBIT_URI,

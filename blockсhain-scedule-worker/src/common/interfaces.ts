@@ -18,6 +18,7 @@ export interface IConfig {
     transferProxy: string;
     erc20proxy: string;
     secretKey: string;
+    erc1155proxyC2: string;
   };
   rabbit: {
     uri: string;
