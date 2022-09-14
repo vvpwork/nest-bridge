@@ -19,7 +19,6 @@ export class LibraryService {
   ) {}
 
   async create(params: ILibraryModel): Promise<LibraryModel> {
-    console.log('scv_par', params);
     const newLibraryRecord = await this.libraryModel.create(params);
 
     await this.notificationService.addNotificationToAllIdentityFollowers(
