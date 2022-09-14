@@ -1,11 +1,23 @@
 /* eslint-disable max-len */
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { NftLikeModel, NftModel } from '@/db/models';
-import { INftQueryDto, SortTypes } from './dtos/nft-query.dto';
+import { paginate } from '@Common/utils/pagination.util';
+import {
+  BlockchainIdentityAddressModel,
+  IdentityModel,
+  LibraryModel,
+  NewsLikeModel,
+  NewsModel,
+  NftLikeModel,
+  NftModel,
+  PodcastModel,
+  ProfileModel,
+} from '@/db/models';
+import { INftQueryDto } from './dtos/nft-query.dto';
 import { upsertData } from '@/db/utils/helper';
-import { INftModel } from '@/db/interfaces';
+import { IIdentityModel, INftModel } from '@/db/interfaces';
 import { getShortHash } from '@/common/utils/short-hash.utile';
+import { config } from '@/common/config';
 
 @Injectable()
 export class NftService {
@@ -13,6 +25,16 @@ export class NftService {
     @InjectModel(NftModel) private repository: typeof NftModel,
     @InjectModel(NftLikeModel)
     private nftLikeModel: typeof NftLikeModel,
+    @InjectModel(LibraryModel)
+    private libraryModel: typeof LibraryModel,
+    @InjectModel(PodcastModel)
+    private podcastModel: typeof PodcastModel,
+    @InjectModel(NewsModel)
+    private newsModel: typeof NewsModel,
+    @InjectModel(NewsLikeModel)
+    private newsLikeModel: typeof NewsLikeModel,
+    @InjectModel(BlockchainIdentityAddressModel)
+    private blockchainIdentityAddressModel: typeof BlockchainIdentityAddressModel,
   ) {}
 
   async getAll(search?: INftQueryDto) {
@@ -127,6 +149,39 @@ export class NftService {
     await this.repository.sequelize.query(balancesQuery);
   }
 
+  async getLibrariesForMarketplace(profileId: number, limit?: number, offset?: number) {
+    const artemundiIdentity = await this.getArtemundiIdentity();
+    return paginate(this.libraryModel, {
+      query: { where: { profileId: artemundiIdentity.profileId } },
+      limit,
+      offset,
+    });
+  }
+
+  async getPodcastsForMarketplace(limit?: number, offset?: number) {
+    const artemundiIdentity = await this.getArtemundiIdentity();
+    return paginate(this.podcastModel, { query: { where: { profileId: artemundiIdentity.profileId } }, limit, offset });
+  }
+
+  async getNewsForMarketplace(viewerUser?: IIdentityModel | null, limit?: number, offset?: number) {
+    const artemundiIdentity = await this.getArtemundiIdentity();
+    const paginatedData = await paginate(this.newsModel, {
+      query: { where: { profileId: artemundiIdentity.profileId } },
+      limit,
+      offset,
+    });
+    paginatedData.data = await Promise.all(
+      paginatedData.data.map((news: NewsModel) => this.injectLikesToNewsRecord(news, viewerUser)),
+    );
+
+    return paginatedData;
+  }
+
+  async getCommunityLinkForMarketplace(): Promise<string> {
+    const artemundiIdentity = await this.getArtemundiIdentity();
+    return artemundiIdentity.profile.communityLink;
+  }
+
   async likeById(nftId: string, profileId: number) {
     const isLiked: boolean = await this.isLiked(nftId, profileId);
     if (isLiked) {
@@ -156,5 +211,43 @@ export class NftService {
       raw: true,
     });
     return !!nftLikeRecord;
+  }
+
+  // ToDo move this and the same code to service, when circular dependencies are resolved
+  async injectLikesToNewsRecord(newsRecord: NewsModel, viewerUser?: IIdentityModel) {
+    const result = newsRecord;
+    result.isLiked = false;
+
+    result.likesCount = await this.getLikesCount(newsRecord.id);
+
+    if (viewerUser) {
+      result.isLiked = await this.isNewsLiked(newsRecord.id, +viewerUser.profileId);
+    }
+
+    return result;
+  }
+
+  async getLikesCount(newsId: string): Promise<number> {
+    return this.newsLikeModel.count({
+      where: { newsId },
+    });
+  }
+
+  async isNewsLiked(newsId: string, profileId: number): Promise<boolean> {
+    const newsLikeRecord = await this.newsLikeModel.findOne({
+      where: { newsId, profileId },
+      attributes: ['id'],
+      raw: true,
+    });
+    return !!newsLikeRecord;
+  }
+
+  async getArtemundiIdentity() {
+    const artemundiWalletRecord = await this.blockchainIdentityAddressModel.findOne({
+      where: { address: config.blockChain.artemundiWallet },
+      include: [{ model: IdentityModel, as: 'identity', include: [{ model: ProfileModel, as: 'profile' }] }],
+    });
+
+    return artemundiWalletRecord.identity;
   }
 }

@@ -1,6 +1,5 @@
-import { forwardRef, HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
-import { EditProfileDto } from '@Modules/profile/dtos/editProfile.dto';
 import {
   FollowerModel,
   IdentityModel,
@@ -14,7 +13,7 @@ import {
 import { InjectModel } from '@nestjs/sequelize';
 import { paginate } from '@Common/utils/pagination.util';
 import { NOTIFICATION_TYPES } from '@Common/enums';
-import { IIdentityModel } from '@DB/interfaces';
+import { IIdentityModel, IProfileModel } from '@DB/interfaces';
 
 @Injectable()
 export class ProfileService {
@@ -48,7 +47,7 @@ export class ProfileService {
     return this.profileModel.findOne({ where: { id } });
   }
 
-  async updateById(id: number, params: EditProfileDto): Promise<{ success: true }> {
+  async updateById(id: number, params: IProfileModel): Promise<void> {
     if (params.userName && params.userName !== '') {
       const alreadyExists = await this.profileModel.findOne({
         where: { userName: params.userName },
@@ -72,7 +71,6 @@ export class ProfileService {
     }
 
     await this.profileModel.update(params, { where: { id } });
-    return { success: true };
   }
 
   async getLibrariesByProfileId(profileId: number, limit?: number, offset?: number) {
@@ -150,6 +148,7 @@ export class ProfileService {
     return profile.userName;
   }
 
+  // ToDo move this and the same code to service, when circular dependencies are resolved
   async injectLikesToNewsRecord(newsRecord: NewsModel, viewerUser?: IIdentityModel) {
     const result = newsRecord;
     result.isLiked = false;

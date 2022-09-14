@@ -1,6 +1,6 @@
-import { Body, Controller, Get, Param, Patch, Query, Post, Req, Inject, forwardRef } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Query, Post, Req, UseInterceptors, UploadedFiles } from '@nestjs/common';
 import { User } from '@Common/decorators/user.decorator';
-import { IIdentityModel } from '@DB/interfaces';
+import { IProfileModel } from '@DB/interfaces';
 import {
   EditProfileDto,
   IProfileLibrariesResponseDto,
@@ -11,23 +11,44 @@ import { PaginationQueryDto } from '@Common/utils/paginationQuery.dto';
 import { Public } from '@Common/decorators';
 import { ApiTags } from '@nestjs/swagger';
 import { IUserInterface, IUserRequest } from '@Common/interfaces';
-import { Request } from 'express';
+import { CloudinaryService } from '@Common/services/cloudinary.service';
+import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { ProfileModel } from '@/db/models/profile.model';
 import { ProfileService } from './profile.service';
 
 @ApiTags('Profiles')
 @Controller()
 export class ProfileController {
-  constructor(private readonly profileService: ProfileService) {}
+  private cloudinary: CloudinaryService;
+  constructor(private readonly profileService: ProfileService) {
+    this.cloudinary = new CloudinaryService();
+  }
 
   @Get()
-  async getMy(@User() user: IIdentityModel): Promise<ProfileModel> {
-    return this.profileService.getById(user.profileId);
+  async getMy(@User() user: IUserInterface): Promise<ProfileModel> {
+    return this.profileService.getById(user.data.profileId);
   }
 
   @Patch()
-  async editMy(@User() user: IIdentityModel, @Body() body: EditProfileDto): Promise<{ success: boolean }> {
-    return this.profileService.updateById(user.profileId, body);
+  @UseInterceptors(AnyFilesInterceptor())
+  async editMy(
+    @User() user: IUserInterface,
+    @Body() body: EditProfileDto,
+    @UploadedFiles() files: Array<Express.Multer.File>,
+  ): Promise<void> {
+    // upload images to cloudinary
+    const [cover, avatar] = await Promise.allSettled([
+      this.cloudinary.uploadFile(files.find((v: Express.Multer.File) => v.fieldname === 'cover')),
+      this.cloudinary.uploadFile(files.find((v: Express.Multer.File) => v.fieldname === 'avatar')),
+    ]);
+    const coverUrl = cover.status === 'fulfilled' ? cover.value.url : '';
+    const avatarUrl = avatar.status === 'fulfilled' ? avatar.value.url : '';
+
+    return this.profileService.updateById(user.data.profileId, {
+      ...body,
+      cover: coverUrl,
+      avatar: avatarUrl,
+    } as IProfileModel);
   }
 
   @Public()
