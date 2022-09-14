@@ -9,16 +9,15 @@ import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateNewsDto, INewsResponseDto } from '@Modules/news/dtos';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { CloudinaryService } from '@Common/services/cloudinary.service';
-import { IUserInterface } from '@Common/interfaces';
+import { IUserInterface, IUserRequest } from '@Common/interfaces';
 import { NewsService } from './news.service';
-import { AuthService } from '../auth/auth.service';
 
 @ApiTags('News')
 @Controller()
 export class NewsController {
   private cloudinary: CloudinaryService;
 
-  constructor(private readonly newsService: NewsService, private readonly authService: AuthService) {
+  constructor(private readonly newsService: NewsService) {
     this.cloudinary = new CloudinaryService();
   }
 
@@ -67,8 +66,17 @@ export class NewsController {
   })
   @Public()
   @Get(':id')
-  async getOne(@Param('id') id: string, @Req() request: Request): Promise<NewsModel> {
-    const user = await this.authService.getUserFromReqHeaders(request);
-    return this.newsService.getOneById(id, user);
+  async getOne(@Param('id') id: string, @Req() request: IUserRequest): Promise<NewsModel> {
+    return this.newsService.getOneById(id, request?.user?.data);
+  }
+
+  @Post(':id/like')
+  async like(@Param('id') id: string, @User() user: IUserInterface): Promise<void> {
+    return this.newsService.likeById(id, user.data.profileId);
+  }
+
+  @Delete(':id/like')
+  async unLike(@Param('id') id: string, @User() user: IUserInterface): Promise<void> {
+    return this.newsService.unLikeById(id, user.data.profileId);
   }
 }

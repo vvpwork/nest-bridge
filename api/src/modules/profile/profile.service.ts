@@ -14,9 +14,7 @@ import {
 import { InjectModel } from '@nestjs/sequelize';
 import { paginate } from '@Common/utils/pagination.util';
 import { NOTIFICATION_TYPES } from '@Common/enums';
-import { IUserInterface } from '@Common/interfaces';
 import { IIdentityModel } from '@DB/interfaces';
-import { NewsService } from '@/modules';
 
 @Injectable()
 export class ProfileService {
@@ -43,7 +41,7 @@ export class ProfileService {
     private newsLikeModel: typeof NewsLikeModel,
 
     @InjectModel(NotificationModel)
-    private notificationModel: typeof NotificationModel, // @Inject(forwardRef(() => NewsService)) // private readonly newsService: NewsService,
+    private notificationModel: typeof NotificationModel,
   ) {}
 
   async getById(id: number): Promise<ProfileModel> {
@@ -85,7 +83,7 @@ export class ProfileService {
     return paginate(this.podcastModel, { query: { where: { profileId } }, limit, offset });
   }
 
-  async getNewsByProfileId(profileId: number, viewerUser?: IdentityModel | null, limit?: number, offset?: number) {
+  async getNewsByProfileId(profileId: number, viewerUser?: IIdentityModel | null, limit?: number, offset?: number) {
     const paginatedData = await paginate(this.newsModel, { query: { where: { profileId } }, limit, offset });
     paginatedData.data = await Promise.all(
       paginatedData.data.map((news: NewsModel) => this.injectLikesToNewsRecord(news, viewerUser)),
@@ -152,7 +150,7 @@ export class ProfileService {
     return profile.userName;
   }
 
-  async injectLikesToNewsRecord(newsRecord: NewsModel, viewerUser: IdentityModel) {
+  async injectLikesToNewsRecord(newsRecord: NewsModel, viewerUser?: IIdentityModel) {
     const result = newsRecord;
     result.isLiked = false;
 

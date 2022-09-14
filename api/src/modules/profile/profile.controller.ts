@@ -10,20 +10,15 @@ import {
 import { PaginationQueryDto } from '@Common/utils/paginationQuery.dto';
 import { Public } from '@Common/decorators';
 import { ApiTags } from '@nestjs/swagger';
-import { IUserInterface } from '@Common/interfaces';
+import { IUserInterface, IUserRequest } from '@Common/interfaces';
 import { Request } from 'express';
 import { ProfileModel } from '@/db/models/profile.model';
 import { ProfileService } from './profile.service';
-import { AuthService } from '../auth/auth.service';
 
 @ApiTags('Profiles')
 @Controller()
 export class ProfileController {
-  constructor(
-    private readonly profileService: ProfileService,
-    // @Inject(forwardRef(() => AuthService))
-    private readonly authService: AuthService,
-  ) {}
+  constructor(private readonly profileService: ProfileService) {}
 
   @Get()
   async getMy(@User() user: IIdentityModel): Promise<ProfileModel> {
@@ -55,11 +50,9 @@ export class ProfileController {
   async getNews(
     @Param('id') id: number,
     @Query() query: PaginationQueryDto,
-    @Req() request: Request,
+    @Req() request: IUserRequest,
   ): Promise<IProfileNewsResponseDto> {
-    const user = await this.authService.getUserFromReqHeaders(request);
-
-    return this.profileService.getNewsByProfileId(id, user, query.limit, query.offset);
+    return this.profileService.getNewsByProfileId(id, request?.user?.data, query.limit, query.offset);
   }
 
   @Post(':id/follow')

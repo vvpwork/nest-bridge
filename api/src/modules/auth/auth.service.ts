@@ -151,7 +151,7 @@ export class AuthService {
     if (!tokenData) return null;
 
     const identity = await this.identityService.findByKey({ id: tokenData.sub });
-    req.user.data = identity;
+    req.user = { data: identity };
     return true;
   }
 }

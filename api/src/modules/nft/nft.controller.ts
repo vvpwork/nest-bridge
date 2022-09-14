@@ -1,7 +1,8 @@
-import { Controller, Get, Logger, Query, Res } from '@nestjs/common';
+import { Controller, Delete, Get, Logger, Param, Post, Query, Res } from '@nestjs/common';
 import { Response } from 'express';
 import { ApiForbiddenResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Public } from '@/common/decorators';
+import { IUserInterface } from '@Common/interfaces';
+import { Public, User } from '@/common/decorators';
 import { NftService } from './nft.service';
 import { INftQueryDto } from './dtos/nft-query.dto';
 import { RabbitRootService } from '../rabbit/rabbit-root.service';
@@ -30,5 +31,15 @@ export class NftController {
       Logger.error(e);
       return res.send('error');
     }
+  }
+
+  @Post(':id/like')
+  async like(@Param('id') id: string, @User() user: IUserInterface): Promise<void> {
+    return this.nftService.likeById(id, user.data.profileId);
+  }
+
+  @Delete(':id/like')
+  async unLike(@Param('id') id: string, @User() user: IUserInterface): Promise<void> {
+    return this.nftService.unLikeById(id, user.data.profileId);
   }
 }

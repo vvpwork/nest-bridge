@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
-import { Get, Injectable, Logger } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { NftModel } from '@/db/models';
+import { NftLikeModel, NftModel } from '@/db/models';
 import { INftQueryDto, SortTypes } from './dtos/nft-query.dto';
 import { upsertData } from '@/db/utils/helper';
 import { INftModel } from '@/db/interfaces';
@@ -9,7 +9,11 @@ import { getShortHash } from '@/common/utils/short-hash.utile';
 
 @Injectable()
 export class NftService {
-  constructor(@InjectModel(NftModel) private repository: typeof NftModel) {}
+  constructor(
+    @InjectModel(NftModel) private repository: typeof NftModel,
+    @InjectModel(NftLikeModel)
+    private nftLikeModel: typeof NftLikeModel,
+  ) {}
 
   async getAll(search?: INftQueryDto) {
     try {
@@ -121,5 +125,36 @@ export class NftService {
     );
 
     await this.repository.sequelize.query(balancesQuery);
+  }
+
+  async likeById(nftId: string, profileId: number) {
+    const isLiked: boolean = await this.isLiked(nftId, profileId);
+    if (isLiked) {
+      throw new HttpException('ALREADY_LIKED', HttpStatus.BAD_REQUEST);
+    }
+
+    await this.nftLikeModel.create({ profileId, nftId });
+  }
+
+  async unLikeById(nftId: string, profileId: number) {
+    const nftLikeRecord = await this.nftLikeModel.findOne({
+      where: { profileId, nftId },
+      attributes: ['id'],
+    });
+
+    if (!nftLikeRecord) {
+      throw new HttpException('NOT_LIKED_YET', HttpStatus.BAD_REQUEST);
+    }
+
+    await nftLikeRecord.destroy();
+  }
+
+  async isLiked(nftId: string, profileId: number) {
+    const nftLikeRecord = await this.nftLikeModel.findOne({
+      where: { profileId, nftId },
+      attributes: ['id'],
+      raw: true,
+    });
+    return !!nftLikeRecord;
   }
 }
