@@ -43,4 +43,7 @@ export class BlockchainIdentityAddressModel extends Model<IIdentityBlockchainAdd
   @AllowNull(true)
   @Column(DataType.STRING)
   description: string;
+
+  @BelongsTo(() => IdentityModel, 'identityId')
+  identity: IdentityModel;
 }

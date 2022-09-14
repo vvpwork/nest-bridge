@@ -1,4 +1,5 @@
 import { IsNumber, IsOptional } from 'class-validator';
+import { Type } from 'class-transformer';
 
 /**
  * https://github.com/typestack/class-validator#validation-decorators
@@ -6,10 +7,12 @@ import { IsNumber, IsOptional } from 'class-validator';
  */
 export class PaginationQueryDto {
   @IsNumber()
+  @Type(() => Number)
   @IsOptional()
   limit?: number;
 
   @IsNumber()
+  @Type(() => Number)
   @IsOptional()
   offset?: number;
 }

@@ -21,16 +21,6 @@ import { ProfileSocials } from '@Common/types';
  */
 export class EditProfileDto {
   @IsString()
-  @Length(0, 254)
-  @IsOptional()
-  public cover?: string;
-
-  @IsString()
-  @Length(0, 254)
-  @IsOptional()
-  public avatar?: string;
-
-  @IsString()
   @Length(0, 30)
   @IsOptional()
   public name?: string;

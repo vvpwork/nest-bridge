@@ -4,6 +4,7 @@ import { NotificationService } from '@Modules/notification';
 import { NOTIFICATION_TYPES } from '@Common/enums';
 import { ProfileService } from '@Modules/profile';
 import { InjectModel } from '@nestjs/sequelize';
+import { ILibraryModel } from '@DB/interfaces';
 import { EditLibraryDto, CreateLibraryDto } from './dtos';
 
 @Injectable()
@@ -17,19 +18,15 @@ export class LibraryService {
     private notificationModel: typeof NotificationModel,
   ) {}
 
-  async create(profileId: number, params: CreateLibraryDto): Promise<LibraryModel> {
-    const { image, source, title } = params;
-
-    const newLibraryRecord = await this.libraryModel.create({ profileId, image, source, title });
+  async create(params: ILibraryModel): Promise<LibraryModel> {
+    const newLibraryRecord = await this.libraryModel.create(params);
 
     await this.notificationService.addNotificationToAllIdentityFollowers(
-      profileId,
+      params.profileId,
       {
         id: newLibraryRecord.id,
-        image,
-        source,
-        title,
-        name: await this.profileService.getUserNameByProfileId(profileId),
+        ...params,
+        name: await this.profileService.getUserNameByProfileId(params.profileId),
       },
       NOTIFICATION_TYPES.FOLLOWING_PERSON_ADDED_LIBRARY,
     );
@@ -37,7 +34,7 @@ export class LibraryService {
     return newLibraryRecord;
   }
 
-  async update(libraryId: number, params: EditLibraryDto): Promise<{ success: true }> {
+  async update(libraryId: string, params: ILibraryModel): Promise<{ success: true }> {
     await this.libraryModel.update(params, { where: { id: libraryId } });
 
     const libraryRecord = await this.libraryModel.findByPk(libraryId);
@@ -67,7 +64,7 @@ export class LibraryService {
     return { success: true };
   }
 
-  async delete(libraryId: number): Promise<{ success: true }> {
+  async delete(libraryId: string): Promise<{ success: true }> {
     const libraryRecord = await this.libraryModel.findByPk(libraryId, { attributes: ['id'] });
     if (!libraryRecord) {
       throw new HttpException('LIBRARY_NOT_FOUND', HttpStatus.NOT_FOUND);

@@ -1,5 +1,7 @@
-import { Request } from '@nestjs/common';
+import { Request } from 'express';
 import BigNumber from 'bignumber.js';
+import { IIdentityModel } from '@DB/interfaces';
+import { IdentityModel } from '@DB/models';
 
 export interface IConfig {
   port: number;
@@ -48,6 +50,10 @@ export interface IConfig {
     apiKey: string;
     apiSecret: string;
   };
+}
+
+export interface IUserRequest extends Request {
+  user: { data: IIdentityModel };
 }
 
 export interface IRequest extends Request {

@@ -9,9 +9,9 @@ export class CreateLibraryDto {
   @Length(1, 200)
   public title!: string;
 
-  @IsString()
-  @Length(1, 254)
-  public image!: string;
+  // @IsString()
+  // @Length(1, 254)
+  // public image!: string;
 
   @IsString()
   @Length(1, 30)

@@ -115,7 +115,7 @@ export interface IOrderModel {
 
 export interface INftLikeModel {
   id?: number;
-  identityId: number;
+  profileId: number;
   nftId: string;
   createdAt: any;
   updatedAt: any;

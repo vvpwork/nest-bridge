@@ -1,13 +1,13 @@
 import { Global, Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 
-import { NotificationModule, NotificationService } from '@Modules/notification';
 import { ProfileController } from './profile.controller';
 import { ProfileService } from './profile.service';
 import {
   FollowerModel,
   IdentityModel,
   LibraryModel,
+  NewsLikeModel,
   NewsModel,
   NotificationModel,
   PodcastModel,
@@ -25,6 +25,7 @@ import {
       NewsModel,
       FollowerModel,
       NotificationModel,
+      NewsLikeModel,
     ]),
   ],
   controllers: [ProfileController],

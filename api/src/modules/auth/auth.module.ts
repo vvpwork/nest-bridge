@@ -1,4 +1,4 @@
-import { ExecutionContext, Module } from '@nestjs/common';
+import { ExecutionContext, Module, UseGuards } from '@nestjs/common';
 import { Request } from 'express';
 import { Reflector } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
@@ -37,11 +37,11 @@ export class AuthModule {
 
   public async canActivate(context: ExecutionContext): Promise<boolean> {
     const isPublic = this.reflector.get<boolean>('isPublic', context.getHandler());
+    const request = this.getRequest(context);
     if (isPublic) {
+      await this.auth.getUserFromReqHeaders(request);
       return true;
     }
-
-    const request = this.getRequest(context);
 
     return this.auth.isAuthenticated(request);
   }
