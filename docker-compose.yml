@@ -1,7 +1,36 @@
 version: '3.2'
 services:
+  api:
+    image: bridgetower/api:dev
+    build:
+      context: ./api
+      dockerfile: Dockerfile.local
+    container_name: api_bridge
+    env_file:
+      - ./api/.env.local
+    command: sh -c '/bin/wait-for-it.sh rabbitmq:5672 --timeout=30 -- node dist/main.js'
+
+  worker:
+    image: bridgetower/worker:dev
+    build:
+      context: ./schedule-worker
+      dockerfile: Dockerfile.local
+    container_name: worker_bridge
+    env_file:
+      - ./schedule-worker/.env.local
+    command: sh -c '/bin/wait-for-it.sh rabbitmq:5672 --timeout=30 -- node dist/main.js'
+
+  db-migrate:
+    image: bridgetower/db-migrator:dev
+    build:
+      context: ./api
+      dockerfile: Dockerfile.migrations
+    env_file:
+      - ./api/.env.local
+    container_name: db_migrate_bridge
+
   mariadb:
-    image: mariadb
+    image: mariadb:10.9.2
     container_name: mariadb_bridge
     environment:
       - MYSQL_ROOT_PASSWORD=bridge
@@ -16,7 +45,7 @@ services:
       - '3307:3306'
 
   rabbitmq:
-    image: rabbitmq:3-management-alpine
+    image: rabbitmq:3.10.7-management-alpine
     container_name: rabbitmq_bridge
     hostname: rabbitmq
     ports:
@@ -32,8 +61,8 @@ services:
       timeout: 15s
       retries: 1
 
-  redis_db:
-    image: redis:alpine
+  redis:
+    image: redis:7.0.4-alpine
     container_name: redis_bridge
     command: redis-server --appendonly yes
     ports:
