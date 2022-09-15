@@ -9,6 +9,7 @@ import {
 } from '@Modules/profile/dtos';
 import { PaginationQueryDto } from '@Common/dto/paginationQuery.dto';
 import { ICommunityLinkResponseDto } from '@Modules/nft/dtos/communityLink-response.dto';
+import { INftHistoryResponseDto } from '@Modules/nft/dtos/nftHistory-responese.dto';
 import { Public, User } from '@/common/decorators';
 import { NftService } from './nft.service';
 import { INftQueryDto } from './dtos/nft-query.dto';
@@ -116,6 +117,19 @@ export class NftController {
   async getCommunityLink(@Param('id') id: number, @Query() query: PaginationQueryDto, @Res() res: Response) {
     res.status(200).send({
       data: await this.nftService.getCommunityLinkForMarketplace(),
+    });
+  }
+
+  @Get(':id/history')
+  @Public()
+  @ApiResponse({
+    status: 200,
+    description: 'get history of nft',
+    type: INftHistoryResponseDto,
+  })
+  async getNftHistory(@Param('id') id: string, @Res() res: Response): Promise<void> {
+    res.status(200).send({
+      data: await this.nftService.getHistoryByNftId(id),
     });
   }
 }
