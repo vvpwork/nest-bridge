@@ -1,7 +1,7 @@
-import { Controller, Delete, Get, Logger, Param, Post, Query, Res } from '@nestjs/common';
+import { Controller, Delete, Get, Logger, Param, Post, Query, Req, Res } from '@nestjs/common';
 import { Response } from 'express';
 import { ApiForbiddenResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { IUserInterface } from '@Common/interfaces';
+import { IUserInterface, IUserRequest } from '@Common/interfaces';
 import {
   IProfileLibrariesResponseDto,
   IProfileNewsResponseDto,
@@ -98,11 +98,11 @@ export class NftController {
   async getNews(
     @Param('id') id: number,
     @Query() query: PaginationQueryDto,
-    @User() user: IUserInterface,
     @Res() res: Response,
+    @Req() request: IUserRequest,
   ) {
     res.status(200).send({
-      data: await this.nftService.getNftInfo('news', query, user.data),
+      data: await this.nftService.getNftInfo('news', query, request?.user?.data),
     });
   }
 
