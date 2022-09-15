@@ -1,12 +1,11 @@
-import { forwardRef, HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
-import { IdentityModel, NewsModel, NewsLikeModel, NotificationModel } from '@DB/models';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { NewsModel, NewsLikeModel, NotificationModel } from '@DB/models';
 import { NotificationService } from '@Modules/notification';
 import { NOTIFICATION_TYPES } from '@Common/enums';
 import { ProfileService } from '@Modules/profile';
 import { InjectModel } from '@nestjs/sequelize';
 
-import { IIdentityModel, ILibraryModel, INewsModel } from '@DB/interfaces';
-import { EditNewsDto, CreateNewsDto } from './dtos';
+import { IIdentityModel, INewsModel } from '@DB/interfaces';
 
 @Injectable()
 export class NewsService {

@@ -1,4 +1,5 @@
 import { IsOptional, IsString, Length } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
 
 /**
  * https://github.com/typestack/class-validator#validation-decorators
@@ -10,8 +11,17 @@ export class EditPodcastDto {
   @IsOptional()
   public title?: string;
 
+  @ApiProperty({ type: 'string', format: 'binary' })
+  @IsOptional()
+  public image?: string;
+
   @IsString()
   @IsOptional()
   @Length(1, 30)
   public source?: string;
+
+  @IsString()
+  @IsOptional()
+  @Length(1, 500)
+  public description?: string;
 }

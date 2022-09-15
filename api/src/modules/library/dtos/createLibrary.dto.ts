@@ -1,4 +1,5 @@
 import { IsString, Length } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
 
 /**
  * https://github.com/typestack/class-validator#validation-decorators
@@ -9,9 +10,8 @@ export class CreateLibraryDto {
   @Length(1, 200)
   public title!: string;
 
-  // @IsString()
-  // @Length(1, 254)
-  // public image!: string;
+  @ApiProperty({ type: 'string', format: 'binary' })
+  public image!: string;
 
   @IsString()
   @Length(1, 30)

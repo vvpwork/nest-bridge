@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNumber, IsString } from 'class-validator';
 
-export class IPodcastResponseDto {
+export class PodcastResponseDto {
   @ApiProperty({
     type: Number,
     example: 1,
@@ -55,4 +55,9 @@ export class IPodcastResponseDto {
     example: '2022-09-13T13:02:38.000Z',
   })
   updatedAt: string;
+}
+
+export class IPodcastResponseDto {
+  @ApiProperty({ type: () => PodcastResponseDto })
+  data: PodcastResponseDto;
 }

@@ -1,12 +1,12 @@
-import { Body, Controller, Delete, Param, Patch, Post, UploadedFiles, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Param, Patch, Post, Res, UploadedFiles, UseInterceptors } from '@nestjs/common';
 import { User } from '@Common/decorators/user.decorator';
-import { ICollectionModel, IIdentityModel, ILibraryModel } from '@DB/interfaces';
-import { CreateLibraryDto, EditLibraryDto } from '@Modules/library/dtos';
-import { LibraryModel } from '@DB/models';
-import { ApiTags } from '@nestjs/swagger';
+import { ILibraryModel } from '@DB/interfaces';
+import { CreateLibraryDto, EditLibraryDto, ILibraryResponseDto } from '@Modules/library/dtos';
+import { ApiConsumes, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { CloudinaryService } from '@Common/services/cloudinary.service';
 import { IUserInterface } from '@Common/interfaces';
+import { Response } from 'express';
 import { LibraryService } from './library.service';
 
 @ApiTags('Libraries')
@@ -19,35 +19,66 @@ export class LibraryController {
   }
 
   @Post()
+  @ApiResponse({
+    status: 201,
+    description: 'Library created successfully',
+    type: ILibraryResponseDto,
+  })
+  @ApiConsumes('multipart/form-data')
   @UseInterceptors(AnyFilesInterceptor())
   async create(
     @User() user: IUserInterface,
     @Body() body: CreateLibraryDto,
     @UploadedFiles() files: Array<Express.Multer.File>,
-  ): Promise<LibraryModel> {
+    @Res() res: Response,
+  ) {
     // upload images to cloudinary
     const image = await this.cloudinary.uploadFile(files.find((v: Express.Multer.File) => v.fieldname === 'image'));
     const imageUrl = image.url ? image.url : '';
 
-    return this.libraryService.create({ profileId: user.data.profileId, ...body, image: imageUrl } as ILibraryModel);
+    res.status(201).send({
+      data: await this.libraryService.create({
+        profileId: user.data.profileId,
+        ...body,
+        image: imageUrl,
+      } as ILibraryModel),
+    });
   }
 
   @Patch(':id')
+  @ApiResponse({
+    status: 200,
+    description: 'successfully edited library',
+  })
+  @ApiConsumes('multipart/form-data')
   @UseInterceptors(AnyFilesInterceptor())
   async update(
     @Body() body: EditLibraryDto,
     @Param('id') id: string,
     @UploadedFiles() files: Array<Express.Multer.File>,
-  ): Promise<{ success: true }> {
+    @Res() res: Response,
+  ) {
+    const params: any = { ...body };
     // upload images to cloudinary
     const image = await this.cloudinary.uploadFile(files.find((v: Express.Multer.File) => v.fieldname === 'image'));
-    const imageUrl = image.url ? image.url : '';
 
-    return this.libraryService.update(id, { ...body, image: imageUrl } as ILibraryModel);
+    if (image && image.url) {
+      params.image = image.url;
+    }
+
+    res.status(200).send({
+      data: await this.libraryService.update(id, params as ILibraryModel),
+    });
   }
 
   @Delete(':id')
-  async delete(@Param('id') id: string): Promise<{ success: true }> {
-    return this.libraryService.delete(id);
+  @ApiResponse({
+    status: 200,
+    description: 'successfully deleted',
+  })
+  async delete(@Param('id') id: string, @Res() res: Response) {
+    res.status(200).send({
+      data: await this.libraryService.delete(id),
+    });
   }
 }
