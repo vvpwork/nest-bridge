@@ -2,16 +2,14 @@ FROM node:16.17.0 as builder
 
 ENV NODE_ENV build
 
-
 USER  node
 WORKDIR /home/node/build
 
 COPY package*.json ./
 RUN yarn
 
-
 COPY --chown=node:node . .
-RUN yarn build 
+RUN yarn build
 
 # ---
 
