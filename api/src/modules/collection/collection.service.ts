@@ -1,12 +1,15 @@
+/* eslint-disable @typescript-eslint/typedef */
+/* eslint-disable security/detect-object-injection */
 /* eslint-disable no-useless-catch */
 import { HttpException, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { ApiTags } from '@nestjs/swagger';
-import { CollectionModel, NftModel } from '@/db/models';
+import { BlockchainIdentityAddressModel, CollectionModel, IdentityModel, NftModel, ProfileModel } from '@/db/models';
 import { ICollectionModel } from '@/db/interfaces';
 import { ICollectionQueryDto } from './dtos';
 import { BlockchainService } from '../blockchain/blockchain.service';
 import { NftService } from '../nft/nft.service';
+import { countHelper } from '@/common/utils';
 
 @ApiTags('Collection')
 @Injectable()
@@ -39,36 +42,41 @@ export class CollectionService {
   async findAll(query: ICollectionQueryDto) {
     const offset = query.offset === 0 ? 0 : query.limit * query.offset - query.limit;
 
-    const { identityId, collectionId, withNft } = query;
+    const searchQuery = `
+    with temptable as (
+    SELECT c.* , JSON_OBJECT(
+      'id',  d.id,
+      'name', d.name,
+      'userName', d.userName,
+      'email', d.email,
+      'status', d.status,
+      'accountType', d.accountType,
+      'cover', d.cover,
+      'avatar', d.avatar
+      ) as identity FROM Collection c
+    LEFT JOIN (
+      SELECT i.*, b.address, b.chainId, p.name, p.cover, p.avatar, p.email, p.userName FROM Identity i
+      LEFT JOIN BlockchainIdentityAddress b ON  b.identityId = i.id
+      LEFT JOIN Profile p ON  p.id = i.profileId
+      GROUP BY i.id
+    ) d ON c.identityId = d.id && c.chainId = d.chainId
+    GROUP BY c.id)
 
-    const where: Partial<ICollectionModel> = {};
+    SELECT tb.*, p.count  FROM temptable tb 
+    JOIN (select count(t.id) as count from temptable t) p  
+    ${query.limit ? `LIMIT ${query.limit}` : ''}
+    ${offset ? `OFFSET ${offset}` : ''}
+    `;
 
-    if (identityId) {
-      where.identityId = identityId;
-    }
-
-    if (collectionId) {
-      where.id = collectionId;
-    }
-
-    const result = await this.repository.findAndCountAll({
-      limit: query.limit,
-      offset,
-      where,
-      include: withNft && [
-        {
-          model: NftModel,
-          attributes: ['id', 'royalty', 'amount', 'thumbnail', 'creatorIds'],
-        },
-      ],
-    });
+    const [data] = await this.repository.sequelize.query(searchQuery);
+    const { total, result } = countHelper(data);
 
     return {
-      data: result.rows.map((d: CollectionModel) => d.toJSON()),
+      data: result,
       pagination: {
-        offset: query.offset,
-        limit: result.rows.length,
-        total: result.count,
+        total,
+        limit: query.limit,
+        offset,
       },
     };
   }

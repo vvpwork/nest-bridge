@@ -6,12 +6,15 @@ import {
   PrimaryKey,
   AllowNull,
   AutoIncrement,
+  ForeignKey,
+  BelongsTo,
 } from 'sequelize-typescript';
-import { IIdentityNftBalanceLock } from './interfaces';
+import { IIdentityNftBalanceLock } from '../interfaces';
+import { IdentityNftBalanceModel } from '@/db/models/identity-nft-balance.model';
 
 @Table({
-  tableName: 'IdentityNftBalanceStatus',
-  timestamps: true,
+  tableName: 'IdentityNftBalanceLock',
+  timestamps: false,
 })
 export class IdentityNftBalanceLock extends Model<IIdentityNftBalanceLock> {
   @PrimaryKey
@@ -20,9 +23,9 @@ export class IdentityNftBalanceLock extends Model<IIdentityNftBalanceLock> {
   @Column(DataType.BIGINT)
   id: number;
 
-  @AllowNull(false)
-  @Column(DataType.BIGINT)
-  identityNftBalanceId: number;
+  @ForeignKey(() => IdentityNftBalanceModel)
+  @Column(DataType.UUID)
+  identityNftBalanceId: IdentityNftBalanceModel;
 
   @AllowNull(false)
   @Column(DataType.INTEGER)

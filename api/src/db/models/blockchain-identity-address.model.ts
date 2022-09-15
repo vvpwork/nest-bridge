@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 /* eslint-disable @typescript-eslint/no-empty-interface */
 import {
   Table,
@@ -34,7 +35,7 @@ export class BlockchainIdentityAddressModel extends Model<IIdentityBlockchainAdd
 
   @ForeignKey(() => IdentityModel)
   @Column(DataType.UUID)
-  identityId: string;
+  identityId: IdentityModel;
 
   @AllowNull(false)
   @Column(DataType.STRING)

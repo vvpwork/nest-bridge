@@ -56,8 +56,9 @@ export class SecuritizeService implements ISecuritizeService {
       const data: ISecuritizeAuthorizeResponseData = await this.api.post('/auth/v1/authorize', {
         code,
       });
+      Logger.log('Securitize auth', data);
 
-      if (data.accessToken || data.refreshToken) {
+      if (!data.accessToken || !data.refreshToken) {
         return null;
       }
       return data;
@@ -69,11 +70,14 @@ export class SecuritizeService implements ISecuritizeService {
 
   async getKycStatus(accessToken: string) {
     try {
-      const data: ISecuritizeKycStatusResponseData = await this.api.get(`/bc/v1/investor/verification`, {
-        headers: {
-          'access-token': accessToken,
+      const data: ISecuritizeKycStatusResponseData = await this.api.get(
+        `/bc/v1/partners/${config.securitize.issuerId}/attestation`,
+        {
+          headers: {
+            'access-token': accessToken,
+          },
         },
-      });
+      );
 
       if (!data.status) {
         return null;
@@ -127,6 +131,7 @@ export class SecuritizeService implements ISecuritizeService {
 
   async login(code: string, address: string) {
     const authResult = await this.authorize(code);
+
     if (!authResult) throw new HttpException('Securitize auth error', 403);
     const { investorId, accessToken, refreshToken } = authResult;
     const kycResult = await this.getKycStatus(accessToken);

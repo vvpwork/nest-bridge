@@ -97,10 +97,30 @@ export class NftService {
         ${sortValue === 'created' ? `ORDER BY  o.createdAt  ${sortType}` : ``}
         ${sortValue === 'unlockTime' ? `ORDER BY l.unlockTime  ${sortType}` : ``}
         )
-        
-        
-        select tb.*, p.count from temptable tb
-        JOIN (select count(t.nftId) as count from temptable t) p
+
+        SELECT
+        tb.nftId as id, 
+        tb.royalty,
+        tb.totalNftAmount,
+        tb.thumbnail,
+        tb.totalSupply, 
+        tb.creators,        
+        tb.collection,
+        JSON_ARRAYAGG(
+          JSON_OBJECT(
+            'identityId', tb.identityId,
+            'identityBalance', tb.identityBalance,
+            'profile',tb.profile,
+            'lockedData', tb.lockedData,
+            'lockedBalance', tb.lockedBalance,
+            'isLiked', tb.isLiked,
+            'likesCount', tb.likesCount,
+            'onSale', tb.onSale,
+            'onSalesData', tb.onSalesData 
+          )
+        ) as owners
+        FROM temptable tb
+        GROUP BY tb.nftId
         ${limit ? `LIMIT ${limit}` : ''}
         ${offset ? `OFFSET ${offset}` : ''}
         `;
@@ -183,33 +203,33 @@ export class NftService {
     return result;
   }
 
-  // async getLibrariesForMarketplace(limit?: number, offset?: number) {
-  //   const artemundiIdentity = await this.getArtemundiIdentity();
-  //   return paginate(this.libraryModel, {
-  //     query: { where: { profileId: artemundiIdentity.profileId } },
-  //     limit,
-  //     offset,
-  //   });
-  // }
+  async getLibrariesForMarketplace(limit?: number, offset?: number) {
+    const artemundiIdentity = await this.getArtemundiIdentity();
+    return paginate(this.libraryModel, {
+      query: { where: { profileId: artemundiIdentity.profileId } },
+      limit,
+      offset,
+    });
+  }
 
-  // async getPodcastsForMarketplace(limit?: number, offset?: number) {
-  //   const artemundiIdentity = await this.getArtemundiIdentity();
-  //   return paginate(this.podcastModel, { query: { where: { profileId: artemundiIdentity.profileId } }, limit, offset });
-  // }
+  async getPodcastsForMarketplace(limit?: number, offset?: number) {
+    const artemundiIdentity = await this.getArtemundiIdentity();
+    return paginate(this.podcastModel, { query: { where: { profileId: artemundiIdentity.profileId } }, limit, offset });
+  }
 
-  // async getNewsForMarketplace(viewerUser?: IIdentityModel | null, limit?: number, offset?: number) {
-  //   const artemundiIdentity = await this.getArtemundiIdentity();
-  //   const paginatedData = await paginate(this.newsModel, {
-  //     query: { where: { profileId: artemundiIdentity.profileId } },
-  //     limit,
-  //     offset,
-  //   });
-  //   paginatedData.data = await Promise.all(
-  //     paginatedData.data.map((news: NewsModel) => this.injectLikesToNewsRecord(news, viewerUser)),
-  //   );
+  async getNewsForMarketplace(viewerUser?: IIdentityModel | null, limit?: number, offset?: number) {
+    const artemundiIdentity = await this.getArtemundiIdentity();
+    const paginatedData = await paginate(this.newsModel, {
+      query: { where: { profileId: artemundiIdentity.profileId } },
+      limit,
+      offset,
+    });
+    paginatedData.data = await Promise.all(
+      paginatedData.data.map((news: NewsModel) => this.injectLikesToNewsRecord(news, viewerUser)),
+    );
 
-  //   return paginatedData;
-  // }
+    return paginatedData;
+  }
 
   async getCommunityLinkForMarketplace(): Promise<string> {
     const artemundiIdentity = await this.getArtemundiIdentity();

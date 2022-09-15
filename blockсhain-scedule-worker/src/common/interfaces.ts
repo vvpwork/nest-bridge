@@ -26,4 +26,10 @@ export interface IConfig {
     exchangeNameDefault: string;
     timeoutDelay: number;
   };
+  securitize: {
+    issuerId: string;
+    secret: string;
+    baseUrl: string;
+    proxyAddress: string;
+  };
 }

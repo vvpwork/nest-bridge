@@ -23,7 +23,7 @@ import { CloudinaryService } from '@/common/services/cloudinary.service';
 import { Public, User } from '@/common/decorators';
 
 import { CollectionService } from './collection.service';
-import { ICollectionQueryDto, ICollectionReadDto } from './dtos';
+import { ICollectionQueryDto, ICollectionReadDto, ICollectionResponse } from './dtos';
 import { ICollectionModel } from '@/db/interfaces';
 import { BlockchainService } from '../blockchain/blockchain.service';
 import { RabbitRootService } from '../rabbit/rabbit-root.service';
@@ -130,6 +130,10 @@ export class CollectionController {
   }
 
   @Public()
+  @ApiResponse({
+    type: ICollectionResponse,
+    isArray: true,
+  })
   @Get()
   public async getAll(@Res() res: Response, @Query() query: ICollectionQueryDto) {
     const result = await this.service.findAll(query);

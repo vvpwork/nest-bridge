@@ -47,12 +47,9 @@ export class NftController {
 
   @Public()
   @Get('/library')
-  async getLibraries(
-    // TODO add dto, interface can't be validated
-    @Param('id') id: number,
-    @Query() query: PaginationQueryDto,
-  ) {
-    return this.nftService.getNftInfo('libraries', query);
+  async getLibraries(@Param('id') id: number, @Res() res: Response, @Query() query: PaginationQueryDto) {
+    const result = this.nftService.getNftInfo('libraries', query);
+    return res.status(200).send({ data: result });
   }
 
   @Public()
@@ -72,7 +69,7 @@ export class NftController {
     @Param('id') id: number,
     @Query() query: PaginationQueryDto,
     @User() user: IUserInterface,
-  ): Promise<IProfileNewsResponseDto> {
+  ) {
     return this.nftService.getNftInfo('news', query, user.data);
   }
 
