@@ -14,7 +14,7 @@ import {
 } from '@nestjs/common';
 import { ApiBody, ApiConsumes, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Multer } from 'multer';
-import { NextFunction, Response } from 'express';
+import { Response } from 'express';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { InjectModel } from '@nestjs/sequelize';
 import { CollectionModel } from '@/db/models';

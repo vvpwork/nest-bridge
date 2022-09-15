@@ -6,11 +6,12 @@ import { User } from '@/common/decorators';
 import { ICreateOrderDto, ICreateOrderResponseDto } from './dtos/order-create.dto';
 import { OrderService } from './order.service';
 import { IUpdateOrderDto, IUpdateOrderResponseDto } from './dtos/update-order.dto';
+import { TransactionHistoryService } from '../transaction-history/transaction-history.service';
 
 @ApiTags('Orders')
 @Controller()
 export class OrderController {
-  constructor(private orderService: OrderService) {}
+  constructor(private orderService: OrderService, private historyService: TransactionHistoryService) {}
 
   @ApiResponse({
     status: 200,
