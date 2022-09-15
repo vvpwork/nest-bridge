@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsBoolean, IsNumber, IsString } from 'class-validator';
 
-export class INewsResponseDto {
+export class NewsResponseDto {
   @ApiProperty({
     type: Number,
     example: 1,
@@ -62,4 +62,9 @@ export class INewsResponseDto {
     example: '2022-09-13T13:02:38.000Z',
   })
   updatedAt: string;
+}
+
+export class INewsResponseDto {
+  @ApiProperty({ type: () => NewsResponseDto })
+  data: NewsResponseDto;
 }

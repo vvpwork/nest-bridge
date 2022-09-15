@@ -5,7 +5,6 @@ import { NOTIFICATION_TYPES } from '@Common/enums';
 import { ProfileService } from '@Modules/profile';
 import { InjectModel } from '@nestjs/sequelize';
 import { ILibraryModel } from '@DB/interfaces';
-import { EditLibraryDto, CreateLibraryDto } from './dtos';
 
 @Injectable()
 export class LibraryService {
