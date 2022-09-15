@@ -29,23 +29,23 @@ export class ICollectionCreateDto {
 
 export class ICollectionCreate {
   @IsString()
-  id: string;
+  id: string = '0x7hdfj98....';
 
   @IsNumber()
-  identityId: number;
+  identityId: number = 1;
 
   @IsString()
-  name: string;
+  name: string = 'Test Collection';
 
   @IsString()
-  description: string;
+  description: string = 'Test Collection';
 
   @IsString()
-  symbol: string;
+  symbol: string = 'TST';
 
   @IsNumber()
-  salt: number;
+  salt: number = 8921892;
 
   @IsNumber()
-  chainId: number;
+  chainId: number = 43113;
 }

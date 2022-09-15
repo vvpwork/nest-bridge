@@ -97,10 +97,30 @@ export class NftService {
         ${sortValue === 'created' ? `ORDER BY  o.createdAt  ${sortType}` : ``}
         ${sortValue === 'unlockTime' ? `ORDER BY l.unlockTime  ${sortType}` : ``}
         )
-        
-        
-        select tb.*, p.count from temptable tb
-        JOIN (select count(t.nftId) as count from temptable t) p
+
+        SELECT
+        tb.nftId as id, 
+        tb.royalty,
+        tb.totalNftAmount,
+        tb.thumbnail,
+        tb.totalSupply, 
+        tb.creators,        
+        tb.collection,
+        JSON_ARRAYAGG(
+          JSON_OBJECT(
+            'identityId', tb.identityId,
+            'identityBalance', tb.identityBalance,
+            'profile',tb.profile,
+            'lockedData', tb.lockedData,
+            'lockedBalance', tb.lockedBalance,
+            'isLiked', tb.isLiked,
+            'likesCount', tb.likesCount,
+            'onSale', tb.onSale,
+            'onSalesData', tb.onSalesData 
+          )
+        ) as owners
+        FROM temptable tb
+        GROUP BY tb.nftId
         ${limit ? `LIMIT ${limit}` : ''}
         ${offset ? `OFFSET ${offset}` : ''}
         `;
@@ -157,7 +177,33 @@ export class NftService {
     await this.repository.sequelize.query(balancesQuery);
   }
 
-  async getLibrariesForMarketplace(profileId: number, limit?: number, offset?: number) {
+  async getNftInfo(
+    type: 'libraries' | 'podcast' | 'news',
+    pagination: { limit?: number; offset?: number },
+    viewerUser?: IIdentityModel | null,
+  ): Promise<any> {
+    const { limit, offset } = pagination;
+    const artemundiIdentity = await this.getArtemundiIdentity();
+    const modelsMap = {
+      libraries: this.libraryModel,
+      podcast: this.podcastModel,
+      news: this.newsModel,
+    };
+    // eslint-disable-next-line security/detect-object-injection
+    let result: any = await paginate(modelsMap[type], {
+      query: { where: { profileId: artemundiIdentity.profileId } },
+      limit,
+      offset,
+    });
+    if (type === 'news') {
+      result = await Promise.all(
+        result.data.map(async (news: NewsModel) => this.injectLikesToNewsRecord(news, viewerUser)),
+      );
+    }
+    return result;
+  }
+
+  async getLibrariesForMarketplace(limit?: number, offset?: number) {
     const artemundiIdentity = await this.getArtemundiIdentity();
     return paginate(this.libraryModel, {
       query: { where: { profileId: artemundiIdentity.profileId } },

@@ -11,9 +11,9 @@ import { erc1155abi } from './abis/erc1155bridgeTowerProxy';
 import { getAxiosInstance } from '@/common/utils';
 import { CloudinaryService } from '@/common/services/cloudinary.service';
 import { DEFAULT_ETH_ADDRESS } from '@/common/constants';
-import { INftLikeModel, INftModel } from '@/db/interfaces';
+import { INftModel } from '@/db/interfaces';
 
-const { secretKey, nodeUrl } = config.blockChain;
+const { secretKey, nodeUrl, erc1155proxyC2 } = config.blockChain;
 @Injectable()
 export class BlockchainService {
   private securitizeRegistryContract: Contract;
@@ -37,7 +37,7 @@ export class BlockchainService {
   }
 
   async isAddressPartner(address: string) {
-    const contract = new this.web3Instance.eth.Contract(erc1155abi, '0xba038280a38285C335a90B281Eb37A790de1FD8f');
+    const contract = new this.web3Instance.eth.Contract(erc1155abi, erc1155proxyC2);
     return contract.methods.isPartner(address).call();
   }
 

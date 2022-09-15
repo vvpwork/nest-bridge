@@ -1,13 +1,13 @@
-import { Controller, Delete, Get, Logger, Param, Post, Query, Req, Res } from '@nestjs/common';
+import { Controller, Delete, Get, Logger, Param, Post, Query, Res } from '@nestjs/common';
 import { Response } from 'express';
 import { ApiForbiddenResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { IUserInterface, IUserRequest } from '@Common/interfaces';
-import { PaginationQueryDto } from '@Common/dto/paginationQuery.dto';
+import { IUserInterface } from '@Common/interfaces';
 import {
   IProfileLibrariesResponseDto,
   IProfileNewsResponseDto,
   IProfilePodcastResponseDto,
 } from '@Modules/profile/dtos';
+import { PaginationQueryDto } from '@Common/dto/paginationQuery.dto';
 import { ICommunityLinkResponseDto } from '@Modules/nft/dtos/communityLink-response.dto';
 import { Public, User } from '@/common/decorators';
 import { NftService } from './nft.service';
@@ -71,7 +71,7 @@ export class NftController {
   })
   async getLibraries(@Param('id') id: number, @Query() query: PaginationQueryDto, @Res() res: Response) {
     res.status(200).send({
-      data: await this.nftService.getLibrariesForMarketplace(query.limit, query.offset),
+      data: await this.nftService.getNftInfo('libraries', query),
     });
   }
 
@@ -84,7 +84,7 @@ export class NftController {
   })
   async getPodcasts(@Param('id') id: number, @Query() query: PaginationQueryDto, @Res() res: Response) {
     res.status(200).send({
-      data: await this.nftService.getPodcastsForMarketplace(query.limit, query.offset),
+      data: await this.nftService.getNftInfo('podcast', query),
     });
   }
 
@@ -98,11 +98,11 @@ export class NftController {
   async getNews(
     @Param('id') id: number,
     @Query() query: PaginationQueryDto,
-    @Req() request: IUserRequest,
+    @User() user: IUserInterface,
     @Res() res: Response,
   ) {
     res.status(200).send({
-      data: await this.nftService.getNewsForMarketplace(request?.user?.data, query.limit, query.offset),
+      data: await this.nftService.getNftInfo('news', query, user.data),
     });
   }
 

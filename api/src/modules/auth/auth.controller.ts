@@ -24,14 +24,14 @@ export class AuthController {
   public async login(@Body() body: LoginDto, @Res() res: Response) {
     const { address, code, chainId } = body;
     const { id, whiteListTransaction } = await this.authService.login(address, code, chainId);
-    return res.status(200).send(
-      whiteListTransaction
+    return res.status(200).send({
+      data: whiteListTransaction
         ? {
             token: this.authService.jwtSign(id),
             whiteListTransaction,
           }
         : { token: this.authService.jwtSign(id) },
-    );
+    });
   }
 
   @Public()

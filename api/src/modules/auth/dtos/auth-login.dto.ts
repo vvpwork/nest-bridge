@@ -1,4 +1,4 @@
-import { IsNumber, IsString } from 'class-validator';
+import { IsNumber, IsOptional, IsString } from 'class-validator';
 import { Type } from 'class-transformer';
 import { ApiProperty, ApiHeaderOptions, ApiHeader } from '@nestjs/swagger';
 
@@ -20,4 +20,12 @@ export class ILoginResponse {
   })
   @IsString()
   token: string;
+
+  @ApiProperty({
+    type: String,
+    example: 'eyJhbGciOiJIUz ...',
+  })
+  @IsOptional()
+  @IsString()
+  whiteListTransaction: string;
 }

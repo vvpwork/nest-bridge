@@ -25,7 +25,9 @@ module.exports = {
   },
   rabbit: {
     uri: process.env.RABBIT_URI,
-    exchangeName: process.env.RABBIT_EXCHANGE_NAME,
+    exchangeNameRpc: process.env.RABBIT_EXCHANGE_NAME_RPC,
+    exchangeNameDefault: process.env.RABBIT_EXCHANGE_NAME_DEFAULT,
+    timeoutDelay: process.env.MESSAGE_TIMEOUT || 6000,
   },
   securitize: {
     issuerId: process.env.SECURITIZE_ISSUER_ID,
@@ -36,10 +38,17 @@ module.exports = {
   blockChain: {
     nodeUrl: process.env.NODE_URL,
     erc1155Proxy: process.env.ERC1155_BRIDGE_TOWER_PROXY_ADDRESS,
+    erc1155proxyC2: process.env.ERC1155_BRIDGE_TOWER_FACTORY_C2_ADDRESS,
     exchangeV2Proxy: process.env.EXCHANGE_V2_PROXY_ADDRESS,
     artemundiWallet: process.env.ARTEMUNDI_WALLET_ADDRESS,
     transferProxy: process.env.TRANSFER_PROXY_ADDRESS,
     erc20proxy: process.env.ERC_20_TRANSFER_PROXY_ADDRESS,
     secretKey: process.env.WALLET_SECRET_KEY,
+  },
+
+  cloudinary: {
+    name: process.env.CLOUD_NAME,
+    apiKey: process.env.CLOUD_API_KEY,
+    apiSecret: process.env.CLOUD_API_SECRET,
   },
 };

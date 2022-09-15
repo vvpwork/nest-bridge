@@ -42,7 +42,7 @@ services:
         max-size: 10m
         max-file: '3'
     ports:
-      - '3307:3306'
+      - '3306:3306'
 
   rabbitmq:
     image: rabbitmq:3.10.7-management-alpine
