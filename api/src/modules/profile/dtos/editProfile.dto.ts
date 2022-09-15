@@ -14,6 +14,7 @@ import { ProfileSocialsDto } from '@Modules/profile/dtos';
 import { Type } from 'class-transformer';
 import { PROFILE_SECTIONS } from '@Common/enums';
 import { ProfileSocials } from '@Common/types';
+import { ApiProperty } from '@nestjs/swagger';
 
 /**
  * https://github.com/typestack/class-validator#validation-decorators
@@ -29,6 +30,14 @@ export class EditProfileDto {
   @Length(0, 30)
   @IsOptional()
   public userName?: string;
+
+  @ApiProperty({ type: 'string', format: 'binary' })
+  @IsOptional()
+  public avatar?: string;
+
+  @ApiProperty({ type: 'string', format: 'binary' })
+  @IsOptional()
+  public cover?: string;
 
   @IsString()
   @Length(0, 254)

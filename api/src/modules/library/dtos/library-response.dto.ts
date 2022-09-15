@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNumber, IsString } from 'class-validator';
 
-export class ILibraryResponseDto {
+export class LibraryResponseDto {
   @ApiProperty({
     type: Number,
     example: 1,
@@ -48,4 +48,9 @@ export class ILibraryResponseDto {
     example: '2022-09-13T13:02:38.000Z',
   })
   updatedAt: string;
+}
+
+export class ILibraryResponseDto {
+  @ApiProperty({ type: () => LibraryResponseDto })
+  data: LibraryResponseDto;
 }

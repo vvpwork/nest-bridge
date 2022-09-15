@@ -1,31 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsOptional } from 'class-validator';
-import { ILibraryResponseDto } from '@Modules/library/dtos';
+import { LibraryResponseDto } from '@Modules/library/dtos';
+import { PaginationResponseDto } from '@Common/dto';
 
 export class IProfileLibrariesResponseDto {
-  @ApiProperty({
-    type: Number,
-    example: 1,
-  })
-  @IsNumber()
-  @IsOptional()
-  limit?: number;
+  @ApiProperty({ type: () => PaginationResponseDto })
+  pagination: PaginationResponseDto;
 
-  @ApiProperty({
-    type: Number,
-    example: 1,
-  })
-  @IsNumber()
-  @IsOptional()
-  offset?: number;
-
-  @ApiProperty({
-    type: Number,
-    example: 1,
-  })
-  @IsNumber()
-  total: number;
-
-  @ApiProperty({ type: () => [ILibraryResponseDto] })
-  data: ILibraryResponseDto[];
+  @ApiProperty({ type: () => [LibraryResponseDto] })
+  data: LibraryResponseDto[];
 }

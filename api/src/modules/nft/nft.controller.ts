@@ -2,11 +2,17 @@ import { Controller, Delete, Get, Logger, Param, Post, Query, Req, Res } from '@
 import { Response } from 'express';
 import { ApiForbiddenResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { IUserInterface, IUserRequest } from '@Common/interfaces';
-import { PaginationQueryDto } from '@Common/utils/dtos';
-import { IProfileLibrariesResponseDto, IProfileNewsResponseDto } from '@Modules/profile/dtos';
+import {
+  IProfileLibrariesResponseDto,
+  IProfileNewsResponseDto,
+  IProfilePodcastResponseDto,
+} from '@Modules/profile/dtos';
+import { PaginationQueryDto } from '@Common/dto/paginationQuery.dto';
+import { ICommunityLinkResponseDto } from '@Modules/nft/dtos/communityLink-response.dto';
+import { INftHistoryResponseDto } from '@Modules/nft/dtos/nftHistory-responese.dto';
+import { Public, User } from '@/common/decorators';
 import { NftService } from './nft.service';
 import { INftQueryDto } from './dtos/nft-query.dto';
-import { Public, User } from '@/common/decorators';
 import { RabbitRootService } from '../rabbit/rabbit-root.service';
 import { INftResponse } from './dtos/nft-responese.dto';
 
@@ -36,46 +42,94 @@ export class NftController {
   }
 
   @Post(':id/like')
-  async like(@Param('id') id: string, @User() user: IUserInterface) {
-    return this.nftService.likeById(id, user.data.profileId);
+  @ApiResponse({
+    status: 200,
+    description: 'successfully liked',
+  })
+  async like(@Param('id') id: string, @User() user: IUserInterface, @Res() res: Response): Promise<void> {
+    res.status(200).send({
+      data: await this.nftService.likeById(id, user.data.profileId),
+    });
   }
 
   @Delete(':id/like')
-  async unLike(@Param('id') id: string, @User() user: IUserInterface) {
-    return this.nftService.unLikeById(id, user.data.profileId);
+  @ApiResponse({
+    status: 200,
+    description: 'successfully removed like',
+  })
+  async unLike(@Param('id') id: string, @User() user: IUserInterface, @Res() res: Response): Promise<void> {
+    res.status(200).send({
+      data: await this.nftService.unLikeById(id, user.data.profileId),
+    });
   }
 
-  @Public()
   @Get('/library')
-  async getLibraries(@Param('id') id: number, @Res() res: Response, @Query() query: PaginationQueryDto) {
-    const result = this.nftService.getNftInfo('libraries', query);
-    return res.status(200).send({ data: result });
+  @Public()
+  @ApiResponse({
+    status: 200,
+    description: 'Get libraries list',
+    type: IProfileLibrariesResponseDto,
+  })
+  async getLibraries(@Param('id') id: number, @Query() query: PaginationQueryDto, @Res() res: Response) {
+    res.status(200).send({
+      data: await this.nftService.getNftInfo('libraries', query),
+    });
   }
 
-  @Public()
   @Get('/podcasts')
-  async getPodcasts(
-    // TODO add dto, interface can't be validated
-    @Param('id') id: number,
-    @Query() query: PaginationQueryDto,
-  ) {
-    return this.nftService.getNftInfo('podcast', query);
+  @Public()
+  @ApiResponse({
+    status: 200,
+    description: 'Get podcasts list',
+    type: IProfilePodcastResponseDto,
+  })
+  async getPodcasts(@Param('id') id: number, @Query() query: PaginationQueryDto, @Res() res: Response) {
+    res.status(200).send({
+      data: await this.nftService.getNftInfo('podcast', query),
+    });
   }
 
-  @Public()
   @Get('/news')
+  @Public()
+  @ApiResponse({
+    status: 200,
+    description: 'Get news list',
+    type: IProfileNewsResponseDto,
+  })
   async getNews(
-    // TODO add dto, interface can't be validated
     @Param('id') id: number,
     @Query() query: PaginationQueryDto,
-    @User() user: IUserInterface,
+    @Res() res: Response,
+    @Req() request: IUserRequest,
   ) {
-    return this.nftService.getNftInfo('news', query, user.data);
+    res.status(200).send({
+      data: await this.nftService.getNftInfo('news', query, request?.user?.data),
+    });
   }
 
-  @Public()
   @Get('/community')
-  async getCommunityLink(@Param('id') id: number) {
-    return this.nftService.getCommunityLinkForMarketplace();
+  @Public()
+  @ApiResponse({
+    status: 200,
+    description: 'Get marketplace community link',
+    type: ICommunityLinkResponseDto,
+  })
+  async getCommunityLink(@Param('id') id: number, @Query() query: PaginationQueryDto, @Res() res: Response) {
+    res.status(200).send({
+      data: await this.nftService.getCommunityLinkForMarketplace(),
+    });
+  }
+
+  @Get(':id/history')
+  @Public()
+  @ApiResponse({
+    status: 200,
+    description: 'get history of nft',
+    type: INftHistoryResponseDto,
+  })
+  async getNftHistory(@Param('id') id: string, @Res() res: Response): Promise<void> {
+    res.status(200).send({
+      data: await this.nftService.getHistoryByNftId(id),
+    });
   }
 }

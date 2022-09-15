@@ -13,11 +13,11 @@ services:
   worker:
     image: bridgetower/worker:dev
     build:
-      context: ./schedule-worker
+      context: ./blockсhain-scedule-worker
       dockerfile: Dockerfile.local
     container_name: worker_bridge
     env_file:
-      - ./schedule-worker/.env.local
+      - ./blockсhain-scedule-worker/.env.local
     command: sh -c '/bin/wait-for-it.sh rabbitmq:5672 --timeout=30 -- node dist/main.js'
 
   db-migrate:

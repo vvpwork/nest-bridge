@@ -2,6 +2,7 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { paginate } from '@Common/utils/pagination.util';
+import { ACCOUNT_TYPES } from '@DB/enums';
 import {
   BlockchainIdentityAddressModel,
   IdentityModel,
@@ -12,6 +13,7 @@ import {
   NftModel,
   PodcastModel,
   ProfileModel,
+  TransactionHistoryModel,
 } from '@/db/models';
 import { INftQueryDto } from './dtos/nft-query.dto';
 import { upsertData } from '@/db/utils/helper';
@@ -36,6 +38,12 @@ export class NftService {
     private newsLikeModel: typeof NewsLikeModel,
     @InjectModel(BlockchainIdentityAddressModel)
     private blockchainIdentityAddressModel: typeof BlockchainIdentityAddressModel,
+    @InjectModel(TransactionHistoryModel)
+    private transactionHistoryModel: typeof TransactionHistoryModel,
+    @InjectModel(IdentityModel)
+    private identityModel: typeof IdentityModel,
+    @InjectModel(ProfileModel)
+    private profileModel: typeof ProfileModel,
   ) {}
 
   async getAll(search?: INftQueryDto) {
@@ -203,37 +211,59 @@ export class NftService {
     return result;
   }
 
-  async getLibrariesForMarketplace(limit?: number, offset?: number) {
-    const artemundiIdentity = await this.getArtemundiIdentity();
-    return paginate(this.libraryModel, {
-      query: { where: { profileId: artemundiIdentity.profileId } },
-      limit,
-      offset,
-    });
-  }
-
-  async getPodcastsForMarketplace(limit?: number, offset?: number) {
-    const artemundiIdentity = await this.getArtemundiIdentity();
-    return paginate(this.podcastModel, { query: { where: { profileId: artemundiIdentity.profileId } }, limit, offset });
-  }
-
-  async getNewsForMarketplace(viewerUser?: IIdentityModel | null, limit?: number, offset?: number) {
-    const artemundiIdentity = await this.getArtemundiIdentity();
-    const paginatedData = await paginate(this.newsModel, {
-      query: { where: { profileId: artemundiIdentity.profileId } },
-      limit,
-      offset,
-    });
-    paginatedData.data = await Promise.all(
-      paginatedData.data.map((news: NewsModel) => this.injectLikesToNewsRecord(news, viewerUser)),
-    );
-
-    return paginatedData;
-  }
-
   async getCommunityLinkForMarketplace(): Promise<string> {
     const artemundiIdentity = await this.getArtemundiIdentity();
     return artemundiIdentity.profile.communityLink;
+  }
+
+  async getHistoryByNftId(nftId: string) {
+    const historyRecords = await this.transactionHistoryModel.findAll({
+      where: { nftId },
+      attributes: ['type', 'amount', 'price', 'txHash', 'createdAt'],
+      order: [['createdAt', 'DESC']],
+      include: [
+        {
+          model: this.identityModel,
+          as: 'identity',
+          attributes: ['accountType'],
+          include: [
+            {
+              model: this.profileModel,
+              as: 'profile',
+              attributes: ['id', 'avatar', 'userName'],
+            },
+            {
+              model: this.blockchainIdentityAddressModel,
+              as: 'address',
+            },
+          ],
+        },
+      ],
+    });
+
+    return historyRecords.map((historyRecord: any) => {
+      // eslint-disable-next-line no-param-reassign
+      historyRecord.dataValues.identity = this.formatIdentityData(historyRecord.dataValues.identity);
+      return historyRecord;
+    });
+  }
+
+  formatIdentityData(identity: any): {
+    id: string;
+    profileId: string;
+    address: string;
+    userName: string;
+    isPartner: boolean;
+    avatar: string;
+  } {
+    return {
+      id: identity.id,
+      profileId: identity.profile.id,
+      address: identity.address[0].address,
+      userName: identity.profile.userName,
+      isPartner: identity.accountType === ACCOUNT_TYPES.PARTNER,
+      avatar: identity.profile.avatar,
+    };
   }
 
   async likeById(nftId: string, profileId: number) {
