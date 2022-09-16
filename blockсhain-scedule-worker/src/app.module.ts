@@ -1,12 +1,11 @@
 import { Logger, Module } from '@nestjs/common';
-import { AppController } from './app.controller';
 import { ScheduleModule } from '@nestjs/schedule';
-import { AppService } from './app.service';
 import { SequelizeModule } from '@nestjs/sequelize';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 import { config } from './common/config';
 import { IdentityNftBalanceLock } from './db/models';
-import { BlockchainModule } from './blockchain';
-import { RabbitModule } from './rabbit';
+import { RabbitModule, BlockchainModule } from './modules';
 
 @Module({
   imports: [

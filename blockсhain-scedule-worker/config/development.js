@@ -31,4 +31,9 @@ module.exports = {
     exchangeNameDefault: process.env.RABBIT_EXCHANGE_NAME_DEFAULT,
     timeoutDelay: process.env.MESSAGE_TIMEOUT || 6000,
   },
+  cloudinary: {
+    name: process.env.CLOUD_NAME,
+    apiKey: process.env.CLOUD_API_KEY,
+    apiSecret: process.env.CLOUD_API_SECRET,
+  },
 };

@@ -1,4 +1,5 @@
 import { AbiItem } from 'web3-utils';
+
 export const erc1155abi: AbiItem[] = [
   {
     anonymous: false,

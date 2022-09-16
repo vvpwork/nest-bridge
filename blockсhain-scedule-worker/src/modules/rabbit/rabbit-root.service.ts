@@ -3,6 +3,7 @@ import { IMessageRabbit } from './interfaces';
 import { TypeRpcCommand, TypeRpcMessage } from './interfaces/enums';
 import { RabbitService } from './services';
 
+// TODO add logic working with rpc
 @Injectable()
 export class RabbitRootService {
   private rabbitInstance: RabbitService;
@@ -23,11 +24,11 @@ export class RabbitRootService {
     );
   }
 
-  handleMessage = async (message: string) => {
+  handleMessage: any = async (message: string) => {
     const mes: IMessageRabbit = JSON.parse(message);
 
     switch (mes.type) {
-      case TypeRpcMessage.BLOCKCHAIN: 
+      case TypeRpcMessage.BLOCKCHAIN:
         return this.blockchainHandler(mes.command, mes.data);
 
       default:
@@ -36,6 +37,6 @@ export class RabbitRootService {
   };
 
   async blockchainHandler(command: TypeRpcCommand, data: any) {
-    
+    return Promise.resolve('ok');
   }
 }

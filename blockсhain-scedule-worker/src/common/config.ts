@@ -8,4 +8,6 @@ export const config: IConfig = {
   rabbit: nodeConfig.get('rabbit'),
   triggerTime: nodeConfig.get('triggerTime'),
   blockchain: nodeConfig.get('blockchain'),
+  securitize: nodeConfig.get('securitize'),
+  cloudinary: nodeConfig.get('cloudinary'),
 };

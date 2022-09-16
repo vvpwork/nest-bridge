@@ -5,7 +5,6 @@ import morgan from 'morgan';
 import cors from 'cors';
 import helmet from 'helmet';
 import compression from 'compression';
-import { urlencoded } from 'express';
 import { AppModule } from './app.module';
 import { apiV1Alias } from './common/constants';
 import { config } from './common/config';

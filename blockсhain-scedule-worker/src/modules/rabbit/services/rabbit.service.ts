@@ -28,6 +28,7 @@ export class RabbitService implements IRabbitService {
     string | null,
     { complete: (msg: string) => void }
   >;
+
   public static instance: RabbitService;
 
   private constructor(rpc_connection: string) {

@@ -5,11 +5,11 @@ import { config } from './common/config';
 
 const { port } = config;
 
-process.on('unhandledRejection', (reason, promise) => {
+process.on('unhandledRejection', (reason: any) => {
   Logger.log(reason);
 });
 
-process.on('uncaughtException', (error, source) => {
+process.on('uncaughtException', (error: Error, source: any) => {
   Logger.log(error, source);
 });
 
