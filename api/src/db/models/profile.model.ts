@@ -8,9 +8,12 @@ import {
   Default,
   AutoIncrement,
   HasOne,
+  HasMany,
 } from 'sequelize-typescript';
 import { PROFILE_SECTIONS } from '@Common/enums';
 import { ProfileSocials } from '@Common/types';
+import { BlockchainIdentityAddressModel } from '@DB/models/blockchain-identity-address.model';
+import { IdentityModel } from '@DB/models/identity.model';
 import { IProfileModel } from '../interfaces';
 
 @Table({
@@ -63,4 +66,7 @@ export class ProfileModel extends Model<IProfileModel> {
   @Default(Object.values(PROFILE_SECTIONS))
   @Column(DataType.JSON)
   sections: string;
+
+  @HasOne(() => IdentityModel, 'profileId')
+  identity: IdentityModel;
 }

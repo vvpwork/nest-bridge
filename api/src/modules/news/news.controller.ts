@@ -109,7 +109,7 @@ export class NewsController {
     status: 200,
     description: 'successfully liked',
   })
-  async like(@Param('id') id: string, @User() user: IUserInterface, @Res() res: Response): Promise<void> {
+  async like(@Param('id') id: string, @User() user: IUserInterface, @Res() res: Response) {
     res.status(200).send({
       data: await this.newsService.likeById(id, user.data.profileId),
     });
@@ -120,7 +120,7 @@ export class NewsController {
     status: 200,
     description: 'successfully removed like',
   })
-  async unLike(@Param('id') id: string, @User() user: IUserInterface, @Res() res: Response): Promise<void> {
+  async unLike(@Param('id') id: string, @User() user: IUserInterface, @Res() res: Response) {
     res.status(200).send({
       data: await this.newsService.unLikeById(id, user.data.profileId),
     });

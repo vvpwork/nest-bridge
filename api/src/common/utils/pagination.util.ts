@@ -1,8 +1,15 @@
 export const paginate = async (
   model: { findAndCountAll(query: Record<string, unknown>): any },
-  options: { query: Record<string, unknown>; offset?: number; limit?: number },
+  options: {
+    where: Record<string, unknown>;
+    offset?: number;
+    limit?: number;
+    attributes?: any[];
+    include?: any[];
+  },
 ) => {
-  const { count, rows } = await model.findAndCountAll({ options });
+  console.log('scv_opt', options);
+  const { count, rows } = await model.findAndCountAll({ ...options, distinct: true });
 
   return {
     pagination: {

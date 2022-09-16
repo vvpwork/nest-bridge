@@ -15,6 +15,8 @@ import { User } from '@Common/decorators/user.decorator';
 import { IProfileModel } from '@DB/interfaces';
 import {
   EditProfileDto,
+  IProfileDetailedResponseDto,
+  IProfileFollowResponseDto,
   IProfileLibrariesResponseDto,
   IProfileNewsResponseDto,
   IProfilePodcastResponseDto,
@@ -46,6 +48,23 @@ export class ProfileController {
   async getMy(@User() user: IUserInterface, @Res() res: Response) {
     res.status(200).send({
       data: await this.profileService.getById(user.data.profileId),
+    });
+  }
+
+  @Get(':userNameOrAddress')
+  @Public()
+  @ApiResponse({
+    status: 200,
+    description: 'get profile by username or address',
+    type: IProfileDetailedResponseDto,
+  })
+  async getByUserNameOrAddress(
+    @Param('userNameOrAddress') userNameOrAddress: string,
+    @Req() request: IUserRequest,
+    @Res() res: Response,
+  ) {
+    return res.status(200).send({
+      data: await this.profileService.getByUserNameOrAddress(userNameOrAddress, request?.user?.data),
     });
   }
 
@@ -125,6 +144,42 @@ export class ProfileController {
   ) {
     res.status(200).send({
       data: await this.profileService.getNewsByProfileId(id, request?.user?.data, query.limit, query.offset),
+    });
+  }
+
+  @Get(':id/followers')
+  @ApiResponse({
+    status: 200,
+    description: 'Get all followers of target profile',
+    type: IProfileFollowResponseDto,
+  })
+  @Public()
+  async getFollowersList(
+    @Param('id') id: number,
+    @Query() query: PaginationQueryDto,
+    @Req() request: IUserRequest,
+    @Res() res: Response,
+  ) {
+    res.status(200).send({
+      data: await this.profileService.getFollowList('followers', id, request?.user?.data, query.limit, query.offset),
+    });
+  }
+
+  @Get(':id/followings')
+  @ApiResponse({
+    status: 200,
+    description: 'Get all users which target profile is following',
+    type: IProfileFollowResponseDto,
+  })
+  @Public()
+  async getFollowingsList(
+    @Param('id') id: number,
+    @Query() query: PaginationQueryDto,
+    @Req() request: IUserRequest,
+    @Res() res: Response,
+  ) {
+    res.status(200).send({
+      data: await this.profileService.getFollowList('followings', id, request?.user?.data, query.limit, query.offset),
     });
   }
 
