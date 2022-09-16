@@ -10,3 +10,4 @@ export * from './collection';
 export * from './nft';
 export * from './orders';
 export * from './transaction-history';
+export * from './config-api';

@@ -5,3 +5,5 @@ export * from './profile-libraries-response.dto';
 export * from './profile-podcasts-response.dto';
 export * from './profile-news-response.dto';
 export * from './profile-response.dto';
+export * from './profile-detailed-response.dto';
+export * from './profile-follow-response.dto';
