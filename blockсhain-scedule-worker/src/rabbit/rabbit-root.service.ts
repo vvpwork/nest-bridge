@@ -27,7 +27,7 @@ export class RabbitRootService {
     const mes: IMessageRabbit = JSON.parse(message);
 
     switch (mes.type) {
-      case TypeRpcMessage.BLOCKCHAIN:
+      case TypeRpcMessage.BLOCKCHAIN: 
         return this.blockchainHandler(mes.command, mes.data);
 
       default:
@@ -36,6 +36,6 @@ export class RabbitRootService {
   };
 
   async blockchainHandler(command: TypeRpcCommand, data: any) {
-    return Promise.resolve('blockchain');
+    
   }
 }
