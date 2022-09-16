@@ -50,7 +50,7 @@ export class NewsController {
     const image = await this.cloudinary.uploadFile(files.find((v: Express.Multer.File) => v.fieldname === 'image'));
     const imageUrl = image.url ? image.url : '';
 
-    res.status(201).send({
+    return res.status(201).send({
       data: await this.newsService.create({ profileId: user.data.profileId, ...body, image: imageUrl } as INewsModel),
     });
   }
@@ -75,7 +75,7 @@ export class NewsController {
       params.image = image.url;
     }
 
-    res.status(200).send({
+    return res.status(200).send({
       data: await this.newsService.update(id, params as INewsModel),
     });
   }
@@ -86,7 +86,7 @@ export class NewsController {
     description: 'successfully deleted',
   })
   async delete(@Param('id') id: string, @Res() res: Response) {
-    res.status(200).send({
+    return res.status(200).send({
       data: await this.newsService.delete(id),
     });
   }
@@ -99,7 +99,7 @@ export class NewsController {
     type: INewsResponseDto,
   })
   async getOne(@Param('id') id: string, @Req() request: IUserRequest, @Res() res: Response) {
-    res.status(200).send({
+    return res.status(200).send({
       data: await this.newsService.getOneById(id, request?.user?.data),
     });
   }
@@ -110,7 +110,7 @@ export class NewsController {
     description: 'successfully liked',
   })
   async like(@Param('id') id: string, @User() user: IUserInterface, @Res() res: Response) {
-    res.status(200).send({
+    return res.status(200).send({
       data: await this.newsService.likeById(id, user.data.profileId),
     });
   }
@@ -121,7 +121,7 @@ export class NewsController {
     description: 'successfully removed like',
   })
   async unLike(@Param('id') id: string, @User() user: IUserInterface, @Res() res: Response) {
-    res.status(200).send({
+    return res.status(200).send({
       data: await this.newsService.unLikeById(id, user.data.profileId),
     });
   }

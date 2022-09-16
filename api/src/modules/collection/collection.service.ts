@@ -48,6 +48,7 @@ export class CollectionService {
       'id',  d.id,
       'name', d.name,
       'userName', d.userName,
+      'address', d.address,
       'email', d.email,
       'status', d.status,
       'accountType', d.accountType,

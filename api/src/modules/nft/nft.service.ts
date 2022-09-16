@@ -20,6 +20,7 @@ import { upsertData } from '@/db/utils/helper';
 import { IIdentityModel, INftModel } from '@/db/interfaces';
 import { getShortHash } from '@/common/utils/short-hash.utile';
 import { config } from '@/common/config';
+import { countHelper } from '@/common/utils';
 
 @Injectable()
 export class NftService {
@@ -60,6 +61,7 @@ export class NftService {
         n.royalty,
         n.amount  as totalNftAmount,
         n.thumbnail,
+        addr.address  as address,
         n.totalSupply, 
         n.creatorIds as creators,
         b.amount as identityBalance,
@@ -78,18 +80,14 @@ export class NftService {
             'currency', cur.symbol 
             ))) as onSalesData
         from Nft n
-
         JOIN Collection c ON c.id = n.collectionId 
         ${collectionId ? `&& c.id = '${collectionId}'` : ''}
-
-
         JOIN IdentityNftBalance b ON b.nftId = n.id ${identityId ? `&&  b.identityId = '${identityId}'` : ''}    
         ${status === 'onSale' ? `JOIN` : `LEFT JOIN`} \`Orders\` o ON o.nftIdentityBalanceId = b.id
         LEFT JOIN Identity  ident ON ident.id = b.identityId
         LEFT JOIN Profile  pr ON pr.id = ident.profileId
-
+        LEFT JOIN BlockchainIdentityAddress addr ON c.identityId = addr.identityId && c.chainId = addr.chainId    
         LEFT JOIN NftLike lk ON lk.nftId = n.id
-
         ${status === 'onLocked' ? `JOIN` : `LEFT JOIN`} (
           SELECT lk.identityNftBalanceId,
                   sum(lk.amount) as lockedBalance, 
@@ -97,7 +95,6 @@ export class NftService {
           FROM IdentityNftBalanceLock lk
           GROUP BY lk.identityNftBalanceId
           ) l ON b.id = l.identityNftBalanceId
-
         LEFT JOIN Currencies cur ON o.currency = cur.symbol
         ${nftId ? `WHERE n.id = '${nftId}'` : ``}
         GROUP BY b.id
@@ -106,17 +103,25 @@ export class NftService {
         ${sortValue === 'unlockTime' ? `ORDER BY l.unlockTime  ${sortType}` : ``}
         )
 
+       
+
         SELECT
         tb.nftId as id, 
+        p.count as count,
         tb.royalty,
         tb.totalNftAmount,
         tb.thumbnail,
         tb.totalSupply, 
-        tb.creators,        
+        JSON_ARRAYAGG(
+          JSON_OBJECT(
+            'id', creators.id
+          )
+        ) as creators,        
         tb.collection,
         JSON_ARRAYAGG(
           JSON_OBJECT(
             'identityId', tb.identityId,
+            'address', tb.address,
             'identityBalance', tb.identityBalance,
             'profile',tb.profile,
             'lockedData', tb.lockedData,
@@ -128,19 +133,14 @@ export class NftService {
           )
         ) as owners
         FROM temptable tb
+        JOIN (select count(t.nftId) as count from temptable t) p
         GROUP BY tb.nftId
         ${limit ? `LIMIT ${limit}` : ''}
         ${offset ? `OFFSET ${offset}` : ''}
         `;
 
-      const data = await this.repository.sequelize.query(rawQuery);
-      let total = 0;
-      const result = data[0].map((r: any) => {
-        const { count, ...resultData } = r;
-        total = count;
-        return resultData;
-      });
-
+      const [data] = await this.repository.sequelize.query(rawQuery);
+      const { total, result } = countHelper(data);
       return {
         data: result,
         pagination: {

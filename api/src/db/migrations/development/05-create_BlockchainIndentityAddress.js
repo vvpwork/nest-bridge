@@ -34,6 +34,7 @@ module.exports = {
         },
 
         address: {
+          unique: true,
           type: Sequelize.STRING,
           allowNull: false,
         },
