@@ -112,7 +112,7 @@ export class ProfileController {
   @Public()
   async getLibraries(@Param('id') id: number, @Query() query: PaginationQueryDto, @Res() res: Response) {
     return res.status(200).send({
-      data: await this.profileService.getLibrariesByProfileId(id, query.limit, query.offset),
+      data: await this.profileService.getResourcesByProfileId('libraries', id, query.limit, query.offset),
     });
   }
 
@@ -125,7 +125,7 @@ export class ProfileController {
   @Public()
   async getPodcasts(@Param('id') id: number, @Query() query: PaginationQueryDto, @Res() res: Response) {
     return res.status(200).send({
-      data: await this.profileService.getPodcastsByProfileId(id, query.limit, query.offset),
+      data: await this.profileService.getResourcesByProfileId('podcasts', id, query.limit, query.offset),
     });
   }
 
@@ -143,7 +143,13 @@ export class ProfileController {
     @Res() res: Response,
   ) {
     return res.status(200).send({
-      data: await this.profileService.getNewsByProfileId(id, request?.user?.data, query.limit, query.offset),
+      data: await this.profileService.getResourcesByProfileId(
+        'news',
+        id,
+        query.limit,
+        query.offset,
+        request?.user?.data,
+      ),
     });
   }
 
@@ -160,7 +166,7 @@ export class ProfileController {
     @Req() request: IUserRequest,
     @Res() res: Response,
   ) {
-    res.status(200).send({
+    return res.status(200).send({
       data: await this.profileService.getFollowList('followers', id, request?.user?.data, query.limit, query.offset),
     });
   }
@@ -178,7 +184,7 @@ export class ProfileController {
     @Req() request: IUserRequest,
     @Res() res: Response,
   ) {
-    res.status(200).send({
+    return res.status(200).send({
       data: await this.profileService.getFollowList('followings', id, request?.user?.data, query.limit, query.offset),
     });
   }

@@ -137,7 +137,7 @@ export class CollectionController {
   @Get()
   public async getAll(@Res() res: Response, @Query() query: ICollectionQueryDto) {
     const result = await this.service.findAll(query);
-    res.status(200).send({
+    return res.status(200).send({
       ...result,
     });
   }

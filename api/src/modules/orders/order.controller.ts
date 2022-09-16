@@ -47,7 +47,7 @@ export class OrderController {
   async create(@Res() res: Response, @User() user: IUserInterface, @Body() body: ICreateOrderDto) {
     const result = await this.orderService.create({ ...body, identityId: user.data.id });
 
-    res.status(200).send({
+    return res.status(200).send({
       ...result,
     });
   }

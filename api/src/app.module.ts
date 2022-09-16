@@ -6,7 +6,7 @@ import { MulterModule } from '@nestjs/platform-express';
 
 import { config } from '@Common/config';
 import { ExceptionsFilter } from '@Common/filters';
-import { ConfigModule } from '@nestjs/config';
+
 import {
   AuthModule,
   ProfileModule,
@@ -20,6 +20,7 @@ import {
   OrderModule,
   TransactionHistoryModule,
   ConfigApiModule,
+  NotificationModule,
 } from './modules';
 import * as models from './db/models';
 import { SseModule } from './modules/sse/sse.module';
@@ -68,6 +69,10 @@ const routes = RouterModule.register([
     path: '/config',
     module: ConfigApiModule,
   },
+  {
+    path: '/notifications',
+    module: NotificationModule,
+  },
 ]);
 
 const imports = [
@@ -96,6 +101,7 @@ const imports = [
   OrderModule,
   TransactionHistoryModule,
   ConfigApiModule,
+  NotificationModule,
   routes,
 ];
 
