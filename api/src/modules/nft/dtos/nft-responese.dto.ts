@@ -29,6 +29,8 @@ class IProfileData {
   cover: string;
   avatar: string;
   name: string;
+  status: string;
+  accountType: string;
 }
 
 export class INftResponse {
@@ -41,10 +43,20 @@ export class INftResponse {
 
   @ApiProperty({
     example: {
+      name: 'test',
+      description: 'test description',
+    },
+  })
+  metadata: any;
+
+  @ApiProperty({
+    example: {
       id: 1,
       avatar: 'http://logo-url',
       cover: 'http://cover-url',
       name: 'test',
+      status: 'in_progress',
+      accountType: 'user',
     },
   })
   @Type(() => IProfileData)

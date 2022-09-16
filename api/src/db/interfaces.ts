@@ -188,7 +188,7 @@ export interface IBlockchainIdentityAddress {
   description?: string;
 }
 
-export interface IIdentityNftCreator {
+export interface IIdentityNftCreatorModel {
   identityId: number;
   address: string;
   nftId: string;

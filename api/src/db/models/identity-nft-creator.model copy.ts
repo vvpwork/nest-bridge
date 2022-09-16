@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-empty-interface */
 import { Table, Column, Model, DataType, ForeignKey, BelongsTo } from 'sequelize-typescript';
 
-import { IIdentityNftCreator } from '../interfaces';
+import { IIdentityNftCreatorModel } from '../interfaces';
 import { BlockchainIdentityAddressModel } from './blockchain-identity-address.model';
 import { IdentityModel } from './identity.model';
 import { NftModel } from './nft.model';
@@ -11,7 +11,7 @@ import { NftModel } from './nft.model';
   tableName: 'IdentityNftCreator',
   timestamps: false,
 })
-export class IdentityNftCreatorModel extends Model<IIdentityNftCreator> {
+export class IdentityNftCreatorModel extends Model<IIdentityNftCreatorModel> {
   @ForeignKey(() => IdentityModel)
   @Column(DataType.UUID)
   identityId: IdentityModel;

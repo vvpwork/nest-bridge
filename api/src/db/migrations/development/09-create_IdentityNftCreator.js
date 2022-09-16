@@ -15,7 +15,7 @@ module.exports = {
           onDelete: 'CASCADE',
           onUpdate: 'CASCADE',
         },
-        
+
         nftId: {
           type: Sequelize.STRING,
           references: {
@@ -40,5 +40,5 @@ module.exports = {
     );
   },
 
-  down: queryInterface => queryInterface.dropTable({ tableName: 'IdentityNftBalance', schema: db.schema }),
+  down: queryInterface => queryInterface.dropTable({ tableName: 'IdentityNftCreator', schema: db.schema }),
 };

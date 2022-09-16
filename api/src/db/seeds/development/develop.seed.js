@@ -1,5 +1,8 @@
 /* eslint-disable */
 const { upsertData, resetSequence } = require('../../utils/helper');
+const oldProfiles = require('./oldProfiles.json');
+const oldIdentities = require('./oldIdentities.json');
+const oldBcAddresses = require('./oldBcAddresses.json');
 
 module.exports = {
   up: async queryInterface => {
@@ -41,6 +44,7 @@ module.exports = {
         socials: '{}',
         email: 'test@email.com',
       },
+      ...oldProfiles,
     ];
 
     const profilesQuery = upsertData(
@@ -201,6 +205,7 @@ module.exports = {
         status: 'in_progress',
         profileId: 2,
       },
+      ...oldIdentities,
     ];
 
     const identitiesQuery = upsertData(
@@ -213,21 +218,22 @@ module.exports = {
       {
         id: 1,
         chainId: 43113,
-        IdentityId: '626b881ce1358f001420e238',
+        identityId: '626b881ce1358f001420e238',
         address: '0x3C865AC4Bd0B7652Aab04e94E1a14ED39c868879',
       },
       {
         id: 2,
         chainId: 43113,
-        IdentityId: '756b354ce1358f001420e238',
+        identityId: '756b354ce1358f001420e238',
         address: '0x0aFD4FCef8C90E822fadE0472d7f4b31496Cf2e8',
       },
+      ...oldBcAddresses,
     ];
 
     const bcIdentityQuery = upsertData(
       'BlockchainIdentityAddress',
       ['id', 'chainId', 'IdentityId', 'address'],
-      bcIdentityAddress.map(tr => [`'${tr.id}','${tr.chainId}','${tr.IdentityId}', '${tr.address}'`]),
+      bcIdentityAddress.map(tr => [`'${tr.id}','${tr.chainId}','${tr.identityId}', '${tr.address}'`]),
     );
 
     await queryInterface.sequelize.query(bcIdentityQuery);
@@ -395,6 +401,15 @@ module.exports = {
 
     await queryInterface.sequelize.query(nftsQuery);
 
+    // add creators
+    const creatorsQuery = upsertData(
+      'IdentityNftCreator',
+      ['address', 'nftId'],
+      nfts.map(cr => [`'0x3C865AC4Bd0B7652Aab04e94E1a14ED39c868879', '${cr.id}'`]),
+    );
+
+    await queryInterface.sequelize.query(creatorsQuery);
+
     const balances = [
       {
         id: '0x8dcF19AeE31F9624F',
@@ -502,12 +517,9 @@ module.exports = {
     const nftLikesQuery = upsertData(
       'NftLike',
       ['id', 'profileId', 'nftId'],
-        nftLikes.map(m => [
-          `'${m.id}', '${m.profileId}', '${m.nftId}'`
-      ]),
+      nftLikes.map(m => [`'${m.id}', '${m.profileId}', '${m.nftId}'`]),
     );
     await queryInterface.sequelize.query(nftLikesQuery);
-
 
     const followers = [
       {
@@ -524,9 +536,7 @@ module.exports = {
     const followersQuery = upsertData(
       'Follower',
       ['id', 'profileId', 'targetProfileId'],
-      followers.map(m => [
-          `'${m.id}', '${m.profileId}', '${m.targetProfileId}'`
-      ]),
+      followers.map(m => [`'${m.id}', '${m.profileId}', '${m.targetProfileId}'`]),
     );
     await queryInterface.sequelize.query(followersQuery);
 
@@ -565,13 +575,12 @@ module.exports = {
         title: 'Lib 5',
         image: 'https://via.placeholder.com/100',
         source: 'src5',
-      }];
+      },
+    ];
     const libraryQuery = upsertData(
       'Library',
       ['id', 'profileId', 'title', 'image', 'source'],
-      library.map(m => [
-        `'${m.id}','${m.profileId}','${m.title}','${m.image}','${m.source}'`,
-      ]),
+      library.map(m => [`'${m.id}','${m.profileId}','${m.title}','${m.image}','${m.source}'`]),
     );
     await queryInterface.sequelize.query(libraryQuery);
 
@@ -615,13 +624,12 @@ module.exports = {
         description: 'Description for news 5',
         image: 'https://via.placeholder.com/205',
         source: 'Source for news 5',
-      }];
+      },
+    ];
     const newsQuery = upsertData(
       'News',
       ['id', 'profileId', 'title', 'description', 'image', 'source'],
-      news.map(m => [
-        `'${m.id}','${m.profileId}','${m.title}','${m.description}','${m.image}','${m.source}'`,
-      ]),
+      news.map(m => [`'${m.id}','${m.profileId}','${m.title}','${m.description}','${m.image}','${m.source}'`]),
     );
     await queryInterface.sequelize.query(newsQuery);
 
@@ -650,13 +658,12 @@ module.exports = {
         id: 5,
         profileId: 1,
         newsId: 'ee4e4c23-f306-48e4-8ee6-92e3b75134e5',
-      }];
+      },
+    ];
     const newsLikeQuery = upsertData(
       'NewsLike',
       ['id', 'profileId', 'newsId'],
-        newsLike.map(m => [
-        `'${m.id}','${m.profileId}','${m.newsId}'`,
-      ]),
+      newsLike.map(m => [`'${m.id}','${m.profileId}','${m.newsId}'`]),
     );
     await queryInterface.sequelize.query(newsLikeQuery);
 
@@ -666,21 +673,20 @@ module.exports = {
         profileId: 1,
         type: 'newFollower',
         isRead: 0,
-        params: JSON.stringify({id: 2}),
+        params: JSON.stringify({ id: 2 }),
       },
       {
         id: 2,
         profileId: 2,
         type: 'newFollower',
         isRead: 1,
-        params: JSON.stringify({id: 1}),
-      }];
+        params: JSON.stringify({ id: 1 }),
+      },
+    ];
     const notificationsQuery = upsertData(
       'Notification',
-      ['id','profileId', 'type', 'isRead', 'params'],
-      notifications.map(m => [
-        `'${m.id}','${m.profileId}','${m.type}','${m.isRead}','${m.params}'`
-      ]),
+      ['id', 'profileId', 'type', 'isRead', 'params'],
+      notifications.map(m => [`'${m.id}','${m.profileId}','${m.type}','${m.isRead}','${m.params}'`]),
     );
     await queryInterface.sequelize.query(notificationsQuery);
 
@@ -716,13 +722,12 @@ module.exports = {
         description: 'Description for podcast 4',
         image: 'https://via.placeholder.com/304',
         source: 'Source for podcast 4',
-      }];
+      },
+    ];
     const podcastsQuery = upsertData(
       'Podcast',
       ['id', 'profileId', 'title', 'description', 'image', 'source'],
-      podcasts.map(m => [
-        `'${m.id}','${m.profileId}','${m.title}','${m.description}','${m.image}','${m.source}'`
-      ]),
+      podcasts.map(m => [`'${m.id}','${m.profileId}','${m.title}','${m.description}','${m.image}','${m.source}'`]),
     );
     await queryInterface.sequelize.query(podcastsQuery);
 
@@ -743,18 +748,17 @@ module.exports = {
         amount: 1,
         price: '200000000',
         txHash: '0x57cebd0d3af5e484d843e75cf018b5a7577cc313853c50feed406a166af9021f',
-        type: 'buy'
-      }];
+        type: 'buy',
+      },
+    ];
     const transactionHistoryQuery = upsertData(
       'TransactionHistory',
-      ['id','identityId', 'nftId', 'amount', 'price', 'txHash', 'type'],
+      ['id', 'identityId', 'nftId', 'amount', 'price', 'txHash', 'type'],
       transactionHistory.map(m => [
-        `'${m.id}','${m.identityId}', '${m.nftId}', '${m.amount}', '${m.price}', '${m.txHash}', '${m.type}'`
+        `'${m.id}','${m.identityId}', '${m.nftId}', '${m.amount}', '${m.price}', '${m.txHash}', '${m.type}'`,
       ]),
     );
     await queryInterface.sequelize.query(transactionHistoryQuery);
-
-
   },
 
   down: async queryInterface => {
