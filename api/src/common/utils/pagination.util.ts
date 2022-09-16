@@ -6,9 +6,9 @@ export const paginate = async (
     limit?: number;
     attributes?: any[];
     include?: any[];
+    order?: any[];
   },
 ) => {
-  console.log('scv_opt', options);
   const { count, rows } = await model.findAndCountAll({ ...options, distinct: true });
 
   return {
