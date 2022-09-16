@@ -4,6 +4,7 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { ProfileController } from './profile.controller';
 import { ProfileService } from './profile.service';
 import {
+  BlockchainIdentityAddressModel,
   FollowerModel,
   IdentityModel,
   LibraryModel,
@@ -26,6 +27,7 @@ import {
       FollowerModel,
       NotificationModel,
       NewsLikeModel,
+      BlockchainIdentityAddressModel,
     ]),
   ],
   controllers: [ProfileController],

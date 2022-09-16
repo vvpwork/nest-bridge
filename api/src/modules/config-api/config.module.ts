@@ -1,6 +1,9 @@
 import { Module } from '@nestjs/common';
+import { ConfigApiController } from './config.controller';
 
 @Module({
-  controllers: [],
+  imports: [],
+  controllers: [ConfigApiController],
+  providers: [],
 })
 export class ConfigApiModule {}

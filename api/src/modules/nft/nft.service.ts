@@ -235,7 +235,7 @@ export class NftService {
     };
     // eslint-disable-next-line security/detect-object-injection
     let result: any = await paginate(modelsMap[type], {
-      query: { where: { profileId: artemundiIdentity.profileId } },
+      where: { profileId: artemundiIdentity.profileId },
       limit,
       offset,
     });
