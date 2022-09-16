@@ -1,12 +1,13 @@
 import { Response } from 'express';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Body, Controller, Delete, Get, Param, Patch, Post, Res } from '@nestjs/common';
-import { IUserInterface } from '@/common/interfaces';
+import { IUserInterface, IUserRequest } from '@/common/interfaces';
 import { User } from '@/common/decorators';
 import { ICreateOrderDto, ICreateOrderResponseDto } from './dtos/order-create.dto';
 import { OrderService } from './order.service';
 import { IUpdateOrderDto, IUpdateOrderResponseDto } from './dtos/update-order.dto';
 import { TransactionHistoryService } from '../transaction-history/transaction-history.service';
+import { IBuyOrderRequest } from './dtos/buy-order.dto';
 
 @ApiTags('Orders')
 @Controller()
@@ -22,6 +23,19 @@ export class OrderController {
   async findOne(@Res() res: Response, @Param() param: { id: string }) {
     const result = await this.orderService.findOne(param.id);
     return res.status(200).send({ ...result });
+  }
+
+  @ApiResponse({
+    status: 200,
+    description: 'Order was bought',
+    type: 'OK',
+  })
+  @Post('buy')
+  async buy(@Res() res: Response, @User() user: IUserInterface, @Body() body: IBuyOrderRequest) {
+    const result = await this.orderService.buy(body, user.data.id);
+    return res.status(200).send({
+      ...result,
+    });
   }
 
   @ApiResponse({

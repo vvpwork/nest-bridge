@@ -13,7 +13,7 @@ export class LoginDto {
   public code!: string;
 }
 
-export class ILoginResponse {
+export class ILoginResponseData {
   @ApiProperty({
     type: String,
     example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9. ...',
@@ -23,9 +23,13 @@ export class ILoginResponse {
 
   @ApiProperty({
     type: String,
-    example: 'eyJhbGciOiJIUz ...',
+    example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9. ...',
   })
   @IsOptional()
   @IsString()
   whiteListTransaction: string;
+}
+
+export class ILoginResponse {
+  data: ILoginResponseData;
 }

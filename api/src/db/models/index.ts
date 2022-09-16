@@ -20,4 +20,4 @@ export * from './transaction-history.model';
 export * from './transaction-history-type.model';
 export * from './currencies.model';
 export * from './blockchain-identity-address.model';
-export * from './identity-nft-creator.model copy';
+export * from './identity-nft-creator.model';

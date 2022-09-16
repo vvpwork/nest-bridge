@@ -50,4 +50,7 @@ module.exports = {
     apiKey: process.env.CLOUD_API_KEY,
     apiSecret: process.env.CLOUD_API_SECRET,
   },
+  nft: {
+    lockPeriod: process.env.NFT_LOCKING_PERIOD_IN_SECONDS,
+  },
 };

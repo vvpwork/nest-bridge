@@ -5,7 +5,12 @@ import { CurrenciesModel, IdentityNftBalanceLock, IdentityNftBalanceModel, Order
 import { ICreateOrderDto } from './dtos/order-create.dto';
 import { logger } from '@/common/middlewares';
 import { IIdentityBalanceModel } from '@/db/interfaces';
+import { IBuyOrderRequest } from './dtos/buy-order.dto';
+import { TransactionHistoryService } from '../transaction-history/transaction-history.service';
+import { getShortHash } from '@/common/utils/short-hash.utile';
+import { config } from '@/common/config';
 
+const { lockPeriod } = config.nft;
 @Injectable()
 export class OrderService {
   constructor(
@@ -13,6 +18,8 @@ export class OrderService {
     @InjectModel(IdentityNftBalanceModel) private balanceModel: typeof IdentityNftBalanceModel,
     @InjectModel(IdentityNftBalanceLock) private lockModel: typeof IdentityNftBalanceLock,
     @InjectModel(CurrenciesModel) private currencyModel: typeof CurrenciesModel,
+
+    private historyService: TransactionHistoryService,
   ) {}
 
   async create(data: ICreateOrderDto) {
@@ -36,6 +43,8 @@ export class OrderService {
         currency,
       })
     ).toJSON();
+
+    await this.historyService.create({ identityId, type: 'list', amount, price, nftId });
 
     // remove private info
     delete order.nftIdentityBalanceId;
@@ -83,15 +92,79 @@ export class OrderService {
     };
   }
 
+  async buy(data: IBuyOrderRequest, identityId: string) {
+    const { buyAmount, orderId, txHash } = data;
+    const order = await this.orderModel.findOne({
+      where: {
+        id: orderId,
+      },
+    });
+    if (!order) throw new HttpException('Order was not found', 404);
+    if (data.buyAmount > order.amount) throw new HttpException('Invalid balance', 400);
+
+    const sellerBalance = await this.balanceModel.findOne({
+      where: { id: order.toJSON().nftIdentityBalanceId },
+    });
+
+    order.amount -= buyAmount;
+    await order.save();
+
+    sellerBalance.amount -= buyAmount;
+    await sellerBalance.save();
+
+    const [buyerBalance] = await this.balanceModel.findOrCreate({
+      where: {
+        identityId,
+        nftId: sellerBalance.toJSON().nftId,
+      },
+      defaults: {
+        id: getShortHash(identityId, sellerBalance.toJSON().nftId),
+        identityId,
+        nftId: sellerBalance.toJSON().nftId,
+        amount: 0,
+      },
+    });
+
+    buyerBalance.amount += buyAmount;
+    await buyerBalance.save();
+
+    await this.lockModel.create({
+      identityNftBalanceId: buyerBalance.toJSON().id,
+      unlockTime: Date.now() + lockPeriod * 1000,
+      amount: buyAmount,
+    });
+
+    await this.historyService.create({
+      identityId: sellerBalance.toJSON().identityId,
+      txHash,
+      type: 'sell',
+      amount: buyAmount,
+      price: order.price,
+      nftId: sellerBalance.toJSON().nftId,
+    });
+    await this.historyService.create({
+      identityId,
+      txHash,
+      type: 'buy',
+      amount: buyAmount,
+      price: order.price,
+      nftId: sellerBalance.toJSON().nftId,
+    });
+
+    return {
+      data: 'Ok',
+    };
+  }
+
   async findOne(id: string) {
     const order = await this.orderModel.findOne({
       where: { id },
-      // include: [
-      //   {
-      //     model: this.balanceModel,
-      //     attributes: ['identityId', 'nftId'],
-      //   },
-      // ],
+      include: [
+        {
+          model: this.balanceModel,
+          attributes: ['identityId', 'nftId'],
+        },
+      ],
     });
     if (!order) throw new HttpException('Not found', 404);
 
@@ -125,6 +198,6 @@ export class OrderService {
     if (lockedBalance) {
       availableBalance -= lockedBalance.amount;
     }
-    return { availableBalance, balanceId: balance.id, identityId: balance.identityId, nftId: balance.nftId };
+    return { availableBalance, balanceId: balance.id, identityId: balance.toJSON().identityId, nftId: balance.nftId };
   }
 }

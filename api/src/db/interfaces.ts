@@ -18,8 +18,10 @@ export interface IProfileModel {
 }
 
 export interface IIdentityModel {
+  [x: string]: any;
   id: string;
   profileId: number;
+  profile?: IProfileModel;
   securitizeId: string;
   status: PROFILE_STATUS;
   accountType: ACCOUNT_TYPES;
@@ -81,7 +83,7 @@ export interface IIdentityBalanceModel {
 
 export interface IIdentityNftBalanceLock {
   id: number;
-  identityNftBalanceId: number;
+  identityNftBalanceId: string;
   amount: number;
   unlockTime: number;
   createdAt: any;

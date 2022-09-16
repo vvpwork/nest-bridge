@@ -9,6 +9,7 @@ import {
   ForeignKey,
   DefaultScope,
   Default,
+  BelongsTo,
 } from 'sequelize-typescript';
 import { IOrderModel } from '../interfaces';
 
@@ -53,4 +54,7 @@ export class OrdersModel extends Model<IOrderModel> {
   @ForeignKey(() => CurrenciesModel)
   @Column(DataType.STRING)
   currency: CurrenciesModel;
+
+  @BelongsTo(() => IdentityNftBalanceModel, 'nftIdentityBalanceId')
+  nftIdentityBalance: IdentityNftBalanceModel;
 }

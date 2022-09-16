@@ -3,7 +3,6 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
-    "@truffle/hdwallet-provider": "^2.0.14",
     "husky": "^8.0.1"
   },
   "scripts": {

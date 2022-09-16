@@ -17,7 +17,7 @@ import {
 } from '@/db/models';
 import { INftQueryDto } from './dtos/nft-query.dto';
 import { upsertData } from '@/db/utils/helper';
-import { IIdentityModel, INftModel } from '@/db/interfaces';
+import { IIdentityModel, INftModel, IProfileModel } from '@/db/interfaces';
 import { getShortHash } from '@/common/utils/short-hash.utile';
 import { config } from '@/common/config';
 import { countHelper } from '@/common/utils';
@@ -241,6 +241,7 @@ export class NftService {
     });
     if (type === 'news') {
       result = await Promise.all(
+        // TODO replace it to one select
         result.data.map(async (news: NewsModel) => this.injectLikesToNewsRecord(news, viewerUser)),
       );
     }

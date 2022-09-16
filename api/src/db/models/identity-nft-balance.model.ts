@@ -42,18 +42,18 @@ export class IdentityNftBalanceModel extends Model<IIdentityAttributes> {
   @ForeignKey(() => IdentityModel)
   @AllowNull(false)
   @Column(DataType.UUID)
-  identityId: string;
+  identityId: IdentityModel;
 
   @ForeignKey(() => NftModel)
   @Column(DataType.STRING)
   nftId: NftModel;
 
-  @AllowNull(false)
+  @Default(0)
   @Column(DataType.INTEGER)
   amount: number;
 
   @ForeignKey(() => IdentityNftBalanceStatusModel)
-  @AllowNull(false)
+  @AllowNull(true)
   @Column(DataType.STRING)
   status: IdentityNftBalanceStatusModel;
 

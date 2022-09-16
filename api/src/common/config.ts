@@ -11,4 +11,5 @@ export const config: IConfig = {
   securitize: nodeConfig.get('securitize'),
   blockChain: nodeConfig.get('blockChain'),
   cloudinary: nodeConfig.get('cloudinary'),
+  nft: nodeConfig.get('nft'),
 };

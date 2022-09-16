@@ -50,6 +50,9 @@ export interface IConfig {
     apiKey: string;
     apiSecret: string;
   };
+  nft: {
+    lockPeriod: number;
+  };
 }
 
 export interface IUserRequest extends Request {

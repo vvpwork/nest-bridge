@@ -4,7 +4,7 @@
 import { HttpException, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { ApiTags } from '@nestjs/swagger';
-import { BlockchainIdentityAddressModel, CollectionModel, IdentityModel, NftModel, ProfileModel } from '@/db/models';
+import { CollectionModel, IdentityModel, NftModel, ProfileModel } from '@/db/models';
 import { ICollectionModel } from '@/db/interfaces';
 import { ICollectionQueryDto } from './dtos';
 import { BlockchainService } from '../blockchain/blockchain.service';
@@ -32,8 +32,6 @@ export class CollectionService {
       throw new HttpException('Error save to db', 502);
     }
   }
-
-  // async fillCollectionByNfts(collectionAddress: string) {}
 
   async findOne(id: string) {
     return this.repository.findOne({ where: { id } });

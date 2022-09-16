@@ -7,6 +7,8 @@ USER  node
 WORKDIR /home/node/build
 
 COPY package*.json ./
+COPY .sequelizerc ./
+COPY config  ./config
 RUN yarn
 
 
@@ -30,5 +32,6 @@ COPY --from=builder --chown=node:node /home/node/build/package*.json ./
 COPY --from=builder --chown=node:node /home/node/build/node_modules/ ./node_modules/
 COPY --from=builder --chown=node:node /home/node/build/dist/ ./dist/
 COPY --from=builder --chown=node:node /home/node/build/config/ ./config/
+COPY --from=builder --chown=node:node /home/node/build/.sequelizerc ./
 
-CMD ["node", "dist/main.js"]
+CMD npx wait-port rabbitmq:5672 && yarn db:migare && yarn db:seed && yarn start
