@@ -47,7 +47,7 @@ export class NftController {
     description: 'successfully liked',
   })
   async like(@Param('id') id: string, @User() user: IUserInterface, @Res() res: Response) {
-    res.status(200).send({
+    return res.status(200).send({
       data: await this.nftService.likeById(id, user.data.profileId),
     });
   }
@@ -58,7 +58,7 @@ export class NftController {
     description: 'successfully removed like',
   })
   async unLike(@Param('id') id: string, @User() user: IUserInterface, @Res() res: Response) {
-    res.status(200).send({
+    return res.status(200).send({
       data: await this.nftService.unLikeById(id, user.data.profileId),
     });
   }
@@ -71,7 +71,7 @@ export class NftController {
     type: IProfileLibrariesResponseDto,
   })
   async getLibraries(@Param('id') id: number, @Query() query: PaginationQueryDto, @Res() res: Response) {
-    res.status(200).send({
+    return res.status(200).send({
       data: await this.nftService.getNftInfo('libraries', query),
     });
   }
@@ -84,7 +84,7 @@ export class NftController {
     type: IProfilePodcastResponseDto,
   })
   async getPodcasts(@Param('id') id: number, @Query() query: PaginationQueryDto, @Res() res: Response) {
-    res.status(200).send({
+    return res.status(200).send({
       data: await this.nftService.getNftInfo('podcast', query),
     });
   }
@@ -102,7 +102,7 @@ export class NftController {
     @Res() res: Response,
     @Req() request: IUserRequest,
   ) {
-    res.status(200).send({
+    return res.status(200).send({
       data: await this.nftService.getNftInfo('news', query, request?.user?.data),
     });
   }
@@ -115,7 +115,7 @@ export class NftController {
     type: ICommunityLinkResponseDto,
   })
   async getCommunityLink(@Param('id') id: number, @Query() query: PaginationQueryDto, @Res() res: Response) {
-    res.status(200).send({
+    return res.status(200).send({
       data: await this.nftService.getCommunityLinkForMarketplace(),
     });
   }

@@ -125,21 +125,27 @@ export class ProfileService {
     await this.profileModel.update(params, { where: { id } });
   }
 
-  async getLibrariesByProfileId(profileId: number, limit?: number, offset?: number) {
-    return paginate(this.libraryModel, { where: { profileId }, limit, offset });
-  }
+  async getResourcesByProfileId(
+    type: 'libraries' | 'podcasts' | 'news',
+    profileId: number,
+    limit?: number,
+    offset?: number,
+    viewerUser?: IIdentityModel | null,
+  ) {
+    if (type === 'libraries') {
+      return paginate(this.libraryModel, { where: { profileId }, limit, offset });
+    }
+    if (type === 'podcasts') {
+      return paginate(this.podcastModel, { where: { profileId }, limit, offset });
+    }
+    if (type === 'news') {
+      const paginatedData = await paginate(this.newsModel, { where: { profileId }, limit, offset });
+      paginatedData.data = await Promise.all(
+        paginatedData.data.map((news: NewsModel) => this.injectLikesToNewsRecord(news, viewerUser)),
+      );
 
-  async getPodcastsByProfileId(profileId: number, limit?: number, offset?: number) {
-    return paginate(this.podcastModel, { where: { profileId }, limit, offset });
-  }
-
-  async getNewsByProfileId(profileId: number, viewerUser?: IIdentityModel | null, limit?: number, offset?: number) {
-    const paginatedData = await paginate(this.newsModel, { where: { profileId }, limit, offset });
-    paginatedData.data = await Promise.all(
-      paginatedData.data.map((news: NewsModel) => this.injectLikesToNewsRecord(news, viewerUser)),
-    );
-
-    return paginatedData;
+      return paginatedData;
+    }
   }
 
   async followByProfileId(sourceProfileId: number, targetProfileId: number): Promise<{ success: boolean }> {
