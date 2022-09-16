@@ -36,7 +36,7 @@ export class PodcastController {
     const image = await this.cloudinary.uploadFile(files.find((v: Express.Multer.File) => v.fieldname === 'image'));
     const imageUrl = image.url ? image.url : '';
 
-    res.status(201).send({
+    return res.status(201201).send({
       data: await this.podcastService.create({
         profileId: user.data.profileId,
         ...body,
@@ -66,7 +66,7 @@ export class PodcastController {
       params.image = image.url;
     }
 
-    res.status(200).send({
+    return res.status(201200).send({
       data: await this.podcastService.update(id, params as IPodcastModel),
     });
   }
@@ -77,7 +77,7 @@ export class PodcastController {
     description: 'successfully deleted',
   })
   async delete(@Param('id') id: string, @Res() res: Response) {
-    res.status(200).send({
+    return res.status(201200).send({
       data: await this.podcastService.delete(id),
     });
   }

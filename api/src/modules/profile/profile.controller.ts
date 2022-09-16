@@ -44,7 +44,7 @@ export class ProfileController {
     type: IProfileResponseDto,
   })
   async getMy(@User() user: IUserInterface, @Res() res: Response) {
-    res.status(200).send({
+    return res.status(200).send({
       data: await this.profileService.getById(user.data.profileId),
     });
   }
@@ -79,7 +79,7 @@ export class ProfileController {
       params.avatar = avatar.value.url;
     }
 
-    res.status(200).send({
+    return res.status(200).send({
       data: await this.profileService.updateById(user.data.profileId, params as IProfileModel),
     });
   }
@@ -92,7 +92,7 @@ export class ProfileController {
   })
   @Public()
   async getLibraries(@Param('id') id: number, @Query() query: PaginationQueryDto, @Res() res: Response) {
-    res.status(200).send({
+    return res.status(200).send({
       data: await this.profileService.getLibrariesByProfileId(id, query.limit, query.offset),
     });
   }
@@ -105,7 +105,7 @@ export class ProfileController {
   })
   @Public()
   async getPodcasts(@Param('id') id: number, @Query() query: PaginationQueryDto, @Res() res: Response) {
-    res.status(200).send({
+    return res.status(200).send({
       data: await this.profileService.getPodcastsByProfileId(id, query.limit, query.offset),
     });
   }
@@ -123,7 +123,7 @@ export class ProfileController {
     @Req() request: IUserRequest,
     @Res() res: Response,
   ) {
-    res.status(200).send({
+    return res.status(200).send({
       data: await this.profileService.getNewsByProfileId(id, request?.user?.data, query.limit, query.offset),
     });
   }
@@ -134,7 +134,7 @@ export class ProfileController {
     description: 'Follow target profile',
   })
   async followByProfileId(@User() user: IUserInterface, @Param('id') id: number, @Res() res: Response) {
-    res.status(201).send({
+    return res.status(201).send({
       data: await this.profileService.followByProfileId(user.data.profileId, id),
     });
   }
@@ -145,7 +145,7 @@ export class ProfileController {
     description: 'unFollow target profile',
   })
   async unFollowByProfileId(@User() user: IUserInterface, @Param('id') id: number, @Res() res: Response) {
-    res.status(201).send({
+    return res.status(201).send({
       data: await this.profileService.unFollowByProfileId(user.data.profileId, id),
     });
   }
