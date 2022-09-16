@@ -6,20 +6,16 @@ module.exports = {
     await queryInterface.createTable(
       { tableName: 'IdentityNftCreator', schema: db.schema },
       {
-        identityId: {
-          type: Sequelize.UUID,
-          allowNull: true,
+        address: {
+          type: Sequelize.STRING,
           references: {
-            model: 'Identity',
-            key: 'id',
+            model: 'BlockchainIdentityAddress',
+            key: 'address',
           },
           onDelete: 'CASCADE',
           onUpdate: 'CASCADE',
         },
-        address: {
-          type:Sequelize.STRING,
-          allowNull: false,
-        },
+        
         nftId: {
           type: Sequelize.STRING,
           references: {
@@ -28,10 +24,6 @@ module.exports = {
           },
           onDelete: 'CASCADE',
           onUpdate: 'CASCADE',
-        },
-        amount: {
-          type: Sequelize.INTEGER,
-          allowNull: false,
         },
 
         createdAt: {
@@ -44,15 +36,6 @@ module.exports = {
           allowNull: false,
           defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
         },
-      },
-    );
-
-    await queryInterface.addConstraint(
-      { tableName: 'IdentityNftCreator', schema: db.schema },
-      {
-        type: 'UNIQUE',
-        fields: ['identityId', 'nftId'],
-        name: 'unique_identityNftCreator',
       },
     );
   },
