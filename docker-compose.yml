@@ -58,8 +58,7 @@ services:
       - rabbitmq
       - redis
     depends_on:
-      rabbitmq:
-        condition: service_healthy
+      - api
 
   api:
     image: bridgetower/api:dev
