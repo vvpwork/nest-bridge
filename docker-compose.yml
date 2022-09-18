@@ -24,8 +24,8 @@ services:
       - 5672:5672
       - 15672:15672
     volumes:
-      - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
-      - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+      - rabbitmq_data:/var/lib/rabbitmq/
+      - rabbitmq_log:/var/log/rabbitmq
 
     healthcheck:
       test: [ "CMD", "nc", "-z", "localhost", "5672" ]
@@ -81,5 +81,6 @@ services:
       - rabbitmq
       - redis
     depends_on:
-      rabbitmq:
-        condition: service_healthy
+      - rabbitmq
+      - mariadb
+      - redis
