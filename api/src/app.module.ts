@@ -25,8 +25,6 @@ import {
 import * as models from './db/models';
 import { SseModule } from './modules/sse/sse.module';
 import { BlockchainModule } from './modules/blockchain';
-import { TransactionHistoryService } from './modules/transaction-history/transaction-history.service';
-// import { BlockchainModule } from './modules/blockchain';
 
 const routes = RouterModule.register([
   {
@@ -87,7 +85,6 @@ const imports = [
 
   RabbitModule,
   BlockchainModule,
-
   // api
   AuthModule,
   ProfileModule,

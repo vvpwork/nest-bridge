@@ -40,17 +40,24 @@ export class RabbitConnect implements IRabbitConnect {
       });
 
       if (type === ConnectRabbitType.RPC) {
-        const q = await this._channel.assertQueue('', { exclusive: true, maxPriority: 10 });
+        const q = await this._channel.assertQueue('', {
+          exclusive: true,
+          maxPriority: 10,
+        });
         this.push_queue = q.queue;
       }
 
-      await this.channel.assertQueue(this.queue, { durable: false, maxPriority: 10 });
+      await this.channel.assertQueue(this.queue, {
+        durable: false,
+        maxPriority: 10,
+      });
       await this.channel.bindQueue(this.queue, this.exchange, '');
       await this.channel.prefetch(1);
 
       this._count_to_connect = 0;
     } catch (error: any) {
       Logger.error('Error rabbit connect');
+      process.exit(1);
     }
   }
 

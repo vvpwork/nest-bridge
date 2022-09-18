@@ -3,7 +3,6 @@ import { HttpException, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { CurrenciesModel, IdentityNftBalanceLock, IdentityNftBalanceModel, OrdersModel } from '@/db/models';
 import { ICreateOrderDto } from './dtos/order-create.dto';
-import { logger } from '@/common/middlewares';
 import { IIdentityBalanceModel } from '@/db/interfaces';
 import { IBuyOrderRequest } from './dtos/buy-order.dto';
 import { TransactionHistoryService } from '../transaction-history/transaction-history.service';
@@ -93,6 +92,7 @@ export class OrderService {
   }
 
   async buy(data: IBuyOrderRequest, identityId: string) {
+    Logger.log(data, '[Order Service] data to buy data');
     const { buyAmount, orderId, txHash } = data;
     const order = await this.orderModel.findOne({
       where: {
@@ -134,6 +134,7 @@ export class OrderService {
       amount: buyAmount,
     });
 
+    // ****** save history
     await this.historyService.create({
       identityId: sellerBalance.toJSON().identityId,
       txHash,

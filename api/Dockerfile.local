@@ -4,9 +4,9 @@ ENV NODE_ENV build
 
 
 USER  root
-WORKDIR /home/node/build
+WORKDIR /home/
 COPY . .
 RUN yarn
 RUN yarn build 
 
-CMD  yarn db:migrate && yarn db:seed && yarn start
+CMD yarn start:docker
