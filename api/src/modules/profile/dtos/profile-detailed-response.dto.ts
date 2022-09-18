@@ -1,9 +1,7 @@
 /* eslint-disable @typescript-eslint/typedef */
-import { IsEnum, IsString } from 'class-validator';
+
 import { IProfileResponseDto, ProfileSocialsDto } from '@Modules/profile/dtos';
-import { Type } from 'class-transformer';
-import { PROFILE_SECTIONS } from '@Common/enums';
-import { ProfileSocials } from '@Common/types';
+
 import { ApiProperty } from '@nestjs/swagger';
 
 /**

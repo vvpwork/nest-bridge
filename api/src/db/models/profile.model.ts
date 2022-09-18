@@ -8,12 +8,10 @@ import {
   Default,
   AutoIncrement,
   HasOne,
-  HasMany,
 } from 'sequelize-typescript';
-import { PROFILE_SECTIONS } from '@Common/enums';
-import { ProfileSocials } from '@Common/types';
-import { BlockchainIdentityAddressModel } from '@DB/models/blockchain-identity-address.model';
-import { IdentityModel } from '@DB/models/identity.model';
+import { PROFILE_SECTIONS } from '../enums';
+import { ProfileSocials } from '../types';
+import { IdentityModel } from './identity.model';
 import { IProfileModel } from '../interfaces';
 
 @Table({

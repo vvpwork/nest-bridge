@@ -41,6 +41,11 @@ export class BlockchainService {
     return contract.methods.isPartner(address).call();
   }
 
+  async getAvailableBalance(contractAddress: string, accountAddress: string, nftId: string) {
+    const contract = new this.web3Instance.eth.Contract(erc1155abi, contractAddress);
+    return contract.methods.balanceOf(accountAddress, nftId).call();
+  }
+
   /**
    * This method get past minted nfts from Collection smart contract
    * @param collectionAddress

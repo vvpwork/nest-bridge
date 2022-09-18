@@ -36,4 +36,10 @@ module.exports = {
     apiKey: process.env.CLOUD_API_KEY,
     apiSecret: process.env.CLOUD_API_SECRET,
   },
+  securitize: {
+    issuerId: process.env.SECURITIZE_ISSUER_ID,
+    secret: process.env.SECURITIZE_SECRET,
+    baseUrl: process.env.SECURITIZE_API_BASE_URL,
+    proxyAddress: process.env.SECURITIZE_REGISTRY_PROXY_ADDRESS,
+  },
 };

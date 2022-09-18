@@ -1,4 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
+import { BlockchainService } from '../blockchain/blockchain.service';
 import { IMessageRabbit } from './interfaces';
 import { TypeRpcCommand, TypeRpcMessage } from './interfaces/enums';
 import { RabbitService } from './services';
@@ -7,7 +8,7 @@ import { RabbitService } from './services';
 @Injectable()
 export class RabbitRootService {
   private rabbitInstance: RabbitService;
-  constructor() {
+  constructor(private bc: BlockchainService) {
     this.init();
   }
 
@@ -29,14 +30,10 @@ export class RabbitRootService {
 
     switch (mes.type) {
       case TypeRpcMessage.BLOCKCHAIN:
-        return this.blockchainHandler(mes.command, mes.data);
+        return this.bc.rabbit.handlerMessage(mes.command, mes.data);
 
       default:
         return 'Type not found';
     }
   };
-
-  async blockchainHandler(command: TypeRpcCommand, data: any) {
-    return Promise.resolve('ok');
-  }
 }

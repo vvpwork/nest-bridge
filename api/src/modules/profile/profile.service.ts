@@ -14,9 +14,9 @@ import {
 } from '@DB/models';
 import { InjectModel } from '@nestjs/sequelize';
 import { paginate } from '@Common/utils/pagination.util';
-import { NOTIFICATION_TYPES } from '@Common/enums';
-import { IFollowerModel, IIdentityModel, IProfileModel } from '@DB/interfaces';
-import { ACCOUNT_TYPES } from '@DB/enums';
+
+import { IIdentityModel, IProfileModel } from '@DB/interfaces';
+import { ACCOUNT_TYPES, NOTIFICATION_TYPES } from '@DB/enums';
 
 @Injectable()
 export class ProfileService {

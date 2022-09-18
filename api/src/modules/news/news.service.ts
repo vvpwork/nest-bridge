@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { NewsModel, NewsLikeModel, NotificationModel } from '@DB/models';
 import { NotificationService } from '@Modules/notification';
-import { NOTIFICATION_TYPES } from '@Common/enums';
+import { NOTIFICATION_TYPES } from '@DB/enums';
 import { ProfileService } from '@Modules/profile';
 import { InjectModel } from '@nestjs/sequelize';
 

@@ -1,7 +1,7 @@
 /* eslint-disable no-loop-func */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { NOTIFICATION_TYPES } from '@Common/enums';
+import { NOTIFICATION_TYPES } from '@DB/enums';
 import { FollowerModel, NotificationModel } from '@DB/models';
 import { paginate } from '@Common/utils';
 

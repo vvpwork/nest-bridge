@@ -9,8 +9,8 @@ import {
   AutoIncrement,
   HasOne,
 } from 'sequelize-typescript';
-import { PROFILE_SECTIONS } from '@Common/enums';
-import { ProfileSocials } from '@Common/types';
+import { PROFILE_SECTIONS } from '../enums';
+import { ProfileSocials } from '../types';
 import { IProfileModel } from '../interfaces';
 
 @Table({

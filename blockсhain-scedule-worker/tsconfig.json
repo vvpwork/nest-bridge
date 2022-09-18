@@ -10,8 +10,12 @@
     "skipLibCheck": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "moduleResolution": "node",
     "useUnknownInCatchVariables": false,
     "target": "ES2017",
+    "types": [
+      "node"
+    ],
     "sourceMap": true,
     "allowJs": true,
     "outDir": "dist",
@@ -38,8 +42,7 @@
     }
   },
   "include": [
-    "src/custom.d.ts",
-    "src/**/*",
+    "src/**/*"
   ],
   "exclude": [
     "node_modules"

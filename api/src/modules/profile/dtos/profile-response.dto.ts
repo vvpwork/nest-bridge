@@ -2,8 +2,8 @@
 import { IsEnum, IsString } from 'class-validator';
 import { ProfileSocialsDto } from '@Modules/profile/dtos';
 import { Type } from 'class-transformer';
-import { PROFILE_SECTIONS } from '@Common/enums';
-import { ProfileSocials } from '@Common/types';
+import { PROFILE_SECTIONS } from '@DB/enums';
+import { ProfileSocials } from '@DB/types';
 import { ApiProperty } from '@nestjs/swagger';
 
 /**
