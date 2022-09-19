@@ -4,7 +4,7 @@
 import { HttpException, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { ApiTags } from '@nestjs/swagger';
-import { CollectionModel, IdentityModel, NftModel, ProfileModel } from '@/db/models';
+import { BlockchainIdentityAddressModel, CollectionModel, IdentityModel, NftModel, ProfileModel } from '@/db/models';
 import { ICollectionModel } from '@/db/interfaces';
 import { ICollectionQueryDto } from './dtos';
 import { BlockchainService } from '../blockchain/blockchain.service';
@@ -34,7 +34,25 @@ export class CollectionService {
   }
 
   async findOne(id: string) {
-    return this.repository.findOne({ where: { id } });
+    return this.repository.findOne({
+      where: { id },
+      include: {
+        model: IdentityModel,
+        attributes: ['id', 'status', 'accountType'],
+        include: [
+          {
+            model: ProfileModel,
+            as: 'profile',
+            attributes: ['avatar', 'cover', 'userName'],
+          },
+          {
+            model: BlockchainIdentityAddressModel,
+            attributes: ['address'],
+            as: 'address',
+          },
+        ],
+      },
+    });
   }
 
   async findAll(query: ICollectionQueryDto) {
@@ -60,6 +78,7 @@ export class CollectionService {
       GROUP BY i.id
     ) d ON c.identityId = d.id && c.chainId = d.chainId
     ${query.search ? `WHERE c.name LIKE '%${query.search}%'` : ''}
+    ${query.collectionId ? `WHERE c.id = '${query.collectionId}'` : ''}
     GROUP BY c.id)
 
     SELECT tb.*, p.count  FROM temptable tb 

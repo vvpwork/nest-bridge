@@ -118,15 +118,21 @@ export class CollectionController {
     });
   }
 
+  @ApiResponse({
+    type: ICollectionResponse,
+  })
   @Public()
   @Get(':id')
   public async getBuId(@Param() param: ICollectionReadDto, @User() user: IUserInterface, @Res() res: Response) {
-    const result = await this.service.findOne(param.id);
-    this.historyService.create({ identityId: user.data.id });
+    const result = await this.service.findAll({
+      collectionId: param.id,
+      limit: 0,
+      offset: 0,
+      search: '',
+    });
     if (!result) throw new HttpException('Collection was not found', 404);
     return res.status(200).send({
-      data: result,
-      hash: getShortHash(param.id, user.data.id),
+      data: result.data[0],
     });
   }
 

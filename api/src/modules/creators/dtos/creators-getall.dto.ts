@@ -41,6 +41,15 @@ class ICreatorsResponseData {
   userName: string = 'testUser1';
 
   @IsString()
+  name: string = 'User1';
+
+  @IsNumber()
+  isFollowing: number = 1;
+
+  @IsNumber()
+  followers: number = 10;
+
+  @IsString()
   accountType: string = 'user';
 }
 

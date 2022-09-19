@@ -14,12 +14,20 @@ export class CreatorsService {
     const searchQuery = `
 
     with temptable as (
-    SELECT DISTINCT cr.address, pr.avatar, id.id, pr.userName, id.accountType
+    SELECT DISTINCT cr.address, pr.avatar, pr.cover, id.id, pr.userName, pr.name, id.accountType, 
+    IF(fl.id, 1, 0) as isFollowing,
+    fol.count as followers
     FROM Identity id
     JOIN BlockchainIdentityAddress bc On bc.identityId = id.id
     JOIN IdentityNftCreator cr ON cr.address = bc.address
     LEFT JOIN Profile pr On id.profileId = pr.id 
+    LEFT JOIN Follower fl On fl.profileId = pr.id
+    LEFT JOIN (
+      SELECT flw.targetProfileId, count(flw.id) as count from Follower flw
+      GROUP BY flw.targetProfileId
+    ) fol On fol.targetProfileId = pr.id
     ${search ? `WHERE pr.userName like '%${search}%'` : ''}
+    GROUP BY cr.address
     )
 
     select tb.*, p.count from temptable tb 

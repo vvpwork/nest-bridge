@@ -11,13 +11,13 @@ export class ICollectionQueryDto {
   // @IsString()
   // identityId: string;
 
-  // @ApiProperty({
-  //   required: false,
-  // })
-  // @IsOptional()
-  // @Type(() => String)
-  // @IsString()
-  // collectionId: string;
+  @ApiProperty({
+    required: false,
+  })
+  @IsOptional()
+  @Type(() => String)
+  @IsString()
+  collectionId: string;
 
   // @ApiProperty({
   //   required: false,

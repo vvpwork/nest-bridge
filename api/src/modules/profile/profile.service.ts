@@ -18,6 +18,7 @@ import { paginate } from '@Common/utils/pagination.util';
 import { IIdentityModel, IProfileModel } from '@DB/interfaces';
 import { ACCOUNT_TYPES, NOTIFICATION_TYPES } from '@DB/enums';
 
+// TODO refactoring
 @Injectable()
 export class ProfileService {
   constructor(
