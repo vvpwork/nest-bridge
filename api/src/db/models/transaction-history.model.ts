@@ -10,6 +10,7 @@ import {
   AutoIncrement,
   BelongsTo,
 } from 'sequelize-typescript';
+import { DataTypes } from 'sequelize/types';
 import { ProfileModel } from '@DB/models/profile.model';
 import { ITransactionHistory } from '../interfaces';
 import { IdentityModel } from '@/db/models/identity.model';
@@ -49,6 +50,9 @@ export class TransactionHistoryModel extends Model<ITransactionHistory> {
   @AllowNull(true)
   @Column(DataType.STRING)
   txHash: string;
+
+  @Column(DataTypes.JSON)
+  data: string;
 
   @ForeignKey(() => TransactionHistoryTypeModel)
   @Column(DataType.STRING)

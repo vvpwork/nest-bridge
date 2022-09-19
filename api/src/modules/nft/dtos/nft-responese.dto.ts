@@ -164,6 +164,7 @@ export class INftResponse {
       name: 'testUser',
       userName: 'testUser1',
       avatar: 'https://test',
+      accountType: 'user',
     },
     isArray: true,
   })

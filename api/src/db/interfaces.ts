@@ -97,6 +97,7 @@ export interface ITransactionHistory {
   amount: number;
   price: string;
   txHash: string;
+  data?: string;
   type: string;
   createdAt?: any;
   updatedAt?: any;

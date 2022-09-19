@@ -112,6 +112,13 @@ module.exports = {
         code: 'sell',
       },
       {
+        code: 'stake',
+      },
+      {
+        code: 'claim',
+      },
+      
+      {
         code: 'mint',
       },
       {
