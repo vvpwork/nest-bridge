@@ -25,6 +25,7 @@ import {
 import * as models from './db/models';
 import { SseModule } from './modules/sse/sse.module';
 import { BlockchainModule } from './modules/blockchain';
+import { CreatorsModule } from './modules/creators';
 
 const routes = RouterModule.register([
   {
@@ -71,6 +72,10 @@ const routes = RouterModule.register([
     path: '/notifications',
     module: NotificationModule,
   },
+  {
+    path: '/creators',
+    module: CreatorsModule,
+  },
 ]);
 
 const imports = [
@@ -99,6 +104,7 @@ const imports = [
   TransactionHistoryModule,
   ConfigApiModule,
   NotificationModule,
+  CreatorsModule,
   routes,
 ];
 

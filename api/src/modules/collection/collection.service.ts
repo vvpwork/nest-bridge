@@ -59,6 +59,7 @@ export class CollectionService {
       LEFT JOIN Profile p ON  p.id = i.profileId
       GROUP BY i.id
     ) d ON c.identityId = d.id && c.chainId = d.chainId
+    ${query.search ? `WHERE c.name LIKE '%${query.search}%'` : ''}
     GROUP BY c.id)
 
     SELECT tb.*, p.count  FROM temptable tb 

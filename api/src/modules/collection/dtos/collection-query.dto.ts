@@ -42,4 +42,11 @@ export class ICollectionQueryDto {
   @Type(() => Number)
   @IsNumber()
   offset: number = 0;
+
+  @ApiProperty({
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  search: string;
 }
