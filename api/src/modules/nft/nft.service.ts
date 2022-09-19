@@ -49,14 +49,13 @@ export class NftService {
   async getAll(search?: INftQueryDto) {
     try {
       const { limit, offset, identityId, collectionId, status, sortType, sortValue, nftId } = search;
-
+      //  TODO refactor
       // One select for all nft requirements
       const rawQuery = `
 
       WITH temptable as (
         SELECT
         b.identityId as identityId,
-
         ident.status as status,
         ident.accountType,
         JSON_OBJECT('id', pr.id, 'cover', pr.cover, 'avatar', pr.avatar, 'name', pr.name ) as profile,
@@ -70,6 +69,7 @@ export class NftService {
           JSON_OBJECT(
             'address', cr.address,
             'identityId', cr.identityId,
+            'accountType', cr.accountType,
             'name', cr.name,
             'userName', cr.userName,
             'avatar', .cr.avatar
@@ -103,7 +103,7 @@ export class NftService {
         LEFT JOIN BlockchainIdentityAddress addr ON c.identityId = addr.identityId && c.chainId = addr.chainId    
         LEFT JOIN NftLike lk ON lk.nftId = n.id
         LEFT JOIN (
-          SELECT creator.nftId, creator.address, id.id as identityId, pr.name, pr.avatar, pr.userName   
+          SELECT creator.nftId, creator.address, id.id as identityId, id.accountType, pr.name, pr.avatar, pr.userName   
           FROM IdentityNftCreator creator
           JOIN BlockchainIdentityAddress bad On bad.address = creator.address
           JOIN Identity id On id.id = bad.identityId
@@ -126,7 +126,6 @@ export class NftService {
         ${sortValue === 'unlockTime' ? `ORDER BY l.unlockTime  ${sortType}` : ``}
         )
 
-       
 
         SELECT
         tb.nftId as id, 
