@@ -5,7 +5,7 @@ import Web3 from 'web3';
 
 import { config } from '@/common/config';
 import { erc1155abi } from '../abis/erc1155bridgeTowerProxy';
-import { IBlockchainUtils } from '../interfaces /blockchain-utils.interface';
+import { IBlockchainUtils } from '../interfaces/blockchain-utils.interface';
 import { securitizeRegistryAbi } from '../abis/securitizeRegistry';
 
 const { erc1155proxyC2 } = config.blockchain;

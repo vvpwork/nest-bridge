@@ -5,7 +5,7 @@ import HDWalletProvider from '@truffle/hdwallet-provider';
 import Web3 from 'web3';
 
 import { config } from '@/common/config';
-import { IBlockchainUtils } from './interfaces /blockchain-utils.interface';
+import { IBlockchainUtils } from './interfaces/blockchain-utils.interface';
 import { BlockchainUtilsService } from './services/blockchain-utils.service';
 import { BlockchainRabbitService } from './services';
 import { CloudinaryService } from '@/common/services/cloudinary.service';
