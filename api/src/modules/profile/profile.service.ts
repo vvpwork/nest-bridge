@@ -140,8 +140,17 @@ export class ProfileService {
     }
     if (type === 'news') {
       const paginatedData = await paginate(this.newsModel, { where: { profileId }, limit, offset });
+
+      const listOfNewsLikesCount = await this.getAllNewsLikeCounts();
+      let listOfAllNewsIdsLikedByUser: NewsModel[] = [];
+      if (viewerUser) {
+        listOfAllNewsIdsLikedByUser = await this.getAllNewsLikesListByProfileId(viewerUser.profileId);
+      }
+
       paginatedData.data = await Promise.all(
-        paginatedData.data.map((news: NewsModel) => this.injectLikesToNewsRecord(news, viewerUser)),
+        paginatedData.data.map((news: NewsModel) =>
+          this.injectLikesToNewsRecord(news, listOfNewsLikesCount, listOfAllNewsIdsLikedByUser),
+        ),
       );
 
       return paginatedData;
@@ -208,32 +217,19 @@ export class ProfileService {
   }
 
   // ToDo move this and the same code to service, when circular dependencies are resolved
-  async injectLikesToNewsRecord(newsRecord: NewsModel, viewerUser?: IIdentityModel) {
+  async injectLikesToNewsRecord(newsRecord: any, listOfNewsLikesCount: any, listOfAllNewsIdsLikedByUser: any) {
     const result = newsRecord;
     result.isLiked = false;
 
-    result.likesCount = await this.getLikesCount(newsRecord.id);
-
-    if (viewerUser) {
-      result.isLiked = await this.isLiked(newsRecord.id, +viewerUser.profileId);
+    if (listOfAllNewsIdsLikedByUser) {
+      result.isLiked = listOfAllNewsIdsLikedByUser.includes(newsRecord.dataValues.id);
     }
 
+    result.likesCount = listOfNewsLikesCount[newsRecord.dataValues.id]
+      ? listOfNewsLikesCount[newsRecord.dataValues.id]
+      : 0;
+
     return result;
-  }
-
-  async getLikesCount(newsId: string): Promise<number> {
-    return this.newsLikeModel.count({
-      where: { newsId },
-    });
-  }
-
-  async isLiked(newsId: string, profileId: number): Promise<boolean> {
-    const newsLikeRecord = await this.newsLikeModel.findOne({
-      where: { newsId, profileId },
-      attributes: ['id'],
-      raw: true,
-    });
-    return !!newsLikeRecord;
   }
 
   async getFollowList(
@@ -369,6 +365,35 @@ export class ProfileService {
       })
       .then((allTargets: Pick<FollowerModel, 'targetProfileId'>[]) =>
         allTargets.map((target: Pick<FollowerModel, 'targetProfileId'>) => target.targetProfileId),
+      );
+  }
+
+  async getAllNewsLikeCounts() {
+    const allCountsList: any[] = await this.newsLikeModel.findAll({
+      attributes: ['newsId', 'profileId', [fn('COUNT', 'profileId'), 'likesCount']],
+      group: ['newsId'],
+    });
+
+    let formattedCountsObject;
+    if (allCountsList.length) {
+      formattedCountsObject = {};
+      allCountsList.forEach((item: any) => {
+        formattedCountsObject[item.newsId] = item.dataValues.likesCount;
+      });
+    }
+
+    return formattedCountsObject;
+  }
+
+  // get array containing all newsIds liked by current user
+  async getAllNewsLikesListByProfileId(profileId: number) {
+    return this.newsLikeModel
+      .findAll({
+        where: { profileId },
+        attributes: ['newsId'],
+      })
+      .then((allNews: Pick<NewsLikeModel, 'newsId'>[]) =>
+        allNews.map((newsRecord: Pick<NewsLikeModel, 'newsId'>) => newsRecord.newsId),
       );
   }
 }
