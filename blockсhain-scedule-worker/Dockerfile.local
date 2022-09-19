@@ -1,32 +1,12 @@
-FROM node:16.17.0 as builder
+FROM node:16.17.0
 
 ENV NODE_ENV build
 
-USER  node
-WORKDIR /home/node/build
 
-COPY package*.json ./
+USER  root
+WORKDIR /home/
+COPY . .
 RUN yarn
+RUN yarn build 
 
-COPY --chown=node:node . .
-RUN yarn build
-
-# ---
-
-FROM node:16-alpine
-
-ENV NODE_ENV development
-
-RUN wget -O /bin/wait-for-it.sh https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh
-RUN chmod +x /bin/wait-for-it.sh
-RUN apk add bash --no-cache
-
-USER node
-WORKDIR /home/node
-
-COPY --from=builder --chown=node:node /home/node/build/package*.json ./
-COPY --from=builder --chown=node:node /home/node/build/node_modules/ ./node_modules/
-COPY --from=builder --chown=node:node /home/node/build/dist/ ./dist/
-COPY --from=builder --chown=node:node /home/node/build/config/ ./config/
-
-CMD ["node", "dist/main.js"]
+CMD yarn start
