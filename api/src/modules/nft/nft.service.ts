@@ -47,9 +47,9 @@ export class NftService {
     private profileModel: typeof ProfileModel,
   ) {}
 
-  async getAll(search?: INftQueryDto) {
+  async getAll(searchData?: INftQueryDto) {
     try {
-      const { limit, offset, identityId, collectionId, status, sortType, sortValue, nftId } = search;
+      const { limit, offset, identityId, collectionId, status, sortType, sortValue, nftId, search } = searchData;
       //  TODO refactor
       // One select for all nft requirements
       const rawQuery = `
@@ -121,6 +121,7 @@ export class NftService {
           ) l ON b.id = l.identityNftBalanceId
         LEFT JOIN Currencies cur ON o.currency = cur.symbol
         ${nftId ? `WHERE n.id = '${nftId}'` : ``}
+        ${search ? `WHERE JSON_VALUE(n.metadata, '$.name') like '%${search}%'` : ``}
         GROUP BY b.id
         ${sortValue === 'price' ? `ORDER BY  CONVERT(o.price, INTEGER) ${sortType}` : ``}
         ${sortValue === 'created' ? `ORDER BY  o.createdAt  ${sortType}` : ``}

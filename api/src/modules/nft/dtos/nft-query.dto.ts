@@ -45,6 +45,13 @@ export class INftQueryDto {
     required: false,
   })
   @IsOptional()
+  @IsString()
+  search: string;
+
+  @ApiProperty({
+    required: false,
+  })
+  @IsOptional()
   @IsEnum(StatusesType)
   status: StatusesType;
 
