@@ -44,6 +44,12 @@ module.exports = {
           type: Sequelize.STRING(128),
           allowNull: true,
         },
+
+        data: {
+          type: Sequelize.JSON,
+          allowNull: true,
+        },
+
         type: {
           type: Sequelize.STRING,
           allowNull: false,

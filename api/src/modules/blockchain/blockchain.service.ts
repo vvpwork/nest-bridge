@@ -71,8 +71,11 @@ export class BlockchainService {
         const [royalties, royalty] = info.royalties[0];
         const [creators] = info.creators[0];
 
+        const ownerBalance = await contract.methods.balanceOf(v.owner, v.id).call();
+
         return {
           ...v,
+          ownerBalance,
           collectionId: collectionAddress,
           thumbnail: info.metadata.imageData.thumbnail,
           metadata: info.metadata.data,

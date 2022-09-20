@@ -3,15 +3,21 @@
 
 import Web3 from 'web3';
 
+import { Injectable } from '@nestjs/common';
 import { config } from '@/common/config';
 import { erc1155abi } from '../abis/erc1155bridgeTowerProxy';
 import { IBlockchainUtils } from '../interfaces/blockchain-utils.interface';
 import { securitizeRegistryAbi } from '../abis/securitizeRegistry';
+import { Web3Instance } from '@/common/utils';
 
 const { erc1155proxyC2 } = config.blockchain;
 
+@Injectable()
 export class BlockchainUtilsService implements IBlockchainUtils {
-  constructor(private web3Instance: Web3) {}
+  private web3Instance: Web3;
+  constructor() {
+    this.web3Instance = Web3Instance.getInstance();
+  }
 
   async isWalletWhitelistedOnSecuritize(address: string): Promise<boolean> {
     const securitizeContract = new this.web3Instance.eth.Contract(

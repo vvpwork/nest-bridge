@@ -13,7 +13,7 @@ module.exports = {
           primaryKey: true,
         },
         identityNftBalanceId: {
-          type: Sequelize.BIGINT,
+          type: Sequelize.UUID,
           allowNull: false,
           references: {
             model: 'IdentityNftBalance',

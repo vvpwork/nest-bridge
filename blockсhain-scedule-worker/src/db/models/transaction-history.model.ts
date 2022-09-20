@@ -8,7 +8,9 @@ import {
   AllowNull,
   ForeignKey,
   AutoIncrement,
+  BelongsTo,
 } from 'sequelize-typescript';
+
 import { ITransactionHistory } from '../interfaces';
 import { IdentityModel } from '@/db/models/identity.model';
 import { NftModel } from '@/db/models/nft.model';
@@ -37,7 +39,7 @@ export class TransactionHistoryModel extends Model<ITransactionHistory> {
   nftId: string;
 
   @AllowNull(true)
-  @Column(DataType.INTEGER)
+  @Column(DataType.NUMBER)
   amount: number;
 
   @AllowNull(true)
@@ -48,7 +50,13 @@ export class TransactionHistoryModel extends Model<ITransactionHistory> {
   @Column(DataType.STRING)
   txHash: string;
 
+  @Column(DataType.JSON)
+  data: string;
+
   @ForeignKey(() => TransactionHistoryTypeModel)
   @Column(DataType.STRING)
   type: TransactionHistoryTypeModel;
+
+  @BelongsTo(() => IdentityModel, 'identityId')
+  identity: IdentityModel;
 }

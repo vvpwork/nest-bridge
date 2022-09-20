@@ -70,7 +70,7 @@ export class NftService {
         ident.accountType,
         JSON_OBJECT('id', pr.id, 'cover', pr.cover, 'avatar', pr.avatar, 'name', pr.name ) as profile,
         n.id as nftId, 
-        JSON_OBJECT('id', c.id, 'logo', c.logo, 'cover', c.cover, 'symbol', c.symbol ) as collection,
+        JSON_OBJECT('id', c.id, 'name', c.name, 'description', c.description, 'logo', c.logo, 'cover', c.cover, 'symbol', c.symbol ) as collection,
         n.royalty,
         n.metadata,
         n.amount  as totalNftAmount,
@@ -214,7 +214,7 @@ export class NftService {
         'IdentityNftBalance',
         ['id', 'identityId', 'nftId', 'amount'],
         nfts.map((nft: INftModel) => [
-          `'${getShortHash(identityId, nft.id)}','${identityId}','${nft.id}','${nft.amount}'`,
+          `'${getShortHash(identityId, nft.id)}','${identityId}','${nft.id}','${nft.ownerBalance}'`,
         ]),
       );
       await this.repository.sequelize.query(balancesQuery);

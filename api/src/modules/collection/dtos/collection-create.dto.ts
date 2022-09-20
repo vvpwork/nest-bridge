@@ -7,9 +7,6 @@ export class ICollectionCreateDto {
   id!: string;
 
   @IsString()
-  identityId!: string;
-
-  @IsString()
   name!: string;
 
   @IsString()
@@ -42,6 +39,12 @@ export class ICollectionCreate {
 
   @IsString()
   symbol: string = 'TST';
+
+  @IsString()
+  cover: string = 'http://res.cloudinary.com/b';
+
+  @IsString()
+  avatar: string = 'http://res.cloudinary.com/b';
 
   @IsNumber()
   salt: number = 8921892;

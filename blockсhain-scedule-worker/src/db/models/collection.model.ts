@@ -10,6 +10,7 @@ import {
   DefaultScope,
   Default,
   HasMany,
+  BelongsToMany,
 } from 'sequelize-typescript';
 import { randomBytes } from 'node:crypto';
 import { ICollectionModel } from '../interfaces';
@@ -29,10 +30,9 @@ export class CollectionModel extends Model<ICollectionModel> {
   @Column(DataType.STRING)
   id: string;
 
+  @Column(DataType.STRING)
   @ForeignKey(() => IdentityModel)
-  @AllowNull(false)
-  @Column(DataType.BIGINT)
-  identityId: number;
+  identityId: IdentityModel;
 
   @AllowNull(true)
   @Column(DataType.STRING)
@@ -68,4 +68,7 @@ export class CollectionModel extends Model<ICollectionModel> {
 
   @HasMany(() => NftModel)
   nfts: NftModel[];
+
+  @BelongsTo(() => IdentityModel, 'identityId')
+  identity: IdentityModel;
 }

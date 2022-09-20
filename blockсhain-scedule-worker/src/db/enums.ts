@@ -32,3 +32,14 @@ export enum NOTIFICATION_TYPES {
   FOLLOWING_PERSON_ADDED_LIBRARY = 'followingPersonAddedLibrary',
   NFTS_UNLOCKED = 'nftsUnlocked',
 }
+
+export enum HISTORY_TYPES {
+  BUY = 'BUY',
+  SELL = 'SELL',
+  LIST = 'LIST',
+  UNLIST = 'UNLIST',
+  PRICE_UPDATE = 'PRICE_UPDATE',
+  ROYALTY_RECEIVE = 'ROYALTY_RECEIVE',
+  STAKE = 'STAKE',
+  CLAIM = 'CLAIM',
+}

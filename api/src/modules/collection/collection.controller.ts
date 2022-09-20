@@ -6,6 +6,7 @@ import {
   Logger,
   Next,
   Param,
+  Patch,
   Post,
   Query,
   Res,
@@ -31,6 +32,7 @@ import { TypeRpcCommand, TypeRpcMessage } from '../rabbit/interfaces/enums';
 import { IUserInterface } from '@/common/interfaces';
 import { getShortHash } from '@/common/utils/short-hash.utile';
 import { TransactionHistoryService } from '../transaction-history/transaction-history.service';
+import { ICollectionUpdateDto, ICollectionUpdateParam } from './dtos/colllection-update.dto';
 
 @ApiTags('Collection')
 @Controller()
@@ -54,8 +56,6 @@ export class CollectionController {
     schema: {
       type: 'object',
       properties: {
-        comment: { type: 'string' },
-        outletId: { type: 'integer' },
         logo: {
           type: 'string',
           format: 'binary',
@@ -65,7 +65,7 @@ export class CollectionController {
           format: 'binary',
         },
         id: { type: 'string' },
-        identityId: { type: 'string' },
+
         name: { type: 'string' },
         description: { type: 'string' },
         symbol: { type: 'string' },
@@ -105,13 +105,16 @@ export class CollectionController {
     } as ICollectionModel);
 
     // inform another service
-    // await this.rabbit.getProcessResult({
-    //   type: TypeRpcMessage.BLOCKCHAIN,
-    //   command: TypeRpcCommand.ADD_COLLECTION,
-    //   data: {
-    //     addresses: [body.id],
-    //   },
-    // });
+    const resFromWorker = await this.rabbit.getProcessResult({
+      type: TypeRpcMessage.BLOCKCHAIN,
+      command: TypeRpcCommand.ADD_COLLECTION,
+      data: {
+        addresses: [body.id],
+        identityId: user.data.id,
+      },
+    });
+
+    console.log(resFromWorker);
 
     return res.status(201).send({
       data: result,
@@ -145,6 +148,53 @@ export class CollectionController {
   public async getAll(@Res() res: Response, @Query() query: ICollectionQueryDto) {
     const result = await this.service.findAll(query);
     return res.status(200).send({
+      ...result,
+    });
+  }
+
+  @UseInterceptors(AnyFilesInterceptor())
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        logo: {
+          type: 'string',
+          format: 'binary',
+        },
+        cover: {
+          type: 'string',
+          format: 'binary',
+        },
+
+        name: { type: 'string' },
+        description: { type: 'string' },
+        symbol: { type: 'string' },
+      },
+    },
+  })
+  @ApiResponse({
+    type: ICollectionCreate,
+  })
+  @Patch(':id')
+  public async updateCollection(
+    @Res() res: Response,
+    @Body() body: ICollectionUpdateDto,
+    @User() user: IUserInterface,
+    @UploadedFiles() files: Array<Express.Multer.File>,
+    @Param() param: ICollectionUpdateParam,
+  ) {
+    // upload images to cloudinary
+    const [cover, logo] = await Promise.allSettled([
+      this.cloudinary.uploadFile(files.find((v: Express.Multer.File) => v.fieldname === 'cover')),
+      this.cloudinary.uploadFile(files.find((v: Express.Multer.File) => v.fieldname === 'logo')),
+    ]);
+
+    const coverImage = cover.status === 'fulfilled' ? cover.value.url : '';
+    const logoImage = logo.status === 'fulfilled' ? logo.value.url : '';
+
+    const result = await this.service.update(param.id, user.data.id, { ...body, cover: coverImage, logo: logoImage });
+    return res.status(201).send({
       ...result,
     });
   }

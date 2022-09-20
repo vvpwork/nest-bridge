@@ -11,6 +11,7 @@ import {
 } from 'sequelize-typescript';
 import { PROFILE_SECTIONS } from '../enums';
 import { ProfileSocials } from '../types';
+import { IdentityModel } from './identity.model';
 import { IProfileModel } from '../interfaces';
 
 @Table({
@@ -63,4 +64,7 @@ export class ProfileModel extends Model<IProfileModel> {
   @Default(Object.values(PROFILE_SECTIONS))
   @Column(DataType.JSON)
   sections: string;
+
+  @HasOne(() => IdentityModel, 'profileId')
+  identity: IdentityModel;
 }

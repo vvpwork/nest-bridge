@@ -84,7 +84,6 @@ export class RabbitService implements IRabbitService {
           this.rpc_connection.ack(msg);
           const message = msg!.content.toString();
           const handlerResult = await this.handlerMessageFromRPC(message);
-          console.log(msg!.properties.replyTo, msg!.properties.correlationId);
           channel.sendToQueue(
             msg!.properties.replyTo,
             Buffer.from(JSON.stringify(handlerResult)),
