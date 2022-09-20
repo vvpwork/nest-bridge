@@ -18,6 +18,7 @@ export class BlockchainRabbitService {
     switch (command) {
       case TypeRpcCommand.ADD_COLLECTION:
         return this.addCollection(data);
+        // return 'ADD_COLLECTION';
 
       default:
         Logger.error('Command is not found ');
@@ -27,6 +28,7 @@ export class BlockchainRabbitService {
 
   private async addCollection(data: any) {
     const nfts = await this.getPastCollectionNfts(data.collectionAddress);
+    return nfts;
   }
 
   /**

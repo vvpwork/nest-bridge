@@ -3,7 +3,6 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { CollectionModel, NftModel } from '@/db/models';
 import { CollectionController } from './collection.controller';
 import { CollectionService } from './collection.service';
-import { BlockchainService } from '../blockchain/blockchain.service';
 import { BlockchainModule } from '../blockchain';
 import { NftModule } from '../nft';
 

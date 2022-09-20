@@ -5,7 +5,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { config } from './common/config';
 import { IdentityNftBalanceLock } from './db/models';
-import { RabbitModule, BlockchainModule } from './modules';
+import { RabbitModule, BlockchainModule, CronJobModule } from './modules';
 
 @Module({
   imports: [
@@ -18,6 +18,7 @@ import { RabbitModule, BlockchainModule } from './modules';
     SequelizeModule.forFeature([IdentityNftBalanceLock]),
     ScheduleModule.forRoot(),
     RabbitModule,
+    CronJobModule,
   ],
   controllers: [AppController],
   providers: [AppService],

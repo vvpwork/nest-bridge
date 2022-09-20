@@ -16,7 +16,7 @@ export class CronJobService {
   async triggerCronJob() {
     try {
       const result = await this.lockRepository.sequelize.query(
-        `DELETE FROM IdentityNftBalanceLock WHERE unlockTime >= ${Date.now()}`,
+        `DELETE FROM IdentityNftBalanceLock WHERE unlockTime  <= ${Date.now()}`,
       );
       Logger.log('Result after delete', JSON.stringify(result));
     } catch (err) {
