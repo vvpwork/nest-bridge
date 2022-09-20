@@ -68,7 +68,4 @@ export class IdentityNftBalanceModel extends Model<IIdentityAttributes> {
 
   @HasMany(() => OrdersModel, 'nftIdentityBalanceId')
   orders: OrdersModel[];
-
-  @BelongsTo(() => NftModel, 'nftId')
-  nft: NftModel;
 }

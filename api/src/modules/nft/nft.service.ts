@@ -27,6 +27,7 @@ import { IIdentityModel, INftModel, IProfileModel } from '@/db/interfaces';
 import { getShortHash } from '@/common/utils/short-hash.utile';
 import { config } from '@/common/config';
 import { countHelper } from '@/common/utils';
+import { IUserInterface } from '@/common/interfaces';
 
 @Injectable()
 export class NftService {
@@ -406,7 +407,7 @@ export class NftService {
     return artemundiWalletRecord.identity;
   }
 
-  async getTotalStatsByIdentityId(user: IIdentityModel) {
+  async getTotalStatsByIdentityId(user: IUserInterface['data']) {
     const historyTotalPrices = await this.transactionHistoryModel.findAll({
       where: { type: HISTORY_TYPES.BUY, identityId: user.id },
       attributes: [[Sequelize.fn('sum', Sequelize.col('price')), 'price']],

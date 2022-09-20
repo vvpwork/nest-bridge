@@ -93,6 +93,7 @@ export interface IIdentityNftBalanceLock {
 
 export interface ITransactionHistory {
   id?: number;
+  nft?: any;
   identityId: string;
   nftId: string;
   amount: number;
