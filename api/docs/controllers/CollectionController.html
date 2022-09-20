@@ -1,0 +1,646 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>api documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">api documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content controller">
+                   <div class="content-data">
+
+
+
+
+
+<ol class="breadcrumb">
+  <li>Controllers</li>
+  <li >CollectionController</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/modules/collection/collection.controller.ts</code>
+        </p>
+
+
+
+
+
+
+
+            <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#getAll" >getAll</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#getBuId" >getBuId</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#post" >post</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getAll"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>getAll</b></span>
+                        <a href="#getAll"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getAll(res: Response, query: <a href="../classes/ICollectionQueryDto.html" target="_self">ICollectionQueryDto</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Public()<br />@ApiResponse({type: ICollectionResponse, isArray: true})<br />@Get()<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="138"
+                            class="link-to-prism">src/modules/collection/collection.controller.ts:138</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>res</td>
+                                    <td>
+                                            <code>Response</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>query</td>
+                                    <td>
+                                                <code><a href="../classes/ICollectionQueryDto.html" target="_self" >ICollectionQueryDto</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getBuId"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>getBuId</b></span>
+                        <a href="#getBuId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getBuId(param: <a href="../classes/ICollectionReadDto.html" target="_self">ICollectionReadDto</a>, user: <a href="../interfaces/IUserInterface.html" target="_self">IUserInterface</a>, res: Response)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Get(&#x27;:id&#x27;)<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="122"
+                            class="link-to-prism">src/modules/collection/collection.controller.ts:122</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>param</td>
+                                    <td>
+                                                <code><a href="../classes/ICollectionReadDto.html" target="_self" >ICollectionReadDto</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>user</td>
+                                    <td>
+                                                <code><a href="../interfaces/IUserInterface.html" target="_self" >IUserInterface</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>res</td>
+                                    <td>
+                                            <code>Response</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="post"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>post</b></span>
+                        <a href="#post"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>post(body: <a href="../classes/ICollectionCreateDto.html" target="_self">ICollectionCreateDto</a>, files: Array<Express.Multer.File>, res: Response, user: <a href="../interfaces/IUserInterface.html" target="_self">IUserInterface</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Post()<br />@UseInterceptors(undefined)<br />@ApiConsumes(&#x27;multipart/form-data&#x27;)<br />@ApiBody({schema: undefined})<br />@ApiResponse({status: 201, description: &#x27;Collection was added&#x27;, type: ICollectionCreate})<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="82"
+                            class="link-to-prism">src/modules/collection/collection.controller.ts:82</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>body</td>
+                                    <td>
+                                                <code><a href="../classes/ICollectionCreateDto.html" target="_self" >ICollectionCreateDto</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>files</td>
+                                    <td>
+                                            <code>Array&lt;Express.Multer.File&gt;</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>res</td>
+                                    <td>
+                                            <code>Response</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>user</td>
+                                    <td>
+                                                <code><a href="../interfaces/IUserInterface.html" target="_self" >IUserInterface</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import {
+  Body,
+  Controller,
+  Get,
+  HttpException,
+  Logger,
+  Next,
+  Param,
+  Post,
+  Query,
+  Res,
+  UploadedFiles,
+  UseInterceptors,
+} from &#x27;@nestjs/common&#x27;;
+import { ApiBody, ApiConsumes, ApiResponse, ApiTags } from &#x27;@nestjs/swagger&#x27;;
+import { Multer } from &#x27;multer&#x27;;
+import { Response } from &#x27;express&#x27;;
+import { AnyFilesInterceptor } from &#x27;@nestjs/platform-express&#x27;;
+import { InjectModel } from &#x27;@nestjs/sequelize&#x27;;
+import { CollectionModel } from &#x27;@/db/models&#x27;;
+import { ICollectionCreate, ICollectionCreateDto } from &#x27;./dtos/collection-create.dto&#x27;;
+import { CloudinaryService } from &#x27;@/common/services/cloudinary.service&#x27;;
+import { Public, User } from &#x27;@/common/decorators&#x27;;
+
+import { CollectionService } from &#x27;./collection.service&#x27;;
+import { ICollectionQueryDto, ICollectionReadDto, ICollectionResponse } from &#x27;./dtos&#x27;;
+import { ICollectionModel } from &#x27;@/db/interfaces&#x27;;
+import { BlockchainService } from &#x27;../blockchain/blockchain.service&#x27;;
+import { RabbitRootService } from &#x27;../rabbit/rabbit-root.service&#x27;;
+import { TypeRpcCommand, TypeRpcMessage } from &#x27;../rabbit/interfaces/enums&#x27;;
+import { IUserInterface } from &#x27;@/common/interfaces&#x27;;
+import { getShortHash } from &#x27;@/common/utils/short-hash.utile&#x27;;
+import { TransactionHistoryService } from &#x27;../transaction-history/transaction-history.service&#x27;;
+
+@ApiTags(&#x27;Collection&#x27;)
+@Controller()
+export class CollectionController {
+  private cloudinary: CloudinaryService;
+
+  constructor(
+    @InjectModel(CollectionModel) private collection: typeof CollectionModel,
+    private bcService: BlockchainService,
+    private service: CollectionService,
+    private rabbit: RabbitRootService,
+    private historyService: TransactionHistoryService,
+  ) {
+    this.cloudinary &#x3D; new CloudinaryService();
+  }
+
+  @Post()
+  @UseInterceptors(AnyFilesInterceptor())
+  @ApiConsumes(&#x27;multipart/form-data&#x27;)
+  @ApiBody({
+    schema: {
+      type: &#x27;object&#x27;,
+      properties: {
+        comment: { type: &#x27;string&#x27; },
+        outletId: { type: &#x27;integer&#x27; },
+        logo: {
+          type: &#x27;string&#x27;,
+          format: &#x27;binary&#x27;,
+        },
+        cover: {
+          type: &#x27;string&#x27;,
+          format: &#x27;binary&#x27;,
+        },
+        id: { type: &#x27;string&#x27; },
+        identityId: { type: &#x27;string&#x27; },
+        name: { type: &#x27;string&#x27; },
+        description: { type: &#x27;string&#x27; },
+        symbol: { type: &#x27;string&#x27; },
+        salt: { type: &#x27;number&#x27; },
+        chainId: { type: &#x27;number&#x27; },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 201,
+    description: &#x27;Collection was added&#x27;,
+    type: ICollectionCreate,
+  })
+  public async post(
+    @Body() body: ICollectionCreateDto,
+    @UploadedFiles() files: Array&lt;Express.Multer.File&gt;,
+    @Res() res: Response,
+    @User() user: IUserInterface,
+  ) {
+    if (!this.bcService.isEthAddress(body.id)) throw new HttpException(&#x27;Address is not valid&#x27;, 400);
+    const isExist &#x3D; await this.service.findOne(body.id);
+    if (isExist) throw new HttpException(&#x27;Collection is already exist&#x27;, 409);
+
+    // upload images to cloudinary
+    const [cover, logo] &#x3D; await Promise.allSettled([
+      this.cloudinary.uploadFile(files.find((v: Express.Multer.File) &#x3D;&gt; v.fieldname &#x3D;&#x3D;&#x3D; &#x27;cover&#x27;)),
+      this.cloudinary.uploadFile(files.find((v: Express.Multer.File) &#x3D;&gt; v.fieldname &#x3D;&#x3D;&#x3D; &#x27;logo&#x27;)),
+    ]);
+    const coverImage &#x3D; cover.status &#x3D;&#x3D;&#x3D; &#x27;fulfilled&#x27; ? cover.value.url : &#x27;&#x27;;
+    const logoImage &#x3D; logo.status &#x3D;&#x3D;&#x3D; &#x27;fulfilled&#x27; ? logo.value.url : &#x27;&#x27;;
+
+    const result &#x3D; await this.service.create({
+      ...body,
+      logo: logoImage,
+      cover: coverImage,
+      identityId: user.data.id,
+    } as ICollectionModel);
+
+    // inform another service
+    // await this.rabbit.getProcessResult({
+    //   type: TypeRpcMessage.BLOCKCHAIN,
+    //   command: TypeRpcCommand.ADD_COLLECTION,
+    //   data: {
+    //     addresses: [body.id],
+    //   },
+    // });
+
+    return res.status(201).send({
+      data: result,
+    });
+  }
+
+  @Get(&#x27;:id&#x27;)
+  public async getBuId(@Param() param: ICollectionReadDto, @User() user: IUserInterface, @Res() res: Response) {
+    const result &#x3D; await this.service.findOne(param.id);
+    this.historyService.create({ identityId: user.data.id });
+    if (!result) throw new HttpException(&#x27;Collection was not found&#x27;, 404);
+    return res.status(200).send({
+      data: result,
+      hash: getShortHash(param.id, user.data.id),
+    });
+  }
+
+  @Public()
+  @ApiResponse({
+    type: ICollectionResponse,
+    isArray: true,
+  })
+  @Get()
+  public async getAll(@Res() res: Response, @Query() query: ICollectionQueryDto) {
+    const result &#x3D; await this.service.findAll(query);
+    return res.status(200).send({
+      ...result,
+    });
+  }
+}
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'controller';
+            var COMPODOC_CURRENT_PAGE_URL = 'CollectionController.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

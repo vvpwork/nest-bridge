@@ -76,6 +76,10 @@ const routes = RouterModule.register([
     path: '/creators',
     module: CreatorsModule,
   },
+  {
+    path: '/transactions',
+    module: TransactionHistoryModule,
+  },
 ]);
 
 const imports = [

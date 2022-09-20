@@ -1,0 +1,2196 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>api documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">api documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content injectable">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li>Injectables</li>
+  <li >ProfileService</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/modules/profile/profile.service.ts</code>
+        </p>
+
+
+
+
+
+            <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#followByProfileId" >followByProfileId</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getAllFollowersCounts" >getAllFollowersCounts</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getAllFollowingsListByProfileId" >getAllFollowingsListByProfileId</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getAllNewsLikeCounts" >getAllNewsLikeCounts</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getAllNewsLikesListByProfileId" >getAllNewsLikesListByProfileId</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getById" >getById</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getByUserNameOrAddress" >getByUserNameOrAddress</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getFollowersCount" >getFollowersCount</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getFollowingCount" >getFollowingCount</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getFollowList" >getFollowList</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getResourcesByProfileId" >getResourcesByProfileId</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getUserNameByProfileId" >getUserNameByProfileId</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#injectDataToFollowList" >injectDataToFollowList</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#injectLikesToNewsRecord" >injectLikesToNewsRecord</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#isFollower" >isFollower</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#processProfileData" >processProfileData</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#unFollowByProfileId" >unFollowByProfileId</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#updateById" >updateById</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(profileModel, identityModel, libraryModel, podcastModel, newsModel, followerModel, newsLikeModel, notificationModel, blockchainIdentityAddressModel)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="22" class="link-to-prism">src/modules/profile/profile.service.ts:22</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>profileModel</td>
+                                                  
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>identityModel</td>
+                                                  
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>libraryModel</td>
+                                                  
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>podcastModel</td>
+                                                  
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>newsModel</td>
+                                                  
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>followerModel</td>
+                                                  
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>newsLikeModel</td>
+                                                  
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>notificationModel</td>
+                                                  
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>blockchainIdentityAddressModel</td>
+                                                  
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="followByProfileId"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>followByProfileId</b></span>
+                        <a href="#followByProfileId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>followByProfileId(sourceProfileId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, targetProfileId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="160"
+                            class="link-to-prism">src/modules/profile/profile.service.ts:160</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>sourceProfileId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>targetProfileId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;literal type&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getAllFollowersCounts"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>getAllFollowersCounts</b></span>
+                        <a href="#getAllFollowersCounts"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getAllFollowersCounts()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="342"
+                            class="link-to-prism">src/modules/profile/profile.service.ts:342</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getAllFollowingsListByProfileId"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>getAllFollowingsListByProfileId</b></span>
+                        <a href="#getAllFollowingsListByProfileId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getAllFollowingsListByProfileId(sourceProfileId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="360"
+                            class="link-to-prism">src/modules/profile/profile.service.ts:360</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>sourceProfileId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;number[]&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getAllNewsLikeCounts"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>getAllNewsLikeCounts</b></span>
+                        <a href="#getAllNewsLikeCounts"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getAllNewsLikeCounts()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="371"
+                            class="link-to-prism">src/modules/profile/profile.service.ts:371</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getAllNewsLikesListByProfileId"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>getAllNewsLikesListByProfileId</b></span>
+                        <a href="#getAllNewsLikesListByProfileId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getAllNewsLikesListByProfileId(profileId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="389"
+                            class="link-to-prism">src/modules/profile/profile.service.ts:389</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>profileId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getById"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>getById</b></span>
+                        <a href="#getById"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getById(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="52"
+                            class="link-to-prism">src/modules/profile/profile.service.ts:52</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>id</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../classes/ProfileModel.html" target="_self" >Promise&lt;ProfileModel&gt;</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getByUserNameOrAddress"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>getByUserNameOrAddress</b></span>
+                        <a href="#getByUserNameOrAddress"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getByUserNameOrAddress(userNameOrAddress: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, viewerUser?: <a href="../interfaces/IIdentityModel.html" target="_self">IIdentityModel</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="56"
+                            class="link-to-prism">src/modules/profile/profile.service.ts:56</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userNameOrAddress</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>viewerUser</td>
+                                    <td>
+                                                <code><a href="../interfaces/IIdentityModel.html" target="_self" >IIdentityModel</a></code>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getFollowersCount"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>getFollowersCount</b></span>
+                        <a href="#getFollowersCount"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getFollowersCount(profileId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="330"
+                            class="link-to-prism">src/modules/profile/profile.service.ts:330</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>profileId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getFollowingCount"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>getFollowingCount</b></span>
+                        <a href="#getFollowingCount"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getFollowingCount(profileId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="336"
+                            class="link-to-prism">src/modules/profile/profile.service.ts:336</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>profileId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getFollowList"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>getFollowList</b></span>
+                        <a href="#getFollowList"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getFollowList(type: "followers" | "followings", profileId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, viewerUser?: <a href="../interfaces/IIdentityModel.html" target="_self">IIdentityModel | null</a>, limit?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, offset?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="235"
+                            class="link-to-prism">src/modules/profile/profile.service.ts:235</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>type</td>
+                                    <td>
+                                            <code>&quot;followers&quot; | &quot;followings&quot;</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>profileId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>viewerUser</td>
+                                    <td>
+                                                <code><a href="../interfaces/IIdentityModel.html" target="_self" >IIdentityModel | null</a></code>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>limit</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>offset</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getResourcesByProfileId"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>getResourcesByProfileId</b></span>
+                        <a href="#getResourcesByProfileId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getResourcesByProfileId(type: "libraries" | "podcasts" | "news", profileId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, limit?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, offset?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, viewerUser?: <a href="../interfaces/IIdentityModel.html" target="_self">IIdentityModel | null</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="128"
+                            class="link-to-prism">src/modules/profile/profile.service.ts:128</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>type</td>
+                                    <td>
+                                            <code>&quot;libraries&quot; | &quot;podcasts&quot; | &quot;news&quot;</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>profileId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>limit</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>offset</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>viewerUser</td>
+                                    <td>
+                                                <code><a href="../interfaces/IIdentityModel.html" target="_self" >IIdentityModel | null</a></code>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getUserNameByProfileId"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>getUserNameByProfileId</b></span>
+                        <a href="#getUserNameByProfileId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getUserNameByProfileId(profileId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="210"
+                            class="link-to-prism">src/modules/profile/profile.service.ts:210</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>profileId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;string | null&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="injectDataToFollowList"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>injectDataToFollowList</b></span>
+                        <a href="#injectDataToFollowList"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>injectDataToFollowList(profile: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, listOfFollowersCount: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, listOfAllProfileIdsFollowedByUser: number[])</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="293"
+                            class="link-to-prism">src/modules/profile/profile.service.ts:293</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>profile</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>listOfFollowersCount</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>listOfAllProfileIdsFollowedByUser</td>
+                                    <td>
+                                            <code>number[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="injectLikesToNewsRecord"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>injectLikesToNewsRecord</b></span>
+                        <a href="#injectLikesToNewsRecord"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>injectLikesToNewsRecord(newsRecord: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, listOfNewsLikesCount: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, listOfAllNewsIdsLikedByUser: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="220"
+                            class="link-to-prism">src/modules/profile/profile.service.ts:220</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>newsRecord</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>listOfNewsLikesCount</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>listOfAllNewsIdsLikedByUser</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isFollower"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>isFollower</b></span>
+                        <a href="#isFollower"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>isFollower(sourceProfileId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, targetProfileId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="201"
+                            class="link-to-prism">src/modules/profile/profile.service.ts:201</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>sourceProfileId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>targetProfileId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="processProfileData"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>processProfileData</b></span>
+                        <a href="#processProfileData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>processProfileData(profile: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, viewerUser?: <a href="../interfaces/IIdentityModel.html" target="_self">IIdentityModel</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="310"
+                            class="link-to-prism">src/modules/profile/profile.service.ts:310</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>profile</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>viewerUser</td>
+                                    <td>
+                                                <code><a href="../interfaces/IIdentityModel.html" target="_self" >IIdentityModel</a></code>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="unFollowByProfileId"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>unFollowByProfileId</b></span>
+                        <a href="#unFollowByProfileId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>unFollowByProfileId(sourceProfileId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, targetProfileId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="185"
+                            class="link-to-prism">src/modules/profile/profile.service.ts:185</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>sourceProfileId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>targetProfileId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;literal type&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateById"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>updateById</b></span>
+                        <a href="#updateById"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>updateById(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, params: <a href="../interfaces/IProfileModel.html" target="_self">IProfileModel</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="102"
+                            class="link-to-prism">src/modules/profile/profile.service.ts:102</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>id</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>params</td>
+                                    <td>
+                                                <code><a href="../interfaces/IProfileModel.html" target="_self" >IProfileModel</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { HttpException, HttpStatus, Injectable } from &#x27;@nestjs/common&#x27;;
+import { fn } from &#x27;sequelize&#x27;;
+import {
+  BlockchainIdentityAddressModel,
+  FollowerModel,
+  IdentityModel,
+  LibraryModel,
+  NewsLikeModel,
+  NewsModel,
+  NotificationModel,
+  PodcastModel,
+  ProfileModel,
+} from &#x27;@DB/models&#x27;;
+import { InjectModel } from &#x27;@nestjs/sequelize&#x27;;
+import { paginate } from &#x27;@Common/utils/pagination.util&#x27;;
+
+import { IIdentityModel, IProfileModel } from &#x27;@DB/interfaces&#x27;;
+import { ACCOUNT_TYPES, NOTIFICATION_TYPES } from &#x27;@DB/enums&#x27;;
+
+@Injectable()
+export class ProfileService {
+  constructor(
+    @InjectModel(ProfileModel)
+    private profileModel: typeof ProfileModel,
+
+    @InjectModel(IdentityModel)
+    private identityModel: typeof IdentityModel,
+
+    @InjectModel(LibraryModel)
+    private libraryModel: typeof LibraryModel,
+
+    @InjectModel(PodcastModel)
+    private podcastModel: typeof PodcastModel,
+
+    @InjectModel(NewsModel)
+    private newsModel: typeof NewsModel,
+
+    @InjectModel(FollowerModel)
+    private followerModel: typeof FollowerModel,
+
+    @InjectModel(NewsLikeModel)
+    private newsLikeModel: typeof NewsLikeModel,
+
+    @InjectModel(NotificationModel)
+    private notificationModel: typeof NotificationModel,
+
+    @InjectModel(BlockchainIdentityAddressModel)
+    private blockchainIdentityAddressModel: typeof BlockchainIdentityAddressModel,
+  ) {}
+
+  async getById(id: number): Promise&lt;ProfileModel&gt; {
+    return this.profileModel.findOne({ where: { id } });
+  }
+
+  async getByUserNameOrAddress(userNameOrAddress: string, viewerUser?: IIdentityModel) {
+    let profile;
+    if (userNameOrAddress.substring(0, 2) &#x3D;&#x3D;&#x3D; &#x27;0x&#x27;) {
+      profile &#x3D; await this.profileModel.findOne({
+        include: [
+          {
+            model: this.identityModel,
+            as: &#x27;identity&#x27;,
+            attributes: [&#x27;accountType&#x27;],
+            include: [
+              {
+                model: this.blockchainIdentityAddressModel,
+                as: &#x27;address&#x27;,
+                where: {
+                  address: userNameOrAddress,
+                },
+                required: true,
+              },
+            ],
+          },
+        ],
+      });
+    } else {
+      profile &#x3D; await this.profileModel.findOne({
+        where: {
+          userName: userNameOrAddress,
+        },
+        include: [
+          {
+            model: this.identityModel,
+            as: &#x27;identity&#x27;,
+            attributes: [&#x27;accountType&#x27;],
+            include: [
+              {
+                model: this.blockchainIdentityAddressModel,
+                as: &#x27;address&#x27;,
+              },
+            ],
+          },
+        ],
+      });
+    }
+
+    return this.processProfileData(profile, viewerUser);
+  }
+
+  async updateById(id: number, params: IProfileModel): Promise&lt;void&gt; {
+    if (params.userName &amp;&amp; params.userName !&#x3D;&#x3D; &#x27;&#x27;) {
+      const alreadyExists &#x3D; await this.profileModel.findOne({
+        where: { userName: params.userName },
+        attributes: [&#x27;id&#x27;],
+        raw: true,
+      });
+      if (alreadyExists) {
+        throw new HttpException(&#x27;USERNAME_ALREADY_EXISTS&#x27;, HttpStatus.BAD_REQUEST);
+      }
+    }
+
+    if (params.email &amp;&amp; params.email !&#x3D;&#x3D; &#x27;&#x27;) {
+      const alreadyExists &#x3D; await this.profileModel.findOne({
+        where: { email: params.email },
+        attributes: [&#x27;id&#x27;],
+        raw: true,
+      });
+      if (alreadyExists) {
+        throw new HttpException(&#x27;EMAIL_ALREADY_EXISTS&#x27;, HttpStatus.BAD_REQUEST);
+      }
+    }
+
+    await this.profileModel.update(params, { where: { id } });
+  }
+
+  async getResourcesByProfileId(
+    type: &#x27;libraries&#x27; | &#x27;podcasts&#x27; | &#x27;news&#x27;,
+    profileId: number,
+    limit?: number,
+    offset?: number,
+    viewerUser?: IIdentityModel | null,
+  ) {
+    if (type &#x3D;&#x3D;&#x3D; &#x27;libraries&#x27;) {
+      return paginate(this.libraryModel, { where: { profileId }, limit, offset });
+    }
+    if (type &#x3D;&#x3D;&#x3D; &#x27;podcasts&#x27;) {
+      return paginate(this.podcastModel, { where: { profileId }, limit, offset });
+    }
+    if (type &#x3D;&#x3D;&#x3D; &#x27;news&#x27;) {
+      const paginatedData &#x3D; await paginate(this.newsModel, { where: { profileId }, limit, offset });
+
+      const listOfNewsLikesCount &#x3D; await this.getAllNewsLikeCounts();
+      let listOfAllNewsIdsLikedByUser: NewsModel[] &#x3D; [];
+      if (viewerUser) {
+        listOfAllNewsIdsLikedByUser &#x3D; await this.getAllNewsLikesListByProfileId(viewerUser.profileId);
+      }
+
+      paginatedData.data &#x3D; await Promise.all(
+        paginatedData.data.map((news: NewsModel) &#x3D;&gt;
+          this.injectLikesToNewsRecord(news, listOfNewsLikesCount, listOfAllNewsIdsLikedByUser),
+        ),
+      );
+
+      return paginatedData;
+    }
+  }
+
+  async followByProfileId(sourceProfileId: number, targetProfileId: number): Promise&lt;{ success: boolean }&gt; {
+    const profile &#x3D; await this.profileModel.findByPk(targetProfileId);
+    if (!profile) {
+      throw new HttpException(&#x27;PROFILE_NOT_FOUND&#x27;, HttpStatus.NOT_FOUND);
+    }
+
+    const isFollower &#x3D; await this.isFollower(sourceProfileId, targetProfileId);
+    if (isFollower) {
+      throw new HttpException(&#x27;IS_ALREADY_FOLLOWER&#x27;, HttpStatus.BAD_REQUEST);
+    }
+
+    await this.followerModel.create({ profileId: sourceProfileId, targetProfileId });
+
+    await this.notificationModel.create({
+      profileId: profile.id,
+      type: NOTIFICATION_TYPES.NEW_FOLLOWER,
+      params: {
+        name: await this.getUserNameByProfileId(sourceProfileId),
+        image: profile.avatar,
+      },
+    });
+
+    return { success: true };
+  }
+
+  async unFollowByProfileId(sourceProfileId: number, targetProfileId: number): Promise&lt;{ success: boolean }&gt; {
+    const profile &#x3D; await this.profileModel.findByPk(targetProfileId);
+    if (!profile) {
+      throw new HttpException(&#x27;PROFILE_NOT_FOUND&#x27;, HttpStatus.NOT_FOUND);
+    }
+
+    const isFollower &#x3D; await this.isFollower(sourceProfileId, targetProfileId);
+    if (!isFollower) {
+      throw new HttpException(&#x27;IS_NOT_FOLLOWER&#x27;, HttpStatus.BAD_REQUEST);
+    }
+
+    await this.followerModel.destroy({ where: { profileId: sourceProfileId, targetProfileId } });
+
+    return { success: true };
+  }
+
+  async isFollower(sourceProfileId: number, targetProfileId: number) {
+    const followerRecord &#x3D; await this.followerModel.findOne({
+      where: { profileId: sourceProfileId, targetProfileId },
+      attributes: [&#x27;profileId&#x27;, &#x27;targetProfileId&#x27;],
+    });
+
+    return !!followerRecord;
+  }
+
+  async getUserNameByProfileId(profileId: number): Promise&lt;string | null&gt; {
+    const profile: ProfileModel &#x3D; await this.profileModel.findOne({
+      where: { id: profileId },
+      attributes: [&#x27;userName&#x27;],
+    });
+
+    return profile.userName;
+  }
+
+  // ToDo move this and the same code to service, when circular dependencies are resolved
+  async injectLikesToNewsRecord(newsRecord: any, listOfNewsLikesCount: any, listOfAllNewsIdsLikedByUser: any) {
+    const result &#x3D; newsRecord;
+    result.isLiked &#x3D; false;
+
+    if (listOfAllNewsIdsLikedByUser) {
+      result.isLiked &#x3D; listOfAllNewsIdsLikedByUser.includes(newsRecord.dataValues.id);
+    }
+
+    result.likesCount &#x3D; listOfNewsLikesCount[newsRecord.dataValues.id]
+      ? listOfNewsLikesCount[newsRecord.dataValues.id]
+      : 0;
+
+    return result;
+  }
+
+  async getFollowList(
+    type: &#x27;followers&#x27; | &#x27;followings&#x27;,
+    profileId: number,
+    viewerUser?: IIdentityModel | null,
+    limit?: number,
+    offset?: number,
+  ) {
+    let where;
+    if (type &#x3D;&#x3D;&#x3D; &#x27;followers&#x27;) {
+      where &#x3D; { targetProfileId: profileId };
+    } else {
+      where &#x3D; { profileId };
+    }
+    const allFollowsRecordsProfileIds &#x3D; await this.followerModel
+      .findAll({
+        where,
+        attributes: [&#x27;profileId&#x27;],
+      })
+      .then((followerRecords: FollowerModel[]) &#x3D;&gt;
+        followerRecords.map((followerRecord: FollowerModel) &#x3D;&gt; followerRecord.profileId),
+      );
+
+    const result &#x3D; await paginate(this.profileModel, {
+      where: { id: allFollowsRecordsProfileIds },
+      attributes: [[&#x27;id&#x27;, &#x27;profileId&#x27;], &#x27;userName&#x27;, &#x27;avatar&#x27;],
+      include: [
+        {
+          model: this.identityModel,
+          as: &#x27;identity&#x27;,
+          attributes: [&#x27;accountType&#x27;, &#x27;id&#x27;],
+          include: [
+            {
+              model: this.blockchainIdentityAddressModel,
+              as: &#x27;address&#x27;,
+              attributes: [&#x27;address&#x27;],
+            },
+          ],
+        },
+      ],
+      limit,
+      offset,
+    });
+
+    const listOfFollowersCount &#x3D; await this.getAllFollowersCounts();
+    let listOfAllProfileIdsFollowedByUser: number[] &#x3D; [];
+    if (viewerUser) {
+      listOfAllProfileIdsFollowedByUser &#x3D; await this.getAllFollowingsListByProfileId(viewerUser.profileId);
+    }
+
+    result.data &#x3D; await Promise.all(
+      result.data.map((item: any) &#x3D;&gt;
+        this.injectDataToFollowList(item, listOfFollowersCount, listOfAllProfileIdsFollowedByUser),
+      ),
+    );
+
+    return result;
+  }
+
+  async injectDataToFollowList(profile: any, listOfFollowersCount: any, listOfAllProfileIdsFollowedByUser: number[]) {
+    profile.dataValues.followers &#x3D; listOfFollowersCount[profile.dataValues.profileId]
+      ? listOfFollowersCount[profile.dataValues.profileId]
+      : 0;
+
+    profile.dataValues.isFollower &#x3D; false;
+    if (listOfAllProfileIdsFollowedByUser) {
+      profile.dataValues.isFollower &#x3D; listOfAllProfileIdsFollowedByUser.includes(profile.dataValues.profileId);
+    }
+
+    profile.dataValues.isPartner &#x3D; profile.identity.accountType &#x3D;&#x3D;&#x3D; ACCOUNT_TYPES.PARTNER;
+    profile.dataValues.address &#x3D; profile.identity.address[0].address;
+    delete profile.dataValues.identity;
+
+    return profile;
+  }
+
+  async processProfileData(profile: any, viewerUser?: IIdentityModel) {
+    if (!profile) {
+      throw new HttpException(&#x27;PROFILE_NOT_FOUND&#x27;, HttpStatus.NOT_FOUND);
+    }
+
+    profile.dataValues.isPartner &#x3D; profile.identity.accountType &#x3D;&#x3D;&#x3D; ACCOUNT_TYPES.PARTNER;
+    profile.dataValues.address &#x3D; profile.identity.address[0].address;
+    delete profile.dataValues.identity;
+
+    profile.dataValues.followersCount &#x3D; await this.getFollowersCount(profile.id);
+    profile.dataValues.followingCount &#x3D; await this.getFollowingCount(profile.id);
+
+    profile.dataValues.isFollower &#x3D; false;
+    if (viewerUser) {
+      profile.dataValues.isFollower &#x3D; await this.isFollower(viewerUser.profileId, profile.id);
+    }
+
+    return profile;
+  }
+
+  async getFollowersCount(profileId: string) {
+    return this.followerModel.count({
+      where: { targetProfileId: profileId },
+    });
+  }
+
+  async getFollowingCount(profileId: string) {
+    return this.followerModel.count({
+      where: { profileId },
+    });
+  }
+
+  async getAllFollowersCounts() {
+    const allCountsList: any[] &#x3D; await this.followerModel.findAll({
+      attributes: [&#x27;targetProfileId&#x27;, &#x27;profileId&#x27;, [fn(&#x27;COUNT&#x27;, &#x27;profileId&#x27;), &#x27;followersCount&#x27;]],
+      group: [&#x27;targetProfileId&#x27;],
+    });
+
+    let formattedCountsObject;
+    if (allCountsList.length) {
+      formattedCountsObject &#x3D; {};
+      allCountsList.forEach((item: any) &#x3D;&gt; {
+        formattedCountsObject[item.targetProfileId] &#x3D; item.dataValues.followersCount;
+      });
+    }
+
+    return formattedCountsObject;
+  }
+
+  // get array containing all profileIds of users followed by current user
+  async getAllFollowingsListByProfileId(sourceProfileId: number): Promise&lt;number[]&gt; {
+    return this.followerModel
+      .findAll({
+        where: { profileId: sourceProfileId },
+        attributes: [&#x27;targetProfileId&#x27;],
+      })
+      .then((allTargets: Pick&lt;FollowerModel, &#x27;targetProfileId&#x27;&gt;[]) &#x3D;&gt;
+        allTargets.map((target: Pick&lt;FollowerModel, &#x27;targetProfileId&#x27;&gt;) &#x3D;&gt; target.targetProfileId),
+      );
+  }
+
+  async getAllNewsLikeCounts() {
+    const allCountsList: any[] &#x3D; await this.newsLikeModel.findAll({
+      attributes: [&#x27;newsId&#x27;, &#x27;profileId&#x27;, [fn(&#x27;COUNT&#x27;, &#x27;profileId&#x27;), &#x27;likesCount&#x27;]],
+      group: [&#x27;newsId&#x27;],
+    });
+
+    let formattedCountsObject;
+    if (allCountsList.length) {
+      formattedCountsObject &#x3D; {};
+      allCountsList.forEach((item: any) &#x3D;&gt; {
+        formattedCountsObject[item.newsId] &#x3D; item.dataValues.likesCount;
+      });
+    }
+
+    return formattedCountsObject;
+  }
+
+  // get array containing all newsIds liked by current user
+  async getAllNewsLikesListByProfileId(profileId: number) {
+    return this.newsLikeModel
+      .findAll({
+        where: { profileId },
+        attributes: [&#x27;newsId&#x27;],
+      })
+      .then((allNews: Pick&lt;NewsLikeModel, &#x27;newsId&#x27;&gt;[]) &#x3D;&gt;
+        allNews.map((newsRecord: Pick&lt;NewsLikeModel, &#x27;newsId&#x27;&gt;) &#x3D;&gt; newsRecord.newsId),
+      );
+  }
+}
+</code></pre>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
+            var COMPODOC_CURRENT_PAGE_URL = 'ProfileService.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>
