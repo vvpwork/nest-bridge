@@ -1,4 +1,4 @@
-import { HttpException, Injectable, Logger } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 import { InjectModel } from '@nestjs/sequelize';
@@ -6,7 +6,6 @@ import { InjectModel } from '@nestjs/sequelize';
 import { config } from '@Common/config';
 import { InjectRedis } from '@liaoliaots/nestjs-redis';
 import Redis from 'ioredis';
-import { where } from 'sequelize/types';
 import { IdentityService } from '../identity/identity.service';
 import { BlockchainIdentityAddressModel, BlockchainModel, IdentityModel, ProfileModel } from '@/db/models';
 import { BlockchainService } from '../blockchain/blockchain.service';
@@ -84,7 +83,6 @@ export class AuthService {
       });
     }
 
-    identity.status = statusKyc;
     await identity.save();
 
     await this.bcIdentityAddressModel.findOrCreate({
@@ -132,7 +130,6 @@ export class AuthService {
     return this.jwt.sign(IPayload, { expiresIn: ttl });
   }
 
-  // TODO add request interface
   public async isAuthenticated(req: Request | any) {
     if (!req.headers.authorization || (req.headers.authorization && !req.headers.authorization.includes('Bearer')))
       return false;
@@ -146,7 +143,7 @@ export class AuthService {
 
     if (userFromDB) {
       req.user = {
-        data: userFromDB.toJSON(),
+        data: userFromDB,
         tokenData: {
           token: reqToken,
           ...tokenData,

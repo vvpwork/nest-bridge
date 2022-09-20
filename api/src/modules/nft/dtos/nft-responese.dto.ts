@@ -5,6 +5,8 @@ import { IsNumber, IsString, ValidateNested } from 'class-validator';
 
 class ICollectionResponse {
   id: string;
+  name: string;
+  description: string;
   logo: string;
   cover: string;
   symbol: string;

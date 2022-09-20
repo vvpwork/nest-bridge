@@ -32,6 +32,13 @@ export class INftQueryDto {
   })
   @IsOptional()
   @IsString()
+  creatorId: string;
+
+  @ApiProperty({
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
   collectionId: string;
 
   @ApiProperty({

@@ -5,7 +5,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import { erc1155abi } from '../abis/erc1155bridgeTowerProxy';
 import { DEFAULT_ETH_ADDRESS } from '@/common/constants';
 import { CloudinaryService } from '@/common/services/cloudinary.service';
-import { INftModel } from '@/db/interfaces';
+import { IBlockchainIdentityAddress, INftModel } from '@/db/interfaces';
 import { getAxiosInstance, Web3Instance } from '@/common/utils';
 import { TypeRpcCommand } from '../../rabbit/interfaces/enums';
 import { NftModel } from '@/db/models';
@@ -68,6 +68,8 @@ export class BlockchainRabbitService {
         const info = await this.getDataForNFT(collectionAddress, v.id);
         const [royalties, royalty] = info.royalties[0];
         const [creators] = info.creators[0];
+        const identityAddress = await this.findIdentityByAddress(v.owner);
+        Logger.log(identityAddress, 'nfts identityFromDb');
 
         const ownerBalance = await contract.methods
           .balanceOf(v.owner, v.id)
@@ -75,6 +77,7 @@ export class BlockchainRabbitService {
 
         return {
           ...v,
+          identityId: identityAddress.identityId,
           ownerBalance,
           collectionId: collectionAddress,
           thumbnail: info.metadata.imageData.thumbnail,
@@ -128,53 +131,75 @@ export class BlockchainRabbitService {
   public async fillNftsByCollection(nfts: INftModel[], identityId?: string) {
     const { tableName } = this.repository;
 
-    console.log(this.repository);
     if (nfts && nfts.length) {
-      //  add nfts
-      const nftsQuery = upsertData(
-        tableName,
-        [
-          'id',
-          'collectionId',
-          'thumbnail',
-          'amount',
-          'metadata',
-          'creatorIds',
-          'royaltyIds',
-          'royalty',
-          'totalSupply',
-        ],
-        nfts.map((nft: INftModel) => [
-          `'${nft.id}','${nft.collectionId}','${nft.thumbnail}','${
-            nft.amount
-          }', '${JSON.stringify(nft.metadata)}', '${JSON.stringify(
-            nft.creatorIds,
-          )}','${JSON.stringify(nft.royaltyIds)}',${nft.royalty}, '${
-            nft.totalSupply
-          }'`,
-        ]),
+      Logger.log(
+        '[BlockchainRabbitService] start fill db by nfts',
+        nfts.length,
       );
-      await this.repository.sequelize.query(nftsQuery);
+      try {
+        this.repository.sequelize.transaction(async (t) => {
+          const nftsQuery = upsertData(
+            tableName,
+            [
+              'id',
+              'collectionId',
+              'thumbnail',
+              'amount',
+              'metadata',
+              'creatorIds',
+              'royaltyIds',
+              'royalty',
+              'totalSupply',
+            ],
+            nfts.map((nft: INftModel) => [
+              `'${nft.id}','${nft.collectionId}','${nft.thumbnail}','${
+                nft.amount
+              }', '${JSON.stringify(nft.metadata)}', '${JSON.stringify(
+                nft.creatorIds,
+              )}','${JSON.stringify(nft.royaltyIds)}',${nft.royalty}, '${
+                nft.totalSupply
+              }'`,
+            ]),
+          );
+          await this.repository.sequelize.query(nftsQuery, { transaction: t });
 
-      // add balances
-      const balancesQuery = upsertData(
-        'IdentityNftBalance',
-        ['id', 'identityId', 'nftId', 'amount'],
-        nfts.map((nft: INftModel) => [
-          `'${getShortHash(identityId, nft.id)}','${identityId}','${nft.id}','${
-            nft.ownerBalance
-          }'`,
-        ]),
-      );
-      await this.repository.sequelize.query(balancesQuery);
-      // add creators
-      const creatorsQuery = upsertData(
-        'IdentityNftCreator',
-        ['address', 'nftId'],
-        nfts.map((cr: INftModel) => [`'${cr.creatorIds[0]}','${cr.id}'`]),
-      );
+          // add balances
+          const balancesQuery = upsertData(
+            'IdentityNftBalance',
+            ['id', 'identityId', 'nftId', 'amount'],
+            nfts.map((nft: INftModel) => [
+              `'${getShortHash(nft.identityId, nft.id)}','${
+                nft.identityId
+              }','${nft.id}','${nft.ownerBalance}'`,
+            ]),
+          );
+          await this.repository.sequelize.query(balancesQuery, {
+            transaction: t,
+          });
+          // add creators
+          const creatorsQuery = upsertData(
+            'IdentityNftCreator',
+            ['address', 'nftId'],
+            nfts.map((cr: INftModel) => [`'${cr.creatorIds[0]}','${cr.id}'`]),
+          );
 
-      await this.repository.sequelize.query(creatorsQuery);
+          await this.repository.sequelize.query(creatorsQuery, {
+            transaction: t,
+          });
+          Logger.log('[BlockchainRabbitService] finish fill db');
+        });
+      } catch (err) {
+        Logger.error(err, 'Fill db error');
+      }
     }
+  }
+
+  async findIdentityByAddress(address: string) {
+    const query = `
+    SELECT * FROM BlockchainIdentityAddress  bc
+    WHERE bc.address = '${address}'
+    `;
+    const [data] = await this.repository.sequelize.query(query);
+    return data[0] as IBlockchainIdentityAddress;
   }
 }

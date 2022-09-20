@@ -18,7 +18,6 @@ export interface IProfileModel {
 }
 
 export interface IIdentityModel {
-  [x: string]: any;
   id: string;
   profileId: number;
   profile?: IProfileModel;
@@ -188,7 +187,7 @@ export interface ICurrenciesModel {
 export interface IBlockchainIdentityAddress {
   id?: number;
   chainId: number;
-  identityId: number;
+  identityId: string;
   address: string;
   description?: string;
 }

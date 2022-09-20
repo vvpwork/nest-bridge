@@ -2,6 +2,7 @@ import { Request } from 'express';
 import BigNumber from 'bignumber.js';
 import { IIdentityModel } from '@DB/interfaces';
 import { IdentityModel } from '@DB/models';
+import { ACCOUNT_TYPES } from '@/db/enums';
 
 export interface IConfig {
   port: number;
@@ -125,6 +126,16 @@ export interface IBigNumberUtile {
 }
 
 export interface IUserInterface {
-  data: IIdentityModel;
+  data: {
+    id: string;
+    securitizeId: string;
+    status: string;
+    accountType: ACCOUNT_TYPES;
+    profileId: number;
+    address: string;
+    name: string;
+    avatar: string;
+    cover: string;
+  };
   tokenData: { sub: string; token: string; [key: string]: any };
 }

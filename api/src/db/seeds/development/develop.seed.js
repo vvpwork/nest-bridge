@@ -117,7 +117,7 @@ module.exports = {
       {
         code: 'claim',
       },
-      
+
       {
         code: 'mint',
       },
@@ -259,18 +259,6 @@ module.exports = {
     // await resetSequence(queryInterface, 'Currencies');
 
     const collections = [
-      {
-        id: '0x8dcF19AeE31F9624FCe35F61037c80f2CA346467',
-        identityId: '626b881ce1358f001420e238',
-        description: 'BridgeTower Permissioned Market Token',
-        name: 'BridgeTower Permissioned Market Token',
-        cover: 'test',
-        logo: 'test',
-        symbol: 'PMT',
-        salt: 3232,
-        chainId: 43113,
-        masterAddress: 'testAddress',
-      },
       {
         id: '0x8dcF19AeE31F9624FCe35F61037c80f2CA346489',
         identityId: '756b354ce1358f001420e238',

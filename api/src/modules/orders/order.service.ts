@@ -1,13 +1,23 @@
 import { Sequelize } from 'sequelize-typescript';
 import { HttpException, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { CurrenciesModel, IdentityNftBalanceLock, IdentityNftBalanceModel, OrdersModel } from '@/db/models';
+import {
+  BlockchainIdentityAddressModel,
+  CurrenciesModel,
+  IdentityModel,
+  IdentityNftBalanceLock,
+  IdentityNftBalanceModel,
+  NftModel,
+  OrdersModel,
+} from '@/db/models';
 import { ICreateOrderDto } from './dtos/order-create.dto';
 import { IIdentityBalanceModel } from '@/db/interfaces';
 import { IBuyOrderRequest } from './dtos/buy-order.dto';
 import { TransactionHistoryService } from '../transaction-history/transaction-history.service';
 import { getShortHash } from '@/common/utils/short-hash.utile';
 import { config } from '@/common/config';
+import { BlockchainService } from '../blockchain/blockchain.service';
+import { IUserInterface } from '@/common/interfaces';
 
 const { lockPeriod } = config.nft;
 @Injectable()
@@ -18,14 +28,15 @@ export class OrderService {
     @InjectModel(IdentityNftBalanceLock) private lockModel: typeof IdentityNftBalanceLock,
     @InjectModel(CurrenciesModel) private currencyModel: typeof CurrenciesModel,
 
+    private bcService: BlockchainService,
     private historyService: TransactionHistoryService,
   ) {}
 
-  async create(data: ICreateOrderDto) {
+  async create(data: ICreateOrderDto, user?: IUserInterface['data']) {
     Logger.log(data, '[Order Service] data to create data');
     const { identityId, nftId, amount, signature, metadata, price, currency } = data;
 
-    const { availableBalance, balanceId } = await this.getAvailableBalance({ identityId, nftId });
+    const { availableBalance, balanceId } = await this.getAvailableBalance({ identityId, nftId }, user);
 
     if (data.amount > availableBalance) throw new HttpException('Do not have enough balance ', 404);
 
@@ -91,7 +102,7 @@ export class OrderService {
     };
   }
 
-  async buy(data: IBuyOrderRequest, identityId: string) {
+  async buy(data: IBuyOrderRequest, user: IUserInterface['data']) {
     Logger.log(data, '[Order Service] data to buy data');
     const { buyAmount, orderId, txHash } = data;
     const order = await this.orderModel.findOne({
@@ -114,12 +125,12 @@ export class OrderService {
 
     const [buyerBalance] = await this.balanceModel.findOrCreate({
       where: {
-        identityId,
+        identityId: user.id,
         nftId: sellerBalance.toJSON().nftId,
       },
       defaults: {
-        id: getShortHash(identityId, sellerBalance.toJSON().nftId),
-        identityId,
+        id: getShortHash(user.id, sellerBalance.toJSON().nftId),
+        identityId: user.id,
         nftId: sellerBalance.toJSON().nftId,
         amount: 0,
       },
@@ -144,7 +155,7 @@ export class OrderService {
       nftId: sellerBalance.toJSON().nftId,
     });
     await this.historyService.create({
-      identityId,
+      identityId: user.id,
       txHash,
       type: 'buy',
       amount: buyAmount,
@@ -174,7 +185,7 @@ export class OrderService {
     };
   }
 
-  private async getAvailableBalance(where: Partial<IIdentityBalanceModel>) {
+  private async getAvailableBalance(where: Partial<IIdentityBalanceModel>, user?: IUserInterface['data']) {
     let availableBalance = 0;
     const balance = await this.balanceModel.findOne({
       where,
@@ -183,9 +194,20 @@ export class OrderService {
           model: OrdersModel,
           attributes: [[Sequelize.fn('sum', Sequelize.col('orders.amount')), 'total']],
         },
+        {
+          model: NftModel,
+          attributes: ['collectionId'],
+          as: 'nft',
+        },
       ],
     });
 
+    const balanceFromBC = await this.bcService.getAvailableBalance(
+      balance.nft.toJSON().collectionId,
+      user.address,
+      balance.toJSON().nftId,
+    );
+    console.log('**********', balanceFromBC);
     if (!balance.id) throw new HttpException('User does not have balance', 404);
     if (!balance.id) Logger.error('Error order');
     const onSaleBalance = balance.orders.length ? balance.orders[0].toJSON().total : 0;

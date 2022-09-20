@@ -32,7 +32,7 @@ export class OrderController {
   })
   @Post('buy')
   async buy(@Res() res: Response, @User() user: IUserInterface, @Body() body: IBuyOrderRequest) {
-    const result = await this.orderService.buy(body, user.data.id);
+    const result = await this.orderService.buy(body, user.data);
     return res.status(200).send({
       ...result,
     });
@@ -45,7 +45,7 @@ export class OrderController {
   })
   @Post()
   async create(@Res() res: Response, @User() user: IUserInterface, @Body() body: ICreateOrderDto) {
-    const result = await this.orderService.create({ ...body, identityId: user.data.id });
+    const result = await this.orderService.create({ ...body, identityId: user.data.id }, user.data);
 
     return res.status(200).send({
       ...result,

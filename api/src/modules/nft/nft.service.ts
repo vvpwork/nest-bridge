@@ -49,7 +49,8 @@ export class NftService {
 
   async getAll(searchData?: INftQueryDto) {
     try {
-      const { limit, offset, identityId, collectionId, status, sortType, sortValue, nftId, search } = searchData;
+      const { limit, offset, identityId, creatorId, collectionId, status, sortType, sortValue, nftId, search } =
+        searchData;
       //  TODO refactor
       // One select for all nft requirements
       const rawQuery = `
@@ -103,14 +104,14 @@ export class NftService {
         LEFT JOIN Profile  pr ON pr.id = ident.profileId
         LEFT JOIN BlockchainIdentityAddress addr ON c.identityId = addr.identityId && c.chainId = addr.chainId    
         LEFT JOIN NftLike lk ON lk.nftId = n.id
-        LEFT JOIN (
+        ${creatorId ? `JOIN` : `LEFT JOIN`} (
           SELECT creator.nftId, creator.address, id.id as identityId, id.accountType, pr.name, pr.avatar, pr.userName   
           FROM IdentityNftCreator creator
           JOIN BlockchainIdentityAddress bad On bad.address = creator.address
           JOIN Identity id On id.id = bad.identityId
           JOIN Profile pr On pr.id = id.profileId
           GROUP BY creator.nftId
-        ) cr ON n.id = cr.nftId
+        ) cr ON n.id = cr.nftId ${creatorId ? `&& cr.identityId = '${creatorId}'` : ``}
 
         ${status === 'onLocked' ? `JOIN` : `LEFT JOIN`} (
           SELECT lk.identityNftBalanceId,
