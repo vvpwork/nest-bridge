@@ -1,0 +1,1677 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>api documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">api documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content injectable">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li>Injectables</li>
+  <li >NftService</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/modules/nft/nft.service.ts</code>
+        </p>
+
+
+
+
+
+            <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#fillNftsByCollection" >fillNftsByCollection</a>
+                            </li>
+                            <li>
+                                <a href="#formatIdentityData" >formatIdentityData</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getAll" >getAll</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getAllNewsLikeCounts" >getAllNewsLikeCounts</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getAllNewsLikesListByProfileId" >getAllNewsLikesListByProfileId</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getArtemundiIdentity" >getArtemundiIdentity</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getCommunityLinkForMarketplace" >getCommunityLinkForMarketplace</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getHistoryByNftId" >getHistoryByNftId</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getNftInfo" >getNftInfo</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#injectLikesToNewsRecord" >injectLikesToNewsRecord</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#isLiked" >isLiked</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#likeById" >likeById</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#unLikeById" >unLikeById</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(repository, nftLikeModel, libraryModel, podcastModel, newsModel, newsLikeModel, blockchainIdentityAddressModel, transactionHistoryModel, identityModel, profileModel)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">src/modules/nft/nft.service.ts:27</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>repository</td>
+                                                  
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>nftLikeModel</td>
+                                                  
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>libraryModel</td>
+                                                  
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>podcastModel</td>
+                                                  
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>newsModel</td>
+                                                  
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>newsLikeModel</td>
+                                                  
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>blockchainIdentityAddressModel</td>
+                                                  
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>transactionHistoryModel</td>
+                                                  
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>identityModel</td>
+                                                  
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>profileModel</td>
+                                                  
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="fillNftsByCollection"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>fillNftsByCollection</b></span>
+                        <a href="#fillNftsByCollection"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>fillNftsByCollection(nfts: <a href="../interfaces/INftModel.html" target="_self">INftModel[]</a>, identityId?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="185"
+                            class="link-to-prism">src/modules/nft/nft.service.ts:185</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>fill nfts after add collection, only ones</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>nfts</td>
+                                    <td>
+                                                <code><a href="../interfaces/INftModel.html" target="_self" >INftModel[]</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>identityId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="formatIdentityData"></a>
+                    <span class="name">
+                        <span ><b>formatIdentityData</b></span>
+                        <a href="#formatIdentityData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>formatIdentityData(identity: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="295"
+                            class="link-to-prism">src/modules/nft/nft.service.ts:295</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>identity</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>literal type</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getAll"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>getAll</b></span>
+                        <a href="#getAll"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getAll(search?: <a href="../classes/INftQueryDto.html" target="_self">INftQueryDto</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="50"
+                            class="link-to-prism">src/modules/nft/nft.service.ts:50</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>search</td>
+                                    <td>
+                                                <code><a href="../classes/INftQueryDto.html" target="_self" >INftQueryDto</a></code>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getAllNewsLikeCounts"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>getAllNewsLikeCounts</b></span>
+                        <a href="#getAllNewsLikeCounts"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getAllNewsLikeCounts()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="360"
+                            class="link-to-prism">src/modules/nft/nft.service.ts:360</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getAllNewsLikesListByProfileId"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>getAllNewsLikesListByProfileId</b></span>
+                        <a href="#getAllNewsLikesListByProfileId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getAllNewsLikesListByProfileId(profileId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="378"
+                            class="link-to-prism">src/modules/nft/nft.service.ts:378</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>profileId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getArtemundiIdentity"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>getArtemundiIdentity</b></span>
+                        <a href="#getArtemundiIdentity"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getArtemundiIdentity()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="389"
+                            class="link-to-prism">src/modules/nft/nft.service.ts:389</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getCommunityLinkForMarketplace"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>getCommunityLinkForMarketplace</b></span>
+                        <a href="#getCommunityLinkForMarketplace"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getCommunityLinkForMarketplace()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="258"
+                            class="link-to-prism">src/modules/nft/nft.service.ts:258</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;string&gt;</code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getHistoryByNftId"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>getHistoryByNftId</b></span>
+                        <a href="#getHistoryByNftId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getHistoryByNftId(nftId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="263"
+                            class="link-to-prism">src/modules/nft/nft.service.ts:263</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>nftId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getNftInfo"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>getNftInfo</b></span>
+                        <a href="#getNftInfo"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getNftInfo(type: "libraries" | "podcast" | "news", pagination: literal type, viewerUser?: <a href="../interfaces/IIdentityModel.html" target="_self">IIdentityModel | null</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="224"
+                            class="link-to-prism">src/modules/nft/nft.service.ts:224</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>type</td>
+                                    <td>
+                                            <code>&quot;libraries&quot; | &quot;podcast&quot; | &quot;news&quot;</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>pagination</td>
+                                    <td>
+                                            <code>literal type</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>viewerUser</td>
+                                    <td>
+                                                <code><a href="../interfaces/IIdentityModel.html" target="_self" >IIdentityModel | null</a></code>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="injectLikesToNewsRecord"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>injectLikesToNewsRecord</b></span>
+                        <a href="#injectLikesToNewsRecord"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>injectLikesToNewsRecord(newsRecord: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, listOfNewsLikesCount: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, listOfAllNewsIdsLikedByUser: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="345"
+                            class="link-to-prism">src/modules/nft/nft.service.ts:345</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>newsRecord</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>listOfNewsLikesCount</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>listOfAllNewsIdsLikedByUser</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isLiked"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>isLiked</b></span>
+                        <a href="#isLiked"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>isLiked(nftId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, profileId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="335"
+                            class="link-to-prism">src/modules/nft/nft.service.ts:335</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>nftId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>profileId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="likeById"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>likeById</b></span>
+                        <a href="#likeById"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>likeById(nftId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, profileId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="313"
+                            class="link-to-prism">src/modules/nft/nft.service.ts:313</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>nftId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>profileId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="unLikeById"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>unLikeById</b></span>
+                        <a href="#unLikeById"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>unLikeById(nftId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, profileId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="322"
+                            class="link-to-prism">src/modules/nft/nft.service.ts:322</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>nftId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>profileId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { HttpException, HttpStatus, Injectable, Logger } from &#x27;@nestjs/common&#x27;;
+import { InjectModel } from &#x27;@nestjs/sequelize&#x27;;
+import { paginate } from &#x27;@Common/utils/pagination.util&#x27;;
+import { ACCOUNT_TYPES } from &#x27;@DB/enums&#x27;;
+import { fn } from &#x27;sequelize&#x27;;
+import {
+  BlockchainIdentityAddressModel,
+  IdentityModel,
+  LibraryModel,
+  NewsLikeModel,
+  NewsModel,
+  NftLikeModel,
+  NftModel,
+  PodcastModel,
+  ProfileModel,
+  TransactionHistoryModel,
+} from &#x27;@/db/models&#x27;;
+import { INftQueryDto } from &#x27;./dtos/nft-query.dto&#x27;;
+import { upsertData } from &#x27;@/db/utils/helper&#x27;;
+import { IIdentityModel, INftModel, IProfileModel } from &#x27;@/db/interfaces&#x27;;
+import { getShortHash } from &#x27;@/common/utils/short-hash.utile&#x27;;
+import { config } from &#x27;@/common/config&#x27;;
+import { countHelper } from &#x27;@/common/utils&#x27;;
+
+@Injectable()
+export class NftService {
+  constructor(
+    @InjectModel(NftModel) private repository: typeof NftModel,
+    @InjectModel(NftLikeModel)
+    private nftLikeModel: typeof NftLikeModel,
+    @InjectModel(LibraryModel)
+    private libraryModel: typeof LibraryModel,
+    @InjectModel(PodcastModel)
+    private podcastModel: typeof PodcastModel,
+    @InjectModel(NewsModel)
+    private newsModel: typeof NewsModel,
+    @InjectModel(NewsLikeModel)
+    private newsLikeModel: typeof NewsLikeModel,
+    @InjectModel(BlockchainIdentityAddressModel)
+    private blockchainIdentityAddressModel: typeof BlockchainIdentityAddressModel,
+    @InjectModel(TransactionHistoryModel)
+    private transactionHistoryModel: typeof TransactionHistoryModel,
+    @InjectModel(IdentityModel)
+    private identityModel: typeof IdentityModel,
+    @InjectModel(ProfileModel)
+    private profileModel: typeof ProfileModel,
+  ) {}
+
+  async getAll(search?: INftQueryDto) {
+    try {
+      const { limit, offset, identityId, collectionId, status, sortType, sortValue, nftId } &#x3D; search;
+      //  TODO refactor
+      // One select for all nft requirements
+      const rawQuery &#x3D; &#x60;
+
+      WITH temptable as (
+        SELECT
+        b.identityId as identityId,
+        ident.status as status,
+        ident.accountType,
+        JSON_OBJECT(&#x27;id&#x27;, pr.id, &#x27;cover&#x27;, pr.cover, &#x27;avatar&#x27;, pr.avatar, &#x27;name&#x27;, pr.name ) as profile,
+        n.id as nftId, 
+        JSON_OBJECT(&#x27;id&#x27;, c.id, &#x27;logo&#x27;, c.logo, &#x27;cover&#x27;, c.cover, &#x27;symbol&#x27;, c.symbol ) as collection,
+        n.royalty,
+        n.metadata,
+        n.amount  as totalNftAmount,
+        n.thumbnail,
+        JSON_ARRAYAGG(
+          JSON_OBJECT(
+            &#x27;address&#x27;, cr.address,
+            &#x27;identityId&#x27;, cr.identityId,
+            &#x27;accountType&#x27;, cr.accountType,
+            &#x27;name&#x27;, cr.name,
+            &#x27;userName&#x27;, cr.userName,
+            &#x27;avatar&#x27;, .cr.avatar
+          )
+        ) as creatorsData,
+        addr.address  as address,
+        n.totalSupply, 
+        n.creatorIds as creators,
+        b.amount as identityBalance,
+        l.lockedData,
+        l.lockedBalance,
+        IF(pr.id &#x3D; lk.profileId, 1, 0) as isLiked,
+        count(lk.id) as likesCount,
+        IFNULL(sum(o.amount), 0) as onSale,
+        IF ( sum(o.amount) is NULL, NULL, JSON_ARRAYAGG(
+          JSON_OBJECT(
+            &#x27;id&#x27;, o.id,
+            &#x27;amount&#x27;, o.amount, 
+            &#x27;price&#x27;, o.price,
+            &#x27;signature&#x27;, o.signature,
+            &#x27;decimals&#x27;, cur.decimals,
+            &#x27;currency&#x27;, cur.symbol 
+            ))) as onSalesData
+        from Nft n
+        JOIN Collection c ON c.id &#x3D; n.collectionId 
+        ${collectionId ? &#x60;&amp;&amp; c.id &#x3D; &#x27;${collectionId}&#x27;&#x60; : &#x27;&#x27;}
+        JOIN IdentityNftBalance b ON b.nftId &#x3D; n.id ${identityId ? &#x60;&amp;&amp;  b.identityId &#x3D; &#x27;${identityId}&#x27;&#x60; : &#x27;&#x27;}    
+        ${status &#x3D;&#x3D;&#x3D; &#x27;onSale&#x27; ? &#x60;JOIN&#x60; : &#x60;LEFT JOIN&#x60;} \&#x60;Orders\&#x60; o ON o.nftIdentityBalanceId &#x3D; b.id
+        LEFT JOIN Identity  ident ON ident.id &#x3D; b.identityId
+        LEFT JOIN Profile  pr ON pr.id &#x3D; ident.profileId
+        LEFT JOIN BlockchainIdentityAddress addr ON c.identityId &#x3D; addr.identityId &amp;&amp; c.chainId &#x3D; addr.chainId    
+        LEFT JOIN NftLike lk ON lk.nftId &#x3D; n.id
+        LEFT JOIN (
+          SELECT creator.nftId, creator.address, id.id as identityId, id.accountType, pr.name, pr.avatar, pr.userName   
+          FROM IdentityNftCreator creator
+          JOIN BlockchainIdentityAddress bad On bad.address &#x3D; creator.address
+          JOIN Identity id On id.id &#x3D; bad.identityId
+          JOIN Profile pr On pr.id &#x3D; id.profileId
+          GROUP BY creator.nftId
+        ) cr ON n.id &#x3D; cr.nftId
+
+        ${status &#x3D;&#x3D;&#x3D; &#x27;onLocked&#x27; ? &#x60;JOIN&#x60; : &#x60;LEFT JOIN&#x60;} (
+          SELECT lk.identityNftBalanceId,
+                  sum(lk.amount) as lockedBalance, 
+          JSON_ARRAYAGG(JSON_OBJECT( &#x27;amount&#x27;, lk.amount, &#x27;unlockTime&#x27;, lk.unlockTime )) as lockedData  
+          FROM IdentityNftBalanceLock lk
+          GROUP BY lk.identityNftBalanceId
+          ) l ON b.id &#x3D; l.identityNftBalanceId
+        LEFT JOIN Currencies cur ON o.currency &#x3D; cur.symbol
+        ${nftId ? &#x60;WHERE n.id &#x3D; &#x27;${nftId}&#x27;&#x60; : &#x60;&#x60;}
+        GROUP BY b.id
+        ${sortValue &#x3D;&#x3D;&#x3D; &#x27;price&#x27; ? &#x60;ORDER BY  CONVERT(o.price, INTEGER) ${sortType}&#x60; : &#x60;&#x60;}
+        ${sortValue &#x3D;&#x3D;&#x3D; &#x27;created&#x27; ? &#x60;ORDER BY  o.createdAt  ${sortType}&#x60; : &#x60;&#x60;}
+        ${sortValue &#x3D;&#x3D;&#x3D; &#x27;unlockTime&#x27; ? &#x60;ORDER BY l.unlockTime  ${sortType}&#x60; : &#x60;&#x60;}
+        )
+
+
+        SELECT
+        tb.nftId as id, 
+        p.count as count,
+        tb.royalty,
+        tb.metadata,
+        tb.totalNftAmount,
+        tb.thumbnail,
+        tb.totalSupply,       
+        tb.collection,
+        tb.creatorsData,
+
+        JSON_ARRAYAGG(
+          JSON_OBJECT(
+            &#x27;identityId&#x27;, tb.identityId,
+            &#x27;address&#x27;, tb.address,
+            &#x27;status&#x27;, tb.status,
+            &#x27;accountType&#x27;, tb.accountType,
+            &#x27;identityBalance&#x27;, tb.identityBalance,
+            &#x27;profile&#x27;,tb.profile,
+            &#x27;lockedData&#x27;, tb.lockedData,
+            &#x27;lockedBalance&#x27;, tb.lockedBalance,
+            &#x27;isLiked&#x27;, tb.isLiked,
+            &#x27;likesCount&#x27;, tb.likesCount,
+            &#x27;onSale&#x27;, tb.onSale,
+            &#x27;onSalesData&#x27;, tb.onSalesData 
+          )
+        ) as owners
+        FROM temptable tb
+        JOIN (select count(t.nftId) as count from temptable t) p
+        GROUP BY tb.nftId
+        ${limit ? &#x60;LIMIT ${limit}&#x60; : &#x27;&#x27;}
+        ${offset ? &#x60;OFFSET ${offset}&#x60; : &#x27;&#x27;}
+        &#x60;;
+
+      const [data] &#x3D; await this.repository.sequelize.query(rawQuery);
+      const { total, result } &#x3D; countHelper(data);
+      return {
+        data: result,
+        pagination: {
+          total,
+          limit,
+          offset,
+        },
+      };
+    } catch (e) {
+      Logger.error(&#x27;Error nft service&#x27;, e);
+      throw e;
+    }
+  }
+
+  /**
+   * fill nfts after add collection, only ones
+   * @param nfts
+   */
+  public async fillNftsByCollection(nfts: INftModel[], identityId?: string) {
+    const { tableName } &#x3D; this.repository;
+    if (nfts &amp;&amp; nfts.length) {
+      //  add nfts
+      const nftsQuery &#x3D; upsertData(
+        tableName,
+        [&#x27;id&#x27;, &#x27;collectionId&#x27;, &#x27;thumbnail&#x27;, &#x27;amount&#x27;, &#x27;metadata&#x27;, &#x27;creatorIds&#x27;, &#x27;royaltyIds&#x27;, &#x27;royalty&#x27;, &#x27;totalSupply&#x27;],
+        nfts.map((nft: INftModel) &#x3D;&gt; [
+          &#x60;&#x27;${nft.id}&#x27;,&#x27;${nft.collectionId}&#x27;,&#x27;${nft.thumbnail}&#x27;,&#x27;${nft.amount}&#x27;, &#x27;${JSON.stringify(
+            nft.metadata,
+          )}&#x27;, &#x27;${JSON.stringify(nft.creatorIds)}&#x27;,&#x27;${JSON.stringify(nft.royaltyIds)}&#x27;,${nft.royalty}, &#x27;${
+            nft.totalSupply
+          }&#x27;&#x60;,
+        ]),
+      );
+      await this.repository.sequelize.query(nftsQuery);
+
+      // add balances
+      const balancesQuery &#x3D; upsertData(
+        &#x27;IdentityNftBalance&#x27;,
+        [&#x27;id&#x27;, &#x27;identityId&#x27;, &#x27;nftId&#x27;, &#x27;amount&#x27;],
+        nfts.map((nft: INftModel) &#x3D;&gt; [
+          &#x60;&#x27;${getShortHash(identityId, nft.id)}&#x27;,&#x27;${identityId}&#x27;,&#x27;${nft.id}&#x27;,&#x27;${nft.amount}&#x27;&#x60;,
+        ]),
+      );
+      await this.repository.sequelize.query(balancesQuery);
+
+      // add creators
+      const creatorsQuery &#x3D; upsertData(
+        &#x27;IdentityNftCreator&#x27;,
+        [&#x27;address&#x27;, &#x27;nftId&#x27;],
+        nfts.map((cr: INftModel) &#x3D;&gt; [&#x60;&#x27;${cr.creatorIds[0]}&#x27;,&#x27;${cr.id}&#x27;&#x60;]),
+      );
+
+      await this.repository.sequelize.query(creatorsQuery);
+      console.log();
+    }
+  }
+
+  async getNftInfo(
+    type: &#x27;libraries&#x27; | &#x27;podcast&#x27; | &#x27;news&#x27;,
+    pagination: { limit?: number; offset?: number },
+    viewerUser?: IIdentityModel | null,
+  ): Promise&lt;any&gt; {
+    const { limit, offset } &#x3D; pagination;
+    const artemundiIdentity &#x3D; await this.getArtemundiIdentity();
+    const modelsMap &#x3D; {
+      libraries: this.libraryModel,
+      podcast: this.podcastModel,
+      news: this.newsModel,
+    };
+    // eslint-disable-next-line security/detect-object-injection
+    let result: any &#x3D; await paginate(modelsMap[type], {
+      where: { profileId: artemundiIdentity.profileId },
+      limit,
+      offset,
+    });
+    if (type &#x3D;&#x3D;&#x3D; &#x27;news&#x27;) {
+      const listOfNewsLikesCount &#x3D; await this.getAllNewsLikeCounts();
+      let listOfAllNewsIdsLikedByUser: NewsModel[] &#x3D; [];
+      if (viewerUser) {
+        listOfAllNewsIdsLikedByUser &#x3D; await this.getAllNewsLikesListByProfileId(viewerUser.profileId);
+      }
+
+      result &#x3D; await Promise.all(
+        result.data.map(async (news: NewsModel) &#x3D;&gt;
+          this.injectLikesToNewsRecord(news, listOfNewsLikesCount, listOfAllNewsIdsLikedByUser),
+        ),
+      );
+    }
+    return result;
+  }
+
+  async getCommunityLinkForMarketplace(): Promise&lt;string&gt; {
+    const artemundiIdentity &#x3D; await this.getArtemundiIdentity();
+    return artemundiIdentity.profile.communityLink;
+  }
+
+  async getHistoryByNftId(nftId: string) {
+    const historyRecords &#x3D; await this.transactionHistoryModel.findAll({
+      where: { nftId },
+      attributes: [&#x27;type&#x27;, &#x27;amount&#x27;, &#x27;price&#x27;, &#x27;txHash&#x27;, &#x27;createdAt&#x27;],
+      order: [[&#x27;createdAt&#x27;, &#x27;DESC&#x27;]],
+      include: [
+        {
+          model: this.identityModel,
+          as: &#x27;identity&#x27;,
+          attributes: [&#x27;accountType&#x27;],
+          include: [
+            {
+              model: this.profileModel,
+              as: &#x27;profile&#x27;,
+              attributes: [&#x27;id&#x27;, &#x27;avatar&#x27;, &#x27;userName&#x27;],
+            },
+            {
+              model: this.blockchainIdentityAddressModel,
+              as: &#x27;address&#x27;,
+            },
+          ],
+        },
+      ],
+    });
+
+    return historyRecords.map((historyRecord: any) &#x3D;&gt; {
+      // eslint-disable-next-line no-param-reassign
+      historyRecord.dataValues.identity &#x3D; this.formatIdentityData(historyRecord.dataValues.identity);
+      return historyRecord;
+    });
+  }
+
+  formatIdentityData(identity: any): {
+    id: string;
+    profileId: string;
+    address: string;
+    userName: string;
+    isPartner: boolean;
+    avatar: string;
+  } {
+    return {
+      id: identity.id,
+      profileId: identity.profile.id,
+      address: identity.address[0].address,
+      userName: identity.profile.userName,
+      isPartner: identity.accountType &#x3D;&#x3D;&#x3D; ACCOUNT_TYPES.PARTNER,
+      avatar: identity.profile.avatar,
+    };
+  }
+
+  async likeById(nftId: string, profileId: number) {
+    const isLiked: boolean &#x3D; await this.isLiked(nftId, profileId);
+    if (isLiked) {
+      throw new HttpException(&#x27;ALREADY_LIKED&#x27;, HttpStatus.BAD_REQUEST);
+    }
+
+    await this.nftLikeModel.create({ profileId, nftId });
+  }
+
+  async unLikeById(nftId: string, profileId: number) {
+    const nftLikeRecord &#x3D; await this.nftLikeModel.findOne({
+      where: { profileId, nftId },
+      attributes: [&#x27;id&#x27;],
+    });
+
+    if (!nftLikeRecord) {
+      throw new HttpException(&#x27;NOT_LIKED_YET&#x27;, HttpStatus.BAD_REQUEST);
+    }
+
+    await nftLikeRecord.destroy();
+  }
+
+  async isLiked(nftId: string, profileId: number) {
+    const nftLikeRecord &#x3D; await this.nftLikeModel.findOne({
+      where: { profileId, nftId },
+      attributes: [&#x27;id&#x27;],
+      raw: true,
+    });
+    return !!nftLikeRecord;
+  }
+
+  // ToDo move this and the same code to service, when circular dependencies are resolved
+  async injectLikesToNewsRecord(newsRecord: any, listOfNewsLikesCount: any, listOfAllNewsIdsLikedByUser: any) {
+    const result &#x3D; newsRecord;
+    result.isLiked &#x3D; false;
+
+    if (listOfAllNewsIdsLikedByUser) {
+      result.isLiked &#x3D; listOfAllNewsIdsLikedByUser.includes(newsRecord.dataValues.id);
+    }
+
+    result.likesCount &#x3D; listOfNewsLikesCount[newsRecord.dataValues.id]
+      ? listOfNewsLikesCount[newsRecord.dataValues.id]
+      : 0;
+
+    return result;
+  }
+
+  async getAllNewsLikeCounts() {
+    const allCountsList: any[] &#x3D; await this.newsLikeModel.findAll({
+      attributes: [&#x27;newsId&#x27;, &#x27;profileId&#x27;, [fn(&#x27;COUNT&#x27;, &#x27;profileId&#x27;), &#x27;likesCount&#x27;]],
+      group: [&#x27;newsId&#x27;],
+    });
+
+    let formattedCountsObject;
+    if (allCountsList.length) {
+      formattedCountsObject &#x3D; {};
+      allCountsList.forEach((item: any) &#x3D;&gt; {
+        formattedCountsObject[item.newsId] &#x3D; item.dataValues.likesCount;
+      });
+    }
+
+    return formattedCountsObject;
+  }
+
+  // get array containing all newsIds liked by current user
+  async getAllNewsLikesListByProfileId(profileId: number) {
+    return this.newsLikeModel
+      .findAll({
+        where: { profileId },
+        attributes: [&#x27;newsId&#x27;],
+      })
+      .then((allNews: Pick&lt;NewsLikeModel, &#x27;newsId&#x27;&gt;[]) &#x3D;&gt;
+        allNews.map((newsRecord: Pick&lt;NewsLikeModel, &#x27;newsId&#x27;&gt;) &#x3D;&gt; newsRecord.newsId),
+      );
+  }
+
+  async getArtemundiIdentity() {
+    const artemundiWalletRecord &#x3D; await this.blockchainIdentityAddressModel.findOne({
+      where: { address: config.blockChain.artemundiWallet },
+      include: [{ model: IdentityModel, as: &#x27;identity&#x27;, include: [{ model: ProfileModel, as: &#x27;profile&#x27; }] }],
+    });
+
+    return artemundiWalletRecord.identity;
+  }
+}
+</code></pre>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
+            var COMPODOC_CURRENT_PAGE_URL = 'NftService.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>
