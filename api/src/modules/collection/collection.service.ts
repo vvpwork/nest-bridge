@@ -24,8 +24,8 @@ export class CollectionService {
   async create(collection: ICollectionModel) {
     try {
       const newCollection = await this.repository.create(collection);
-      const nfts = await this.bcService.getPastCollectionNfts(newCollection.id);
-      await this.nftService.fillNftsByCollection(nfts, collection.identityId);
+      // const nfts = await this.bcService.getPastCollectionNfts(newCollection.id);
+      // await this.nftService.fillNftsByCollection(nfts, collection.identityId);
       return newCollection;
     } catch (err) {
       Logger.error('Controller service', err);
@@ -97,6 +97,28 @@ export class CollectionService {
         limit: query.limit,
         offset,
       },
+    };
+  }
+
+  async update(collectionId: string, identityId: string, data: Partial<ICollectionModel>) {
+    const collection = await this.repository.findOne({
+      where: {
+        id: collectionId,
+        identityId,
+      },
+    });
+
+    if (!collection) throw new HttpException('Collection for this user was not found', 404);
+
+    await this.repository.update(data, {
+      where: {
+        id: collectionId,
+        identityId,
+      },
+      returning: true,
+    });
+    return {
+      data: { ...collection.toJSON(), ...data },
     };
   }
 }

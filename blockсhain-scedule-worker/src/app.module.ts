@@ -4,7 +4,7 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { config } from './common/config';
-import { IdentityNftBalanceLock } from './db/models';
+import * as models from './db/models';
 import { RabbitModule, BlockchainModule, CronJobModule } from './modules';
 
 @Module({
@@ -12,10 +12,9 @@ import { RabbitModule, BlockchainModule, CronJobModule } from './modules';
     BlockchainModule,
     SequelizeModule.forRoot({
       ...config.db,
-      models: [IdentityNftBalanceLock],
+      models: Object.values(models),
       logging: Logger.log,
     }),
-    SequelizeModule.forFeature([IdentityNftBalanceLock]),
     ScheduleModule.forRoot(),
     RabbitModule,
     CronJobModule,

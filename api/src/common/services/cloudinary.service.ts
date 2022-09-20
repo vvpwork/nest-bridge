@@ -40,6 +40,7 @@ export class CloudinaryService {
   }
 
   async uploadFile(file: Express.Multer.File): Promise<ICloudinaryUploadFileResponseData> {
-    return this.streamUpload(file);
+    const res = await this.streamUpload(file);
+    return res;
   }
 }

@@ -3,5 +3,13 @@
         "cloudinary",
         "streamifier",
         "UNLIST"
+    ],
+    "spellright.language": [
+        "en"
+    ],
+    "spellright.documentTypes": [
+        "markdown",
+        "latex",
+        "plaintext"
     ]
 }

@@ -6,6 +6,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import { config } from '@Common/config';
 import { InjectRedis } from '@liaoliaots/nestjs-redis';
 import Redis from 'ioredis';
+import { where } from 'sequelize/types';
 import { IdentityService } from '../identity/identity.service';
 import { BlockchainIdentityAddressModel, BlockchainModel, IdentityModel, ProfileModel } from '@/db/models';
 import { BlockchainService } from '../blockchain/blockchain.service';
@@ -40,21 +41,31 @@ export class AuthService {
     )
       throw new HttpException(`Chain with id ${chainId} was not found `, 404);
 
+    const { investorId, statusKyc, isPartner, whiteListTransaction } =
+      config.nodeEnv === 'development'
+        ? { investorId: 'develop', statusKyc: PROFILE_STATUS.VERIFIED, isPartner: false, whiteListTransaction: null }
+        : await this.securitizeService.login(code, address);
+
     const userDataFromDB = await this.bcIdentityAddressModel.findOne({
       where: {
         address,
       },
     });
 
-    if (userDataFromDB)
-      return {
-        id: userDataFromDB.toJSON().identityId,
-      };
+    if (userDataFromDB) {
+      await this.identityModel.update(
+        {
+          status: statusKyc,
+        },
+        {
+          where: {
+            id: userDataFromDB.toJSON().identityId,
+          },
+        },
+      );
 
-    const { investorId, statusKyc, isPartner, whiteListTransaction } =
-      config.nodeEnv === 'development'
-        ? { investorId: 'develop', statusKyc: PROFILE_STATUS.VERIFIED, isPartner: false, whiteListTransaction: null }
-        : await this.securitizeService.login(code, address);
+      return { id: userDataFromDB.toJSON().identityId };
+    }
 
     let identity = await this.identityModel.findOne({
       where: {

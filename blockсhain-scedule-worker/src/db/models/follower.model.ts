@@ -29,9 +29,9 @@ export class FollowerModel extends Model<IFollowerModel> {
 
   @ForeignKey(() => ProfileModel)
   @Column(DataType.BIGINT)
-  profileId: ProfileModel;
+  profileId: number;
 
   @ForeignKey(() => ProfileModel)
   @Column(DataType.BIGINT)
-  targetProfileId: ProfileModel;
+  targetProfileId: number;
 }

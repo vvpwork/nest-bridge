@@ -62,6 +62,8 @@ export interface INftModel {
   collectionId: string;
   thumbnail: string;
   amount: number;
+  // only after get blockchain
+  ownerBalance?: number;
   metadata: MetadataObject;
   creatorIds: string[];
   royaltyIds: string[];

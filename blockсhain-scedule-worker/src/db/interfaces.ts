@@ -18,8 +18,10 @@ export interface IProfileModel {
 }
 
 export interface IIdentityModel {
+  [x: string]: any;
   id: string;
   profileId: number;
+  profile?: IProfileModel;
   securitizeId: string;
   status: PROFILE_STATUS;
   accountType: ACCOUNT_TYPES;
@@ -60,6 +62,8 @@ export interface INftModel {
   collectionId: string;
   thumbnail: string;
   amount: number;
+  // only after get blockchain
+  ownerBalance?: number;
   metadata: MetadataObject;
   creatorIds: string[];
   royaltyIds: string[];
@@ -81,7 +85,7 @@ export interface IIdentityBalanceModel {
 
 export interface IIdentityNftBalanceLock {
   id: number;
-  identityNftBalanceId: number;
+  identityNftBalanceId: string;
   amount: number;
   unlockTime: number;
   createdAt: any;
@@ -95,6 +99,7 @@ export interface ITransactionHistory {
   amount: number;
   price: string;
   txHash: string;
+  data?: unknown;
   type: string;
   createdAt?: any;
   updatedAt?: any;
@@ -186,4 +191,10 @@ export interface IBlockchainIdentityAddress {
   identityId: number;
   address: string;
   description?: string;
+}
+
+export interface IIdentityNftCreatorModel {
+  identityId: number;
+  address: string;
+  nftId: string;
 }

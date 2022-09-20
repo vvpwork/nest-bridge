@@ -27,6 +27,7 @@ export class RabbitRootService {
 
   handleMessage: any = async (message: string) => {
     const mes: IMessageRabbit = JSON.parse(message);
+    console.log(mes);
 
     switch (mes.type) {
       case TypeRpcMessage.BLOCKCHAIN:
