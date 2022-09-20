@@ -94,7 +94,7 @@ export interface ITransactionHistory {
   id?: number;
   identityId: string;
   nftId: string;
-  amount: string;
+  amount: number;
   price: string;
   txHash: string;
   data?: unknown;

@@ -39,8 +39,8 @@ export class TransactionHistoryModel extends Model<ITransactionHistory> {
   nftId: string;
 
   @AllowNull(true)
-  @Column(DataType.STRING)
-  amount: string;
+  @Column(DataType.NUMBER)
+  amount: number;
 
   @AllowNull(true)
   @Column(DataType.STRING)

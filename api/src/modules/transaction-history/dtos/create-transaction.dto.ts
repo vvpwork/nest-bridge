@@ -12,8 +12,8 @@ export enum TransactionsType {
 }
 
 export class CreateTransactionDto {
-  @IsString()
-  public amount!: string;
+  @IsNumber()
+  public amount!: number;
 
   @IsString()
   @Length(1, 128)

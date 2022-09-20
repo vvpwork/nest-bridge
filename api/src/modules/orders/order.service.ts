@@ -43,7 +43,7 @@ export class OrderService {
       })
     ).toJSON();
 
-    await this.historyService.create({ identityId, type: 'list', amount: amount.toString(), price, nftId });
+    await this.historyService.create({ identityId, type: 'list', amount, price, nftId });
 
     // remove private info
     delete order.nftIdentityBalanceId;
@@ -139,7 +139,7 @@ export class OrderService {
       identityId: sellerBalance.toJSON().identityId,
       txHash,
       type: 'sell',
-      amount: buyAmount.toString(),
+      amount: buyAmount,
       price: order.price,
       nftId: sellerBalance.toJSON().nftId,
     });
@@ -147,7 +147,7 @@ export class OrderService {
       identityId,
       txHash,
       type: 'buy',
-      amount: buyAmount.toString(),
+      amount: buyAmount,
       price: order.price,
       nftId: sellerBalance.toJSON().nftId,
     });
