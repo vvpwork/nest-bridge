@@ -10,6 +10,7 @@ import {
 import { PaginationQueryDto } from '@Common/dto/paginationQuery.dto';
 import { ICommunityLinkResponseDto } from '@Modules/nft/dtos/communityLink-response.dto';
 import { INftHistoryResponseDto } from '@Modules/nft/dtos/nftHistory-responese.dto';
+import { NftTotalsResponseDto } from '@Modules/nft/dtos';
 import { Public, User } from '@/common/decorators';
 import { NftService } from './nft.service';
 import { INftQueryDto } from './dtos/nft-query.dto';
@@ -127,9 +128,21 @@ export class NftController {
     description: 'get history of nft',
     type: INftHistoryResponseDto,
   })
-  async getNftHistory(@Param('id') id: string, @Res() res: Response): Promise<void> {
-    res.status(200).send({
+  async getNftHistory(@Param('id') id: string, @Res() res: Response) {
+    return res.status(200).send({
       data: await this.nftService.getHistoryByNftId(id),
+    });
+  }
+
+  @Get('totals')
+  @ApiResponse({
+    status: 200,
+    description: 'get total stats for NFT',
+    type: NftTotalsResponseDto,
+  })
+  async getNftTotalStats(@User() user: IUserInterface, @Res() res: Response) {
+    return res.status(200).send({
+      data: await this.nftService.getTotalStatsByIdentityId(user.data),
     });
   }
 }

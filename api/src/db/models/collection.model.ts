@@ -71,4 +71,7 @@ export class CollectionModel extends Model<ICollectionModel> {
 
   @BelongsTo(() => IdentityModel, 'identityId')
   identity: IdentityModel;
+
+  @BelongsTo(() => BlockchainModel, 'chainId')
+  blockchain: BlockchainModel;
 }

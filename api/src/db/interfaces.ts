@@ -112,6 +112,8 @@ export interface IOrderModel {
   signature: any;
   metadata: any;
   total?: number;
+  totalPrice?: string;
+  totalAmount?: number;
   createdAt: any;
   updatedAt: any;
 }

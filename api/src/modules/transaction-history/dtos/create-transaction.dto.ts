@@ -1,6 +1,6 @@
-import { IsEnum, IsNumber, IsOptional, IsString, Length } from 'class-validator';
+import { IsEnum, IsNumber, IsOptional, IsString, Length, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
-import { TransactionDataDto } from '@Modules/transaction-history/dtos/transaction-data.dto';
+import { TransactionDataDto } from '@Modules/transaction-history/dtos/';
 /**
  * https://github.com/typestack/class-validator#validation-decorators
  * https://docs.nestjs.com/techniques/serialization
@@ -21,6 +21,7 @@ export class CreateTransactionDto {
 
   @Type(() => TransactionDataDto)
   @IsOptional()
+  @ValidateNested()
   public data?: TransactionDataDto;
 
   @IsEnum(TransactionsType)

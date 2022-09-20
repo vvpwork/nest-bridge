@@ -2,16 +2,21 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { paginate } from '@Common/utils/pagination.util';
-import { ACCOUNT_TYPES } from '@DB/enums';
+import { ACCOUNT_TYPES, HISTORY_TYPES } from '@DB/enums';
 import { fn } from 'sequelize';
+import { Sequelize } from 'sequelize-typescript';
 import {
   BlockchainIdentityAddressModel,
+  BlockchainModel,
+  CollectionModel,
   IdentityModel,
+  IdentityNftBalanceModel,
   LibraryModel,
   NewsLikeModel,
   NewsModel,
   NftLikeModel,
   NftModel,
+  OrdersModel,
   PodcastModel,
   ProfileModel,
   TransactionHistoryModel,
@@ -45,6 +50,10 @@ export class NftService {
     private identityModel: typeof IdentityModel,
     @InjectModel(ProfileModel)
     private profileModel: typeof ProfileModel,
+    @InjectModel(OrdersModel)
+    private orderModel: typeof OrdersModel,
+    @InjectModel(IdentityNftBalanceModel)
+    private identityNftBalanceModel: typeof IdentityNftBalanceModel,
   ) {}
 
   async getAll(searchData?: INftQueryDto) {
@@ -394,5 +403,95 @@ export class NftService {
     });
 
     return artemundiWalletRecord.identity;
+  }
+
+  async getTotalStatsByIdentityId(user: IIdentityModel) {
+    const historyTotalPrices = await this.transactionHistoryModel.findAll({
+      where: { type: HISTORY_TYPES.BUY, identityId: user.id },
+      attributes: [[Sequelize.fn('sum', Sequelize.col('price')), 'price']],
+      group: ['nft.collection.blockchain.name'],
+      include: [
+        {
+          model: NftModel,
+          attributes: ['id', 'collectionId'],
+          include: [
+            {
+              model: CollectionModel,
+              attributes: ['chainId'],
+              include: [
+                {
+                  model: BlockchainModel,
+                  attributes: ['name'],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+    const totalValue = {};
+    if (historyTotalPrices.length) {
+      historyTotalPrices.forEach((item: Partial<TransactionHistoryModel>) => {
+        totalValue[item.nft.collection.blockchain.name] = { value: item.price };
+      });
+    }
+
+    const balances = await this.identityNftBalanceModel.findAll({
+      where: { identityId: user.id },
+      include: [
+        {
+          model: OrdersModel,
+          attributes: [
+            [Sequelize.fn('sum', Sequelize.col('orders.amount')), 'totalAmount'],
+            [Sequelize.fn('sum', Sequelize.col('orders.price')), 'totalPrice'],
+          ],
+        },
+        {
+          model: NftModel,
+          attributes: ['id', 'collectionId'],
+          include: [
+            {
+              model: CollectionModel,
+              attributes: ['chainId'],
+              include: [
+                {
+                  model: BlockchainModel,
+                  attributes: ['name'],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+
+    const totalWorth = {};
+    if (balances?.length) {
+      balances.forEach((balance: IdentityNftBalanceModel) => {
+        if (totalValue[balance.nft.collection.blockchain.name]?.amount) {
+          totalValue[balance.nft.collection.blockchain.name].amount += balance.amount;
+        } else {
+          totalValue[balance.nft.collection.blockchain.name].amount = balance.amount;
+        }
+        if (balance?.orders.length) {
+          balance.orders.forEach((order: OrdersModel) => {
+            if (totalWorth[balance.nft.collection.blockchain.name]) {
+              totalWorth[balance.nft.collection.blockchain.name].amount += order.toJSON().totalAmount;
+              totalWorth[balance.nft.collection.blockchain.name].value += order.toJSON().totalPrice;
+            } else {
+              totalWorth[balance.nft.collection.blockchain.name] = {
+                amount: order.toJSON().totalAmount,
+                value: order.toJSON().totalPrice,
+              };
+            }
+          });
+        }
+      });
+    }
+
+    return {
+      value: totalValue,
+      worth: totalWorth,
+    };
   }
 }
