@@ -59,4 +59,7 @@ export class TransactionHistoryModel extends Model<ITransactionHistory> {
 
   @BelongsTo(() => IdentityModel, 'identityId')
   identity: IdentityModel;
+
+  @BelongsTo(() => NftModel, 'nftId')
+  nft: NftModel;
 }

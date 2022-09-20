@@ -59,4 +59,7 @@ export class NftModel extends Model<INftModel> {
 
   @Column(DataType.BIGINT)
   royalty: number;
+
+  @BelongsTo(() => CollectionModel, 'collectionId')
+  collection: CollectionModel;
 }
