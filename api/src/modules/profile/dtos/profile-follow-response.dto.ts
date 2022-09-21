@@ -35,16 +35,22 @@ export class FollowResponseDto {
   isFollower: boolean;
 
   @ApiProperty({
-    type: Boolean,
-    example: true,
+    type: String,
+    example: 'user',
   })
-  isPartner: boolean;
+  accountType: string;
 
   @ApiProperty({
     type: String,
     example: '0x423cbE3E6479E86dfb816915c5BF57060e48C5A7',
   })
   address: string;
+
+  @ApiProperty({
+    type: String,
+    example: '0dwkjk-dwdllk',
+  })
+  identityId: string;
 }
 
 export class IProfileFollowResponseDto {

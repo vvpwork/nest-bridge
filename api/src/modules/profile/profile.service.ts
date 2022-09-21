@@ -18,7 +18,7 @@ import { paginate } from '@Common/utils/pagination.util';
 import { IIdentityModel, IProfileModel } from '@DB/interfaces';
 import { ACCOUNT_TYPES, NOTIFICATION_TYPES } from '@DB/enums';
 
-// TODO refactoring
+// TODO refactoring followers
 @Injectable()
 export class ProfileService {
   constructor(
@@ -50,9 +50,36 @@ export class ProfileService {
     private blockchainIdentityAddressModel: typeof BlockchainIdentityAddressModel,
   ) {}
 
-  async getById(id: number): Promise<ProfileModel> {
-    return this.profileModel.findOne({ where: { id } });
+  async getById(id: string) {
+    const query = `
+    SELECT DISTINCT id.*, bc.address, pr.name, 
+    pr.avatar, pr.cover, pr.userName,
+    pr.website, pr.socials, pr.email, pr.bio, pr.sections,
+    pr.communityLink,
+    IF(fl.id, 1, 0) as isFollowing,
+    IF(fol.count, fol.count, 0) as followers,
+    IF(follower.count, follower.count, 0) as followings
+    FROM Identity id
+    LEFT JOIN BlockchainIdentityAddress bc On bc.identityId = id.id
+    LEFT JOIN Profile pr ON pr.id = id.profileID
+    LEFT JOIN Follower fl On fl.profileId = pr.id
+    LEFT JOIN (
+      SELECT flw.targetProfileId, count(flw.id) as count  from Follower flw
+      GROUP BY flw.targetProfileId
+    ) fol On fol.targetProfileId = pr.id
+    LEFT JOIN (
+      SELECT flw.profileId, count(flw.id) as count  from Follower flw
+      GROUP BY flw.profileId
+    ) follower On follower.profileId = pr.id
+    WHERE id.id = '${id}'
+    GROUP BY id.id
+    `;
+    const [data] = await this.profileModel.sequelize.query(query);
+
+    return data[0];
   }
+
+  // TODO Refactor all methods
 
   async getByUserNameOrAddress(userNameOrAddress: string, viewerUser?: IIdentityModel) {
     let profile;
@@ -267,7 +294,7 @@ export class ProfileService {
             {
               model: this.blockchainIdentityAddressModel,
               as: 'address',
-              attributes: ['address'],
+              attributes: ['address', 'identityId'],
             },
           ],
         },
@@ -301,8 +328,9 @@ export class ProfileService {
       profile.dataValues.isFollower = listOfAllProfileIdsFollowedByUser.includes(profile.dataValues.profileId);
     }
 
-    profile.dataValues.isPartner = profile.identity.accountType === ACCOUNT_TYPES.PARTNER;
+    profile.dataValues.accountType = profile.identity.accountType;
     profile.dataValues.address = profile.identity.address[0].address;
+    profile.dataValues.identityId = profile.identity.id;
     delete profile.dataValues.identity;
 
     return profile;
