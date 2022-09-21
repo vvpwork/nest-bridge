@@ -20,6 +20,7 @@ import {
   IProfileLibrariesResponseDto,
   IProfileNewsResponseDto,
   IProfilePodcastResponseDto,
+  IProfileResponse,
   IProfileResponseDto,
 } from '@Modules/profile/dtos/';
 import { PaginationQueryDto } from '@Common/dto/paginationQuery.dto';
@@ -43,11 +44,12 @@ export class ProfileController {
   @ApiResponse({
     status: 200,
     description: 'Get authorized user profile',
-    type: IProfileResponseDto,
+    type: IProfileResponse,
   })
   async getMy(@User() user: IUserInterface, @Res() res: Response) {
+    const result = await this.profileService.getById(user.data.id);
     return res.status(200).send({
-      data: await this.profileService.getById(user.data.profileId),
+      data: result,
     });
   }
 
@@ -90,11 +92,11 @@ export class ProfileController {
       this.cloudinary.uploadFile(files.find((v: Express.Multer.File) => v.fieldname === 'avatar')),
     ]);
 
-    if (cover && cover.status === 'fulfilled') {
+    if (cover.status === 'fulfilled') {
       params.cover = cover.value.url;
     }
 
-    if (avatar && avatar.status === 'fulfilled') {
+    if (avatar.status === 'fulfilled') {
       params.avatar = avatar.value.url;
     }
 

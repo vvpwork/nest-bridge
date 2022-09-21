@@ -22,53 +22,61 @@ import { ApiProperty } from '@nestjs/swagger';
  */
 export class EditProfileDto {
   @IsString()
-  @Length(0, 30)
+  @IsDefined()
   @IsOptional()
-  public name?: string;
+  public name?: string | null;
 
   @IsString()
   @Length(0, 30)
+  @IsDefined()
   @IsOptional()
-  public userName?: string;
+  public userName?: string | null;
 
   @ApiProperty({ type: 'string', format: 'binary' })
+  @IsDefined()
   @IsOptional()
-  public avatar?: string;
+  public avatar?: string | null;
 
   @ApiProperty({ type: 'string', format: 'binary' })
+  @IsDefined()
   @IsOptional()
-  public cover?: string;
+  public cover?: string | null;
 
   @IsString()
   @Length(0, 254)
+  @IsDefined()
   @IsOptional()
-  public website?: string;
+  public website?: string | null;
 
   @IsString()
   @Length(0, 254)
   @IsEmail()
+  @IsDefined()
   @IsOptional()
-  public email?: string;
+  public email?: string | null;
 
   @IsString()
   @Length(0, 254)
+  @IsDefined()
   @IsOptional()
-  public communityLink?: string;
+  public communityLink?: string | null;
 
   @IsString()
   @Length(0, 1000)
+  @IsDefined()
   @IsOptional()
-  public bio?: string;
+  public bio?: string | null;
 
   @IsDefined()
   @IsNotEmptyObject()
   @ValidateNested()
   @IsOptional()
   @Type(() => ProfileSocialsDto)
-  public socials?: ProfileSocials;
+  public socials?: ProfileSocials | null;
 
   @ArrayNotEmpty()
   @ArrayUnique()
+  @IsDefined()
   @IsOptional()
-  public sections?: PROFILE_SECTIONS[];
+  public sections?: PROFILE_SECTIONS[] | null;
 }
