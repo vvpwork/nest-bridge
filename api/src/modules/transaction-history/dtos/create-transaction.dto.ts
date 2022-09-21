@@ -9,6 +9,7 @@ import { TransactionDataDto } from '@Modules/transaction-history/dtos/';
 export enum TransactionsType {
   stake = 'STAKE',
   claim = 'CLAIM',
+  buyDigitalSecurity = 'BUY_DIGITAL_SECURITY',
 }
 
 export class CreateTransactionDto {

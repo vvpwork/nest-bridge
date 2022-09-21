@@ -21,6 +21,7 @@ import {
   TransactionHistoryModule,
   ConfigApiModule,
   NotificationModule,
+  DashboardModule,
 } from './modules';
 import * as models from './db/models';
 import { SseModule } from './modules/sse/sse.module';
@@ -80,6 +81,10 @@ const routes = RouterModule.register([
     path: '/transactions',
     module: TransactionHistoryModule,
   },
+  {
+    path: '/dashboard',
+    module: DashboardModule,
+  },
 ]);
 
 const imports = [
@@ -109,6 +114,7 @@ const imports = [
   ConfigApiModule,
   NotificationModule,
   CreatorsModule,
+  DashboardModule,
   routes,
 ];
 

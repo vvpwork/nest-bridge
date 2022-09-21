@@ -11,6 +11,7 @@ import {
   BelongsTo,
 } from 'sequelize-typescript';
 
+import { BlockchainIdentityAddressModel } from '@DB/models/blockchain-identity-address.model';
 import { ITransactionHistory } from '../interfaces';
 import { IdentityModel } from '@/db/models/identity.model';
 import { NftModel } from '@/db/models/nft.model';
@@ -46,6 +47,11 @@ export class TransactionHistoryModel extends Model<ITransactionHistory> {
   @Column(DataType.STRING)
   price: string;
 
+  @ForeignKey(() => BlockchainIdentityAddressModel)
+  @AllowNull(true)
+  @Column(DataType.STRING)
+  address: string;
+
   @AllowNull(true)
   @Column(DataType.STRING)
   txHash: string;
@@ -62,4 +68,7 @@ export class TransactionHistoryModel extends Model<ITransactionHistory> {
 
   @BelongsTo(() => NftModel, 'nftId')
   nft: NftModel;
+
+  @BelongsTo(() => BlockchainIdentityAddressModel, { foreignKey: 'address', targetKey: 'address' })
+  addresses: BlockchainIdentityAddressModel;
 }
