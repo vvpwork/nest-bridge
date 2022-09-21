@@ -18,16 +18,19 @@ export class ICreateOrderDto {
   currency: string = 'USDC';
 
   @IsOptional()
-  @IsObject()
-  @Type(() => Object)
-  signature: { [key: string]: any };
+  @IsString()
+  signature: string;
 
   @IsString()
   nftId: string;
 
+  @ApiProperty({
+    examples: {
+      test: 'test',
+    },
+  })
   @IsOptional()
   @IsObject()
-  @Type(() => Object)
   metadata: { [key: string]: any };
 }
 

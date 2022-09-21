@@ -79,6 +79,7 @@ export class CollectionService {
     ) d ON c.identityId = d.id && c.chainId = d.chainId
     ${query.search ? `WHERE c.name LIKE '%${query.search}%'` : ''}
     ${query.collectionId ? `WHERE c.id = '${query.collectionId}'` : ''}
+    ${query.identityId ? `WHERE c.identityId = '${query.identityId}'` : ``}
     GROUP BY c.id)
 
     SELECT tb.*, p.count  FROM temptable tb 

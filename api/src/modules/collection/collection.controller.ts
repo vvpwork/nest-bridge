@@ -166,10 +166,8 @@ export class CollectionController {
           type: 'string',
           format: 'binary',
         },
-
-        name: { type: 'string' },
         description: { type: 'string' },
-        symbol: { type: 'string' },
+        masterAddress: { type: 'string' },
       },
     },
   })
@@ -184,16 +182,20 @@ export class CollectionController {
     @UploadedFiles() files: Array<Express.Multer.File>,
     @Param() param: ICollectionUpdateParam,
   ) {
-    // upload images to cloudinary
+    // TODO refactor
+    const coverData = files.find((v: Express.Multer.File) => v.fieldname === 'cover');
+    const logoData = files.find((v: Express.Multer.File) => v.fieldname === 'logo');
+
     const [cover, logo] = await Promise.allSettled([
-      this.cloudinary.uploadFile(files.find((v: Express.Multer.File) => v.fieldname === 'cover')),
-      this.cloudinary.uploadFile(files.find((v: Express.Multer.File) => v.fieldname === 'logo')),
+      this.cloudinary.uploadFile(coverData),
+      this.cloudinary.uploadFile(logoData),
     ]);
 
-    const coverImage = cover.status === 'fulfilled' ? cover.value.url : '';
-    const logoImage = logo.status === 'fulfilled' ? logo.value.url : '';
+    const coverImage: any = cover.status === 'fulfilled' ? cover.value.url : coverData;
+    const logoImage: any = logo.status === 'fulfilled' ? logo.value.url : logoData;
 
-    const result = await this.service.update(param.id, user.data.id, { ...body, cover: coverImage, logo: logoImage });
+    const bodyData = { cover: coverImage, logo: logoImage, ...body };
+    const result = await this.service.update(param.id, user.data.id, bodyData);
     return res.status(201).send({
       ...result,
     });

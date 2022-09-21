@@ -41,6 +41,9 @@ export class ICollectionCreate {
   symbol: string = 'TST';
 
   @IsString()
+  masterAddress: string = 'djhdwjdhfj';
+
+  @IsString()
   cover: string = 'http://res.cloudinary.com/b';
 
   @IsString()

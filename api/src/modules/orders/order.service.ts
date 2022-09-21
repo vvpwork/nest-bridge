@@ -1,17 +1,9 @@
 import { Sequelize } from 'sequelize-typescript';
 import { HttpException, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import {
-  BlockchainIdentityAddressModel,
-  CurrenciesModel,
-  IdentityModel,
-  IdentityNftBalanceLock,
-  IdentityNftBalanceModel,
-  NftModel,
-  OrdersModel,
-} from '@/db/models';
+import { CurrenciesModel, IdentityNftBalanceLock, IdentityNftBalanceModel, NftModel, OrdersModel } from '@/db/models';
 import { ICreateOrderDto } from './dtos/order-create.dto';
-import { IIdentityBalanceModel } from '@/db/interfaces';
+import { IIdentityBalanceModel, IOrderModel } from '@/db/interfaces';
 import { IBuyOrderRequest } from './dtos/buy-order.dto';
 import { TransactionHistoryService } from '../transaction-history/transaction-history.service';
 import { getShortHash } from '@/common/utils/short-hash.utile';
@@ -31,6 +23,8 @@ export class OrderService {
     private bcService: BlockchainService,
     private historyService: TransactionHistoryService,
   ) {}
+
+  // TODO refactor nftId
 
   async create(data: ICreateOrderDto, user?: IUserInterface['data']) {
     Logger.log(data, '[Order Service] data to create data');
@@ -54,7 +48,15 @@ export class OrderService {
       })
     ).toJSON();
 
-    await this.historyService.create({ identityId, type: 'list', amount, price, nftId });
+    await this.historyService.create({
+      identityId,
+      type: 'list',
+      amount,
+      price,
+      nftId,
+      txHash: signature,
+      data: metadata,
+    });
 
     // remove private info
     delete order.nftIdentityBalanceId;
@@ -63,7 +65,7 @@ export class OrderService {
     };
   }
 
-  async delete(id: string) {
+  async delete(id: string, data: { user: IUserInterface['data']; txHash: string }) {
     const order = await this.orderModel.findOne({
       where: {
         id,
@@ -72,30 +74,52 @@ export class OrderService {
     if (!order) throw new HttpException('Not found', 404);
     await order.destroy();
 
+    await this.historyService.create({
+      identityId: data.user.id,
+      txHash: data.txHash,
+      type: 'unList',
+      amount: order.amount,
+      price: order.price,
+    });
+
     return {
       data: order.toJSON(),
     };
   }
 
-  async update(data: Partial<OrdersModel & { identityId: string }>) {
+  async update(data: Partial<IOrderModel>, user: IUserInterface['data']) {
     const oldOrder = await this.orderModel.findOne({
       where: {
         id: data.id,
       },
     });
 
-    const { availableBalance, identityId } = await this.getAvailableBalance({
-      id: oldOrder.toJSON().nftIdentityBalanceId,
-    });
+    const { availableBalance, identityId } = await this.getAvailableBalance(
+      {
+        id: oldOrder.toJSON().nftIdentityBalanceId,
+      },
+      user,
+    );
 
-    if (identityId !== data.identityId) throw new HttpException('Permission error', 403);
+    if (identityId !== user.id) throw new HttpException('Permission error', 403);
 
     if (data.amount > oldOrder.amount && data.amount > availableBalance)
       throw new HttpException('Do not have enough balance', 404);
 
     oldOrder.amount = data.amount;
+    oldOrder.signature = data.signature;
+    oldOrder.metadata = data.metadata;
     if (data.price) oldOrder.price = data.price;
     await oldOrder.save();
+
+    this.historyService.create({
+      identityId: user.id,
+      amount: oldOrder.amount,
+      price: oldOrder.price,
+      type: 'priceUpdate',
+      txHash: data.signature,
+      data: data.metadata,
+    });
 
     return {
       data: oldOrder,
@@ -178,6 +202,7 @@ export class OrderService {
         },
       ],
     });
+
     if (!order) throw new HttpException('Not found', 404);
 
     return {

@@ -1,19 +1,8 @@
 /* eslint-disable @typescript-eslint/typedef */
-import {
-  ArrayNotEmpty,
-  ArrayUnique,
-  IsDefined,
-  IsEmail,
-  IsNotEmptyObject,
-  IsOptional,
-  IsString,
-  Length,
-  ValidateNested,
-} from 'class-validator';
-import { ProfileSocialsDto } from '@Modules/profile/dtos';
-import { Type } from 'class-transformer';
+import { IsDefined, IsEmail, IsOptional, IsString, Length } from 'class-validator';
+
 import { PROFILE_SECTIONS } from '@DB/enums';
-import { ProfileSocials } from '@DB/types';
+
 import { ApiProperty } from '@nestjs/swagger';
 
 /**
@@ -67,16 +56,10 @@ export class EditProfileDto {
   @IsOptional()
   public bio?: string | null;
 
-  @IsDefined()
-  @IsNotEmptyObject()
-  @ValidateNested()
   @IsOptional()
-  @Type(() => ProfileSocialsDto)
-  public socials?: ProfileSocials | null;
+  public socials?: any;
 
-  @ArrayNotEmpty()
-  @ArrayUnique()
   @IsDefined()
   @IsOptional()
-  public sections?: PROFILE_SECTIONS[] | null;
+  public sections?: PROFILE_SECTIONS[] | any[];
 }
