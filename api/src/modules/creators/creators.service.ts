@@ -14,7 +14,7 @@ export class CreatorsService {
     const searchQuery = `
 
     with temptable as (
-    SELECT DISTINCT cr.address, pr.avatar, pr.cover, id.id, pr.userName, pr.name, id.accountType, 
+    SELECT DISTINCT cr.address, pr.id as profileId, pr.avatar, pr.cover, id.id, pr.userName, pr.name, id.accountType, 
     IF(fl.id, 1, 0) as isFollowing,
     fol.count as followers
     FROM Identity id

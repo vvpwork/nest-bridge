@@ -97,8 +97,10 @@ const imports = [
   // Redis
   RedisModule.forRoot({ config: config.redis }),
 
+  // Global
   RabbitModule,
   BlockchainModule,
+
   // api
   AuthModule,
   ProfileModule,

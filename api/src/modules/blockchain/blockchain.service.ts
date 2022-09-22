@@ -16,7 +16,6 @@ import { INftModel } from '@/db/interfaces';
 const { secretKey, nodeUrl, erc1155proxyC2 } = config.blockChain;
 @Injectable()
 export class BlockchainService {
-  private securitizeRegistryContract: Contract;
   private web3Instance: Web3;
   private cloudService: CloudinaryService;
   constructor() {
@@ -26,14 +25,11 @@ export class BlockchainService {
 
   connect() {
     this.web3Instance = new Web3(new HDWalletProvider(secretKey, nodeUrl));
-    this.securitizeRegistryContract = new this.web3Instance.eth.Contract(
-      securitizeRegistryAbi,
-      config.securitize.proxyAddress,
-    );
   }
 
   async isWalletWhitelistedOnSecuritize(address: string): Promise<boolean> {
-    return this.securitizeRegistryContract.methods.isWhitelistedWallet(address).call();
+    const contract = new this.web3Instance.eth.Contract(erc1155abi, config.blockChain.erc1155proxyC2);
+    return contract.methods.isPartner(address).call();
   }
 
   async isAddressPartner(address: string) {

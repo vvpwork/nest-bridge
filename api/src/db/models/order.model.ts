@@ -44,7 +44,7 @@ export class OrdersModel extends Model<IOrderModel> {
   price: string;
 
   @AllowNull(false)
-  @Column(DataType.JSON)
+  @Column(DataType.STRING)
   signature: string;
 
   @AllowNull(true)

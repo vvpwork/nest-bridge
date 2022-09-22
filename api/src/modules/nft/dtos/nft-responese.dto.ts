@@ -142,6 +142,18 @@ export class INftResponse {
   totalNftAmount: number;
 
   @ApiProperty({
+    example: 1000,
+  })
+  @IsNumber()
+  isLiked: 1;
+
+  @ApiProperty({
+    example: 1000,
+  })
+  @IsNumber()
+  likesCount: 1;
+
+  @ApiProperty({
     example: 100,
   })
   @IsNumber()

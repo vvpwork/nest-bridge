@@ -1,6 +1,6 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger';
 
-import { IsNumber, IsUUID, IsOptional, IsString } from 'class-validator';
+import { IsNumber, IsUUID, IsOptional, IsString, IsObject } from 'class-validator';
 import { ICreateOrderResponseDto } from './order-create.dto';
 
 export class IUpdateOrderDto {
@@ -24,7 +24,16 @@ export class IUpdateOrderDto {
 
   @IsOptional()
   @IsString()
-  nftId: string;
+  signature: string;
+
+  @ApiProperty({
+    examples: {
+      test: 'test',
+    },
+  })
+  @IsOptional()
+  @IsObject()
+  metadata: { [key: string]: any };
 }
 
 export class IUpdateOrderResponseDto extends ICreateOrderResponseDto {}

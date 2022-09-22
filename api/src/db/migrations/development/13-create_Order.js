@@ -42,7 +42,7 @@ module.exports = {
           allowNull: false,
         },
         signature: {
-          type: Sequelize.JSON,
+          type: Sequelize.STRING,
           allowNull: false,
         },
         metadata: {

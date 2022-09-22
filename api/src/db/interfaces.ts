@@ -95,6 +95,7 @@ export interface ITransactionHistory {
   id?: number;
   nft?: any;
   identityId: string;
+  address?: string;
   nftId: string;
   amount: number;
   price: string;

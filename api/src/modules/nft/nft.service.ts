@@ -57,7 +57,7 @@ export class NftService {
     private identityNftBalanceModel: typeof IdentityNftBalanceModel,
   ) {}
 
-  async getAll(searchData?: INftQueryDto) {
+  async getAll(searchData?: INftQueryDto, profileId?: number) {
     try {
       const { limit, offset, identityId, creatorId, collectionId, status, sortType, sortValue, nftId, search } =
         searchData;
@@ -93,7 +93,8 @@ export class NftService {
         b.amount as identityBalance,
         l.lockedData,
         l.lockedBalance,
-        IF(pr.id = lk.profileId, 1, 0) as isLiked,
+        IF(lk.profileId = '${profileId}', 1, 0 ) as isLiked,
+        IF(pr.id = lk.profileId, 1, 0) as isLikedOwner,
         count(lk.id) as likesCount,
         IFNULL(sum(o.amount), 0) as onSale,
         IF ( sum(o.amount) is NULL, NULL, JSON_ARRAYAGG(
@@ -150,6 +151,8 @@ export class NftService {
         tb.totalSupply,       
         tb.collection,
         tb.creatorsData,
+        tb.likesCount,
+        tb.isLiked,
 
         JSON_ARRAYAGG(
           JSON_OBJECT(
@@ -161,8 +164,7 @@ export class NftService {
             'profile',tb.profile,
             'lockedData', tb.lockedData,
             'lockedBalance', tb.lockedBalance,
-            'isLiked', tb.isLiked,
-            'likesCount', tb.likesCount,
+            'isLiked', tb.isLikedOwner,
             'onSale', tb.onSale,
             'onSalesData', tb.onSalesData 
           )

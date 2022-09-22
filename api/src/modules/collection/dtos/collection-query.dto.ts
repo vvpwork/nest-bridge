@@ -3,13 +3,13 @@ import { Type } from 'class-transformer';
 import { IsBoolean, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class ICollectionQueryDto {
-  // @ApiProperty({
-  //   required: false,
-  // })
-  // @IsOptional()
-  // @Type(() => String)
-  // @IsString()
-  // identityId: string;
+  @ApiProperty({
+    required: false,
+  })
+  @IsOptional()
+  @Type(() => String)
+  @IsString()
+  identityId?: string;
 
   @ApiProperty({
     required: false,

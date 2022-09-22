@@ -30,9 +30,9 @@ export class NftController {
     description: 'Request was succeed',
     type: INftResponse,
   })
-  async getAll(@Res() res: Response, @Query() query: INftQueryDto) {
+  async getAll(@Res() res: Response, @User() user: IUserInterface, @Query() query: INftQueryDto) {
     try {
-      const result = await this.nftService.getAll(query);
+      const result = await this.nftService.getAll(query, user.data.profileId);
       return res.status(200).send({
         ...result,
       });

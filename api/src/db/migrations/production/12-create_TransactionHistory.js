@@ -44,6 +44,10 @@ module.exports = {
           type: Sequelize.STRING(128),
           allowNull: true,
         },
+        address: {
+          type: Sequelize.STRING(128),
+          allowNull: true,
+        },
 
         data: {
           type: Sequelize.JSON,
