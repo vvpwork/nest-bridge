@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEnum, IsNumber, IsOptional } from 'class-validator';
-import { PaginationQueryDto } from '@Common/dto';
 import { Type } from 'class-transformer';
 
 export enum AssetsType {
