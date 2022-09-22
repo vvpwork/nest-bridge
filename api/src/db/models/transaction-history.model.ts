@@ -39,6 +39,8 @@ export class TransactionHistoryModel extends Model<ITransactionHistory> {
   @Column(DataType.STRING)
   nftId: string;
 
+  @ForeignKey(() => BlockchainIdentityAddressModel)
+  @AllowNull(true)
   @Column(DataType.STRING)
   address: string;
 
@@ -49,11 +51,6 @@ export class TransactionHistoryModel extends Model<ITransactionHistory> {
   @AllowNull(true)
   @Column(DataType.STRING)
   price: string;
-
-  @ForeignKey(() => BlockchainIdentityAddressModel)
-  @AllowNull(true)
-  @Column(DataType.STRING)
-  address: string;
 
   @AllowNull(true)
   @Column(DataType.STRING)
