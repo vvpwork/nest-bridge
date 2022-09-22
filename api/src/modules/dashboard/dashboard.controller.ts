@@ -25,4 +25,17 @@ export class DashboardController {
       data: await this.dashboardService.getPortfolio(user.data, query),
     });
   }
+
+  @Get('stats')
+  @ApiResponse({
+    status: 200,
+    description: 'Get stats for dashboard page',
+    type: null, // ToDo add response dto
+  })
+  @ApiForbiddenResponse({ description: 'Unauthorized Request' })
+  async getStats(@User() user: IUserInterface, @Res() res: Response) {
+    return res.status(200).send({
+      data: await this.dashboardService.getStats(user.data),
+    });
+  }
 }

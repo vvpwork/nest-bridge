@@ -5,6 +5,9 @@ import { AssetsType, Blockchains, IPortfolioQueryDto } from '@Modules/dashboard/
 import { IUserInterface } from '@Common/interfaces';
 import { paginate } from '@Common/utils';
 import { TransactionsType } from '@Modules/transaction-history/dtos';
+import { Sequelize } from 'sequelize-typescript';
+import { HISTORY_TYPES } from '@DB/enums';
+import { Op } from 'sequelize';
 import { BlockchainIdentityAddressModel, TransactionHistoryModel } from '@/db/models';
 
 @Injectable()
@@ -22,30 +25,25 @@ export class DashboardService {
     if (asset) {
       switch (asset) {
         case AssetsType.digitalSecurity: {
-          const where = { ...options.where, type: TransactionsType.buyDigitalSecurity, data: { isClaimed: false } };
+          const where = { ...options.where, type: HISTORY_TYPES.BUY_DIGITAL_SECURITY, data: { isClaimed: false } };
           options.where = where;
           break;
         }
 
         case AssetsType.staked: {
-          const where = { ...options.where, type: TransactionsType.stake, data: { isClaimed: false } };
+          const where = { ...options.where, type: HISTORY_TYPES.STAKE, data: { isClaimed: false } };
           options.where = where;
           break;
         }
 
         default: {
-          const where = { ...options.where, type: TransactionsType.stake, data: { isClaimed: false } };
+          const where = { ...options.where, type: HISTORY_TYPES.STAKE, data: { isClaimed: false } };
           options.where = where;
         }
       }
     }
 
     if (blockchain) {
-      // options['include'] =: [
-      //   {
-      //     model: BlockchainIdentityAddressModel,
-      //   },
-      // ],
       switch (blockchain) {
         case Blockchains.ethereum: {
           options['include'] = [
@@ -81,5 +79,43 @@ export class DashboardService {
     }
 
     return paginate(this.historyModel, options);
+  }
+
+  async getStats(user: IUserInterface['data']) {
+    const nftStats = await this.getStatsByWhere({
+      identityId: user.id,
+      type: HISTORY_TYPES.BUY,
+    });
+
+    const digitalSecuritiesStats = await this.getStatsByWhere({
+      identityId: user.id,
+      type: [HISTORY_TYPES.BUY_DIGITAL_SECURITY],
+      data: { isClaimed: false },
+    });
+
+    const stakedAssetsStats = await this.getStatsByWhere({
+      identityId: user.id,
+      type: [HISTORY_TYPES.STAKE],
+      data: { isClaimed: false },
+    });
+
+    return {
+      assets: stakedAssetsStats,
+      securities: digitalSecuritiesStats,
+      nft: nftStats,
+    };
+  }
+
+  async getStatsByWhere(where: any) {
+    return this.historyModel.findAll({
+      where,
+      attributes: [
+        [Sequelize.fn('DATE_FORMAT', Sequelize.col('createdAt'), '%Y-%m-%d'), 'date'],
+        [Sequelize.fn('sum', Sequelize.col('amount')), 'amount'],
+        [Sequelize.fn('sum', Sequelize.col('price')), 'price'],
+      ],
+      group: ['date'],
+      order: [['date', 'DESC']],
+    });
   }
 }

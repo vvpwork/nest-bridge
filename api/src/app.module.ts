@@ -89,7 +89,7 @@ const routes = RouterModule.register([
 
 const imports = [
   // DB mariaDB
-  SequelizeModule.forRoot({ ...config.db, synchronize: true, models: Object.values(models), logging: Logger.log }),
+  SequelizeModule.forRoot({ ...config.db, synchronize: true, models: Object.values(models), logging: console.log }),
 
   MulterModule.register({
     dest: './files',
