@@ -69,10 +69,12 @@ export class NewsController {
     @Res() res: Response,
   ) {
     const params: any = { ...body };
-    // upload images to cloudinary
-    const image = await this.cloudinary.uploadFile(files.find((v: Express.Multer.File) => v.fieldname === 'image'));
-    if (image && image.url) {
-      params.image = image.url;
+    if (!body.image) {
+      // upload images to cloudinary
+      const image = await this.cloudinary.uploadFile(files.find((v: Express.Multer.File) => v.fieldname === 'image'));
+      if (image && image.url) {
+        params.image = image.url;
+      }
     }
 
     return res.status(200).send({

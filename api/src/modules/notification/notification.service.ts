@@ -2,7 +2,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { NOTIFICATION_TYPES } from '@DB/enums';
-import { FollowerModel, NotificationModel } from '@DB/models';
+import { FollowerModel, NotificationModel, ProfileModel } from '@DB/models';
 import { paginate } from '@Common/utils';
 
 @Injectable()

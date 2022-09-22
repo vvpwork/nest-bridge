@@ -77,25 +77,15 @@ export class NftService {
         n.metadata,
         n.amount  as totalNftAmount,
         n.thumbnail,
-        JSON_ARRAYAGG(
-          JSON_OBJECT(
-            'address', cr.address,
-            'identityId', cr.identityId,
-            'accountType', cr.accountType,
-            'name', cr.name,
-            'userName', cr.userName,
-            'avatar', .cr.avatar
-          )
-        ) as creatorsData,
+        cr.creatorsData,
         addr.address  as address,
         n.totalSupply, 
         n.creatorIds as creators,
         b.amount as identityBalance,
         l.lockedData,
         l.lockedBalance,
-        IF(lk.profileId = '${profileId}', 1, 0 ) as isLiked,
-        IF(pr.id = lk.profileId, 1, 0) as isLikedOwner,
-        count(lk.id) as likesCount,
+        IF(lik.count, lik.count, 0) as likesCount,
+        IF(ll.id, 1, 0) as isLiked,
         IFNULL(sum(o.amount), 0) as onSale,
         IF ( sum(o.amount) is NULL, NULL, JSON_ARRAYAGG(
           JSON_OBJECT(
@@ -104,25 +94,48 @@ export class NftService {
             'price', o.price,
             'signature', o.signature,
             'decimals', cur.decimals,
-            'currency', cur.symbol 
+            'currency', cur.symbol, 
+            'createdAt', o.createdAt
             ))) as onSalesData
         from Nft n
+
         JOIN Collection c ON c.id = n.collectionId 
+
         ${collectionId ? `&& c.id = '${collectionId}'` : ''}
+
         JOIN IdentityNftBalance b ON b.nftId = n.id ${identityId ? `&&  b.identityId = '${identityId}'` : ''}    
+
         ${status === 'onSale' ? `JOIN` : `LEFT JOIN`} \`Orders\` o ON o.nftIdentityBalanceId = b.id
         LEFT JOIN Identity  ident ON ident.id = b.identityId
         LEFT JOIN Profile  pr ON pr.id = ident.profileId
         LEFT JOIN BlockchainIdentityAddress addr ON c.identityId = addr.identityId && c.chainId = addr.chainId    
-        LEFT JOIN NftLike lk ON lk.nftId = n.id
+        
+        LEFT JOIN (
+        SELECT li.nftId, count(li.id) as count 
+        FROM NftLike li 
+        GROUP BY li.nftId
+        ) lik ON lik.nftId = n.id
+
+       LEFT JOIN NftLike ll On ll.nftId = n.id && ll.profileId='${profileId}'
+
+
         ${creatorId ? `JOIN` : `LEFT JOIN`} (
-          SELECT creator.nftId, creator.address, id.id as identityId, id.accountType, pr.name, pr.avatar, pr.userName   
+          SELECT creator.address, creator.nftId, JSON_ARRAYAGG(
+            JSON_OBJECT(
+              'address', creator.address,
+              'identityId', id.id,
+              'accountType', id.accountType,
+              'name', pr.name,
+              'userName', pr.userName,
+              'avatar', pr.avatar
+            )
+          ) as creatorsData
           FROM IdentityNftCreator creator
           JOIN BlockchainIdentityAddress bad On bad.address = creator.address
           JOIN Identity id On id.id = bad.identityId
           JOIN Profile pr On pr.id = id.profileId
-          GROUP BY creator.nftId
-        ) cr ON n.id = cr.nftId ${creatorId ? `&& cr.identityId = '${creatorId}'` : ``}
+          GROUP BY creator.nftId, creator.address
+        ) cr ON cr.nftId = n.id ${creatorId ? `&& JSON_VALUE(cr.creatorsData, '$.identityId') = '${creatorId}'` : ``}
 
         ${status === 'onLocked' ? `JOIN` : `LEFT JOIN`} (
           SELECT lk.identityNftBalanceId,
@@ -132,11 +145,13 @@ export class NftService {
           GROUP BY lk.identityNftBalanceId
           ) l ON b.id = l.identityNftBalanceId
         LEFT JOIN Currencies cur ON o.currency = cur.symbol
+
+
+
         ${nftId ? `WHERE n.id = '${nftId}'` : ``}
         ${search ? `WHERE JSON_VALUE(n.metadata, '$.name') like '%${search}%'` : ``}
         GROUP BY b.id
         ${sortValue === 'price' ? `ORDER BY  CONVERT(o.price, INTEGER) ${sortType}` : ``}
-        ${sortValue === 'created' ? `ORDER BY  o.createdAt  ${sortType}` : ``}
         ${sortValue === 'unlockTime' ? `ORDER BY l.unlockTime  ${sortType}` : ``}
         )
 
@@ -164,7 +179,6 @@ export class NftService {
             'profile',tb.profile,
             'lockedData', tb.lockedData,
             'lockedBalance', tb.lockedBalance,
-            'isLiked', tb.isLikedOwner,
             'onSale', tb.onSale,
             'onSalesData', tb.onSalesData 
           )
@@ -177,6 +191,7 @@ export class NftService {
         `;
 
       const [data] = await this.repository.sequelize.query(rawQuery);
+
       const { total, result } = countHelper(data);
       return {
         data: result,

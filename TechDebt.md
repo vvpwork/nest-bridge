@@ -10,3 +10,4 @@
 8. Add cache to get nft (ttl= 10sec)
 9. Add listeners for Mint and Transfer Nft;
 10. Add validate user balance before create order
+11. Sort from created order

@@ -12,8 +12,30 @@ export class TransactionDataDto {
   @IsNumber()
   @IsOptional()
   public apr?: number;
+}
 
-  @IsBoolean()
-  @IsOptional()
-  public isClaimed?: boolean;
+export class IAddTransactionsStakingData {
+  @IsNumber()
+  poolId: number;
+
+  @IsNumber()
+  stakingPeriodEnd: number;
+
+  @IsNumber()
+  apr: number;
+
+  @IsString()
+  amount: string;
+
+  @IsNumber()
+  chainId: number;
+
+  @IsString()
+  currency: string;
+
+  @IsNumber()
+  decimal: number;
+
+  @IsString()
+  serviceFee: string;
 }

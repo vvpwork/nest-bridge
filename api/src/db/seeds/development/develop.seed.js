@@ -683,7 +683,7 @@ module.exports = {
       ['id', 'profileId', 'type', 'isRead', 'params'],
       notifications.map(m => [`'${m.id}','${m.profileId}','${m.type}','${m.isRead}','${m.params}'`]),
     );
-    await queryInterface.sequelize.query(notificationsQuery);
+    // await queryInterface.sequelize.query(notificationsQuery);
 
     const podcasts = [
       {

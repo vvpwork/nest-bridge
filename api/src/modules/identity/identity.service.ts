@@ -17,7 +17,7 @@ export class IdentityService {
 
   async findByKey(searchKey: Partial<IIdentityModel>) {
     const query = `
-    SELECT DISTINCT id.*, bc.address, pr.name, pr.avatar, pr.cover FROM Identity id
+    SELECT DISTINCT id.*, bc.address, bc.chainId, pr.name, pr.userName, pr.avatar, pr.cover FROM Identity id
     LEFT JOIN BlockchainIdentityAddress bc On bc.identityId = id.id
     LEFT JOIN Profile pr ON pr.id = id.profileID
     WHERE id.id = '${searchKey.id}'

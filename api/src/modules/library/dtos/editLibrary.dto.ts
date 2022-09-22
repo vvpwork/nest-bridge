@@ -7,7 +7,6 @@ import { ApiProperty } from '@nestjs/swagger';
  */
 export class EditLibraryDto {
   @IsString()
-  @Length(1, 200)
   @IsOptional()
   public title?: string;
 
@@ -17,6 +16,5 @@ export class EditLibraryDto {
 
   @IsString()
   @IsOptional()
-  @Length(1, 30)
   public source?: string;
 }

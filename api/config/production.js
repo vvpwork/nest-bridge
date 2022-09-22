@@ -43,6 +43,7 @@ module.exports = {
     transferProxy: process.env.TRANSFER_PROXY_ADDRESS,
     erc20proxy: process.env.ERC_20_TRANSFER_PROXY_ADDRESS,
     secretKey: process.env.WALLET_SECRET_KEY,
+    structuredStakingProxy: process.env.STRUCTURED_STAKING_PROXY
   },
   cloudinary: {
     name: process.env.CLOUD_NAME,

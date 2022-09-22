@@ -33,7 +33,7 @@ export class LibraryService {
     return newLibraryRecord;
   }
 
-  async update(libraryId: string, params: ILibraryModel): Promise<{ success: true }> {
+  async update(libraryId: string, params: ILibraryModel, userName: string): Promise<{ success: true }> {
     await this.libraryModel.update(params, { where: { id: libraryId } });
 
     const libraryRecord = await this.libraryModel.findByPk(libraryId);
@@ -55,6 +55,7 @@ export class LibraryService {
             title,
             image,
             source,
+            name: userName,
           },
         },
         { where: { id: allNotificationIds } },

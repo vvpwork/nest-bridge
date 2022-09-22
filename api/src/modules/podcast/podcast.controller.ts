@@ -36,7 +36,7 @@ export class PodcastController {
     const image = await this.cloudinary.uploadFile(files.find((v: Express.Multer.File) => v.fieldname === 'image'));
     const imageUrl = image.url ? image.url : '';
 
-    return res.status(201201).send({
+    return res.status(201).send({
       data: await this.podcastService.create({
         profileId: user.data.profileId,
         ...body,
@@ -60,13 +60,14 @@ export class PodcastController {
   ) {
     const params: any = { ...body };
 
-    // upload images to cloudinary
-    const image = await this.cloudinary.uploadFile(files.find((v: Express.Multer.File) => v.fieldname === 'image'));
-    if (image && image.url) {
-      params.image = image.url;
+    if (!body.image) {
+      const image = await this.cloudinary.uploadFile(files.find((v: Express.Multer.File) => v.fieldname === 'image'));
+      if (image && image.url) {
+        params.image = image.url;
+      }
     }
 
-    return res.status(201200).send({
+    return res.status(201).send({
       data: await this.podcastService.update(id, params as IPodcastModel),
     });
   }
@@ -77,7 +78,7 @@ export class PodcastController {
     description: 'successfully deleted',
   })
   async delete(@Param('id') id: string, @Res() res: Response) {
-    return res.status(201200).send({
+    return res.status(201).send({
       data: await this.podcastService.delete(id),
     });
   }

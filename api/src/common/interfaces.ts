@@ -45,6 +45,7 @@ export interface IConfig {
     erc20proxy: string;
     secretKey: string;
     erc1155proxyC2: string;
+    structuredStakingProxy: string;
   };
   cloudinary: {
     name: string;
@@ -135,6 +136,8 @@ export interface IUserInterface {
     profileId: number;
     address: string;
     name: string;
+    userName: string;
+    chainId: number;
     avatar: string;
     cover: string;
   };
