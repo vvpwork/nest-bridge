@@ -37,16 +37,16 @@ module.exports = {
           allowNull: true,
         },
         price: {
-          type: Sequelize.STRING(64),
+          type: Sequelize.TEXT,
           allowNull: true,
         },
         txHash: {
-          type: Sequelize.STRING(128),
+          type: Sequelize.TEXT,
           allowNull: true,
         },
 
         address: {
-          type: Sequelize.STRING(128),
+          type: Sequelize.TEXT,
           allowNull: true,
         },
 

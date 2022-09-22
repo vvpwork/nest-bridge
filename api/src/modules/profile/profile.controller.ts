@@ -62,11 +62,12 @@ export class ProfileController {
   })
   async getByUserNameOrAddress(
     @Param('userNameOrAddress') userNameOrAddress: string,
-    @Req() request: IUserRequest,
+    @User() user: IUserInterface,
     @Res() res: Response,
   ) {
+    const result = await this.profileService.getByUserNameOrAddress(userNameOrAddress, user.data);
     return res.status(200).send({
-      data: await this.profileService.getByUserNameOrAddress(userNameOrAddress, request?.user?.data),
+      ...result,
     });
   }
 

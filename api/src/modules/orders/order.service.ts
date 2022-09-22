@@ -54,8 +54,8 @@ export class OrderService {
       amount,
       price,
       nftId,
-      txHash: signature,
-      data: metadata,
+
+      data: JSON.stringify({ metadata, signature }),
     });
 
     // remove private info
