@@ -1,4 +1,4 @@
-import { IsNumber, IsOptional, IsString, Length } from 'class-validator';
+import { IsBoolean, IsNumber, IsOptional, IsString, Length } from 'class-validator';
 
 export class TransactionDataDto {
   @IsNumber()
@@ -12,4 +12,8 @@ export class TransactionDataDto {
   @IsNumber()
   @IsOptional()
   public apr?: number;
+
+  @IsBoolean()
+  @IsOptional()
+  public isClaimed?: boolean;
 }

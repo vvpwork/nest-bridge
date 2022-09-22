@@ -21,6 +21,7 @@ import {
   TransactionHistoryModule,
   ConfigApiModule,
   NotificationModule,
+  DashboardModule,
 } from './modules';
 import * as models from './db/models';
 import { SseModule } from './modules/sse/sse.module';
@@ -80,11 +81,15 @@ const routes = RouterModule.register([
     path: '/transactions',
     module: TransactionHistoryModule,
   },
+  {
+    path: '/dashboard',
+    module: DashboardModule,
+  },
 ]);
 
 const imports = [
   // DB mariaDB
-  SequelizeModule.forRoot({ ...config.db, synchronize: true, models: Object.values(models), logging: Logger.log }),
+  SequelizeModule.forRoot({ ...config.db, synchronize: true, models: Object.values(models), logging: console.log }),
 
   MulterModule.register({
     dest: './files',
@@ -111,6 +116,7 @@ const imports = [
   ConfigApiModule,
   NotificationModule,
   CreatorsModule,
+  DashboardModule,
   routes,
 ];
 

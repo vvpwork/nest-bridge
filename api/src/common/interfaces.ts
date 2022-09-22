@@ -14,6 +14,7 @@ export interface IConfig {
     database: string;
     username: string;
     dialect: any;
+    logging: any;
   };
   redis: {
     host: string;
