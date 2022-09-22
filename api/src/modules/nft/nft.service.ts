@@ -140,7 +140,7 @@ export class NftService {
         ${status === 'onLocked' ? `JOIN` : `LEFT JOIN`} (
           SELECT lk.identityNftBalanceId,
                   sum(lk.amount) as lockedBalance, 
-          JSON_ARRAYAGG(JSON_OBJECT( 'amount', lk.amount, 'unlockTime', lk.unlockTime )) as lockedData  
+          JSON_ARRAYAGG(JSON_OBJECT('id', lk.id, 'amount', lk.amount, 'unlockTime', lk.unlockTime )) as lockedData  
           FROM IdentityNftBalanceLock lk
           GROUP BY lk.identityNftBalanceId
           ) l ON b.id = l.identityNftBalanceId
