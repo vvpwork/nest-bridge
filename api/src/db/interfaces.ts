@@ -100,7 +100,12 @@ export interface ITransactionHistory {
   amount: number;
   price: string;
   txHash: string;
-  data?: unknown;
+  data?: {
+    poolId?: number;
+    stakingPeriodEnd?: number;
+    apr?: number;
+    isClaimed?: boolean;
+  };
   type: string;
   createdAt?: any;
   updatedAt?: any;

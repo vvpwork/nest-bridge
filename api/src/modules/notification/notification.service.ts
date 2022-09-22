@@ -31,6 +31,13 @@ export class NotificationService {
     return paginatedData;
   }
 
+  // check if user currently have unread notifications
+  async doesHaveUnreadNotifications(profileId: number): Promise<boolean> {
+    const unreadNotificationsCount = await this.notificationModel.count({ where: { profileId, isRead: false } });
+
+    return unreadNotificationsCount > 0;
+  }
+
   async addNotificationToAllIdentityFollowers(
     profileId: number,
     params: Record<string, unknown>,
