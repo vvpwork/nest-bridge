@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum, IsOptional } from 'class-validator';
+import { IsEnum, IsNumber, IsOptional } from 'class-validator';
 import { PaginationQueryDto } from '@Common/dto';
+import { Type } from 'class-transformer';
 
 export enum AssetsType {
   staked = 'staked',
@@ -12,7 +13,7 @@ export enum Blockchains {
   avalanche = 'avalanche',
 }
 
-export class IPortfolioQueryDto extends PaginationQueryDto {
+export class IPortfolioQueryDto {
   @ApiProperty({
     required: false,
   })
@@ -26,4 +27,14 @@ export class IPortfolioQueryDto extends PaginationQueryDto {
   @IsOptional()
   @IsEnum(Blockchains)
   blockchain?: Blockchains;
+
+  @IsNumber()
+  @Type(() => Number)
+  @IsOptional()
+  limit?: number;
+
+  @IsNumber()
+  @Type(() => Number)
+  @IsOptional()
+  offset?: number;
 }

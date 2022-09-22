@@ -6,7 +6,12 @@ import { IUserInterface } from '@Common/interfaces';
 import { Response } from 'express';
 
 import { DashboardService } from '@Modules/dashboard/dashboard.service';
-import { IPortfolioQueryDto, IPortfolioResponseDto } from '@Modules/dashboard/dtos';
+import {
+  IDashboardStatsQueryDto,
+  IPortfolioQueryDto,
+  IPortfolioResponseDto,
+  IDashboardStatResponseDto,
+} from '@Modules/dashboard/dtos';
 
 @ApiTags('Dashboard')
 @Controller()
@@ -29,13 +34,13 @@ export class DashboardController {
   @Get('stats')
   @ApiResponse({
     status: 200,
-    description: 'Get stats for dashboard page',
-    type: null, // ToDo add response dto
+    description: 'Get stats for dashboard and staked assets page',
+    type: IDashboardStatResponseDto,
   })
   @ApiForbiddenResponse({ description: 'Unauthorized Request' })
-  async getStats(@User() user: IUserInterface, @Res() res: Response) {
+  async getStats(@User() user: IUserInterface, @Query() query: IDashboardStatsQueryDto, @Res() res: Response) {
     return res.status(200).send({
-      data: await this.dashboardService.getStats(user.data),
+      data: await this.dashboardService.getStats(user.data, query),
     });
   }
 }
