@@ -29,20 +29,4 @@ export class CreatorsController {
       ...result,
     });
   }
-
-  @Public()
-  @Get('rabbit')
-  async testRabbit(@Res() res: Response) {
-    const message: IMessageRabbit = {
-      type: TypeRpcMessage.BLOCKCHAIN,
-      command: TypeRpcCommand.ADD_COLLECTION,
-      data: {
-        collectionId: { collectionId: '0x8dcF19AeE31F9624FCe35F61037c80f2CA346467' },
-      },
-    };
-
-    const result = await this.rabbit.getProcessResult(message);
-
-    return res.send(result);
-  }
 }

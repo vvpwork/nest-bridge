@@ -105,13 +105,9 @@ export class CollectionController {
     } as ICollectionModel);
 
     // inform another service
-    const resFromWorker = await this.rabbit.getProcessResult({
-      type: TypeRpcMessage.BLOCKCHAIN,
-      command: TypeRpcCommand.ADD_COLLECTION,
-      data: {
-        addresses: [body.id],
-        identityId: user.data.id,
-      },
+    const resFromWorker = await this.rabbit.addCollectionEvent({
+      addresses: [body.id],
+      identityId: user.data.id,
     });
 
     console.log(resFromWorker);

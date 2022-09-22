@@ -13,7 +13,7 @@ module.exports = {
           primaryKey: true,
         },
         identityId: {
-          type: Sequelize.BIGINT,
+          type: Sequelize.UUID,
           allowNull: true,
           references: {
             model: 'Identity',
@@ -23,7 +23,7 @@ module.exports = {
           onUpdate: 'CASCADE',
         },
         nftId: {
-          type: Sequelize.UUID,
+          type: Sequelize.STRING,
           allowNull: true,
           references: {
             model: 'Nft',
@@ -37,13 +37,24 @@ module.exports = {
           allowNull: true,
         },
         price: {
-          type: Sequelize.STRING(64),
+          type: Sequelize.TEXT,
           allowNull: true,
         },
         txHash: {
-          type: Sequelize.STRING(128),
+          type: Sequelize.TEXT,
           allowNull: true,
         },
+
+        address: {
+          type: Sequelize.TEXT,
+          allowNull: true,
+        },
+
+        data: {
+          type: Sequelize.JSON,
+          allowNull: true,
+        },
+
         type: {
           type: Sequelize.STRING,
           allowNull: false,

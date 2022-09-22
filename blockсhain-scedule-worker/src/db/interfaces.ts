@@ -1,10 +1,4 @@
-import {
-  ACCOUNT_TYPES,
-  BALANCE_STATUSES,
-  NOTIFICATION_TYPES,
-  PROFILE_SECTIONS,
-  PROFILE_STATUS,
-} from './enums';
+import { ACCOUNT_TYPES, BALANCE_STATUSES, NOTIFICATION_TYPES, PROFILE_SECTIONS, PROFILE_STATUS } from './enums';
 import { MetadataObject, ProfileSocials } from './types';
 
 export interface IProfileModel {
@@ -24,7 +18,6 @@ export interface IProfileModel {
 }
 
 export interface IIdentityModel {
-  [x: string]: any;
   id: string;
   profileId: number;
   profile?: IProfileModel;
@@ -69,9 +62,9 @@ export interface INftModel {
   thumbnail: string;
   amount: number;
   // only after get blockchain
-  ownerBalance?: number;
   identityId?: string;
-  // ***
+  ownerBalance?: number;
+  // ****
   metadata: MetadataObject;
   creatorIds: string[];
   royaltyIds: string[];
@@ -102,12 +95,21 @@ export interface IIdentityNftBalanceLock {
 
 export interface ITransactionHistory {
   id?: number;
+  nft?: any;
   identityId: string;
+  address?: string;
   nftId: string;
   amount: number;
   price: string;
   txHash: string;
-  data?: unknown;
+  data?:
+    | {
+        poolId?: number;
+        stakingPeriodEnd?: number;
+        apr?: number;
+        isClaimed?: boolean;
+      }
+    | any;
   type: string;
   createdAt?: any;
   updatedAt?: any;
@@ -122,6 +124,8 @@ export interface IOrderModel {
   signature: any;
   metadata: any;
   total?: number;
+  totalPrice?: string;
+  totalAmount?: number;
   createdAt: any;
   updatedAt: any;
 }

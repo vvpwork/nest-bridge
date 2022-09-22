@@ -22,7 +22,7 @@ module.exports = {
           onUpdate: 'CASCADE',
         },
 
-        identityId: {
+        IdentityId: {
           type: Sequelize.UUID,
           allowNull: false,
           references: {

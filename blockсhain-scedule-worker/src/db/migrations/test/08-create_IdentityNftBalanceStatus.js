@@ -7,7 +7,7 @@ module.exports = {
       { tableName: 'IdentityNftBalanceStatus', schema: db.schema },
       {
         code: {
-          type: Sequelize.STRING(16),
+          type: Sequelize.STRING,
           allowNull: false,
           primaryKey: true,
         },

@@ -4,29 +4,20 @@ const db = nodeConfig.get('db');
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable(
-      { tableName: 'Order', schema: db.schema },
+      { tableName: 'Orders', schema: db.schema },
       {
         id: {
-          type: Sequelize.BIGINT,
-          autoIncrement: true,
+          type: Sequelize.UUID,
+          defaultValue: Sequelize.UUIDV4,
           allowNull: false,
           primaryKey: true,
         },
-        identityId: {
-          type: Sequelize.INTEGER,
-          allowNull: false,
-          references: {
-            model: 'Identity',
-            key: 'id',
-          },
-          onDelete: 'CASCADE',
-          onUpdate: 'CASCADE',
-        },
-        nftId: {
+
+        nftIdentityBalanceId: {
           type: Sequelize.UUID,
           allowNull: false,
           references: {
-            model: 'Nft',
+            model: 'IdentityNftBalance',
             key: 'id',
           },
           onDelete: 'CASCADE',
@@ -36,20 +27,26 @@ module.exports = {
           type: Sequelize.INTEGER,
           allowNull: false,
         },
+        currency: {
+          type: Sequelize.STRING,
+          allowNull: false,
+          references: {
+            model: 'Currencies',
+            key: 'symbol',
+          },
+          onDelete: 'CASCADE',
+          onUpdate: 'CASCADE',
+        },
         price: {
-          type: Sequelize.STRING(64),
-          allowNull: false,
-        },
-        decimals: {
-          type: Sequelize.INTEGER,
-          allowNull: false,
-        },
-        signature: {
           type: Sequelize.TEXT,
           allowNull: false,
         },
+        signature: {
+          type: Sequelize.JSON,
+          allowNull: false,
+        },
         metadata: {
-          type: Sequelize.JSONB,
+          type: Sequelize.JSON,
           allowNull: false,
         },
         createdAt: {
@@ -66,5 +63,5 @@ module.exports = {
     );
   },
 
-  down: queryInterface => queryInterface.dropTable({ tableName: 'Order', schema: db.schema }),
+  down: queryInterface => queryInterface.dropTable({ tableName: 'Orders', schema: db.schema }),
 };

@@ -7,7 +7,7 @@ module.exports = {
       { tableName: 'TransactionHistoryType', schema: db.schema },
       {
         code: {
-          type: Sequelize.STRING(32),
+          type: Sequelize.STRING,
           allowNull: false,
           primaryKey: true,
         },

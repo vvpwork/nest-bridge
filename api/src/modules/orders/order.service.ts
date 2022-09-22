@@ -62,6 +62,7 @@ export class OrderService {
     await this.notificationService.addNotification(user.profileId, NOTIFICATION_TYPES.FOLLOWING_PERSON_LISTS_NFT, {
       name: user.userName,
       id: user.id,
+      amount,
       price,
       nftId,
     });
