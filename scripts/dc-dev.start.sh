@@ -2,7 +2,7 @@
 
 docker-compose -f docker-compose.dev.yml down --remove-orphans;
 echo 'Removed old containers'
-docker-compose -f docker-compose.dev.yml up -Vd;
+docker-compose -f docker-compose.dev.yml up -Vd --build;
 echo 'All services are running'
 
 
