@@ -36,9 +36,14 @@ export class BlockchainRabbitService {
     }
   }
 
-  private async addCollection(data: any) {
-    const nfts = await this.getPastCollectionNfts(data.addresses[0]);
-    await this.fillNftsByCollection(nfts, data.identityId);
+  async addCollection(data: { addresses: string[]; identityId?: string }) {
+    await Promise.allSettled(
+      data.addresses.map(async (address: string) => {
+        const nfts = await this.getPastCollectionNfts(address);
+        await this.fillNftsByCollection(nfts, data.identityId);
+      }),
+    );
+    return 'Added';
   }
 
   /**
