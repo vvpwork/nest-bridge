@@ -6,6 +6,7 @@ export enum StatusesType {
   onSale = 'onSale',
   onLocked = 'onLocked',
   notForSale = 'notForSale',
+  sold = 'sold',
 }
 
 export enum SortValues {

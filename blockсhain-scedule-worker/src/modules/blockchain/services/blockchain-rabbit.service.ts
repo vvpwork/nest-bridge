@@ -9,7 +9,7 @@ import { erc1155abi } from '../abis/erc1155bridgeTowerProxy';
 import { DEFAULT_ETH_ADDRESS } from '@/common/constants';
 import { CloudinaryService } from '@/common/services/cloudinary.service';
 import { IBlockchainIdentityAddress, INftModel } from '@/db/interfaces';
-import { getAxiosInstance, Web3Instance } from '@/common/utils';
+import { getAxiosInstance, sleep, Web3Instance } from '@/common/utils';
 import { TypeRpcCommand } from '../../rabbit/interfaces/enums';
 import { NftModel } from '@/db/models';
 import { getShortHash } from '@/common/utils/short-hash.utile';
@@ -46,6 +46,9 @@ export class BlockchainRabbitService {
   ) {
     const type =
       ev.returnValues.from === DEFAULT_ETH_ADDRESS ? 'mint' : 'transfer';
+
+    if (type === 'transfer') return;
+
     const nft = await this.getNftInfo(
       {
         id: ev.returnValues.id,
@@ -152,28 +155,24 @@ export class BlockchainRabbitService {
     return data;
   }
 
-  private sleep = async (ms: number) =>
-    new Promise((resolve, reject) => {
-      setTimeout(resolve, ms);
-    });
-
   async getDataForNFT(collectionAddress: string, nftId: number | string) {
     const collectionContract = new this.web3Instance.eth.Contract(
       erc1155abi,
       collectionAddress,
     );
     let uri = await collectionContract.methods.uri(nftId).call();
-    console.log('first', uri);
+    Logger.log('first', uri);
 
     if (!uri) {
-      await this.sleep(1000);
+      await sleep(1000);
       uri = await collectionContract.methods.uri(nftId).call();
-      console.log('second', uri);
+      Logger.log('second', uri);
     }
+
     if (!uri) {
-      await this.sleep(1000);
+      await sleep(1000);
       uri = await collectionContract.methods.uri(nftId).call();
-      console.log('third', uri);
+      Logger.log('third', uri);
     }
 
     const getMetadata = async () => {

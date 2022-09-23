@@ -64,7 +64,6 @@ export class NftService {
       //  TODO refactor
       // One select for all nft requirements
       const rawQuery = `
-
       WITH temptable as (
         SELECT
         b.identityId as identityId,
@@ -103,8 +102,9 @@ export class NftService {
 
         ${collectionId ? `&& c.id = '${collectionId}'` : ''}
 
-        JOIN IdentityNftBalance b ON b.nftId = n.id ${identityId ? `&&  b.identityId = '${identityId}'` : ''}    
-
+        JOIN IdentityNftBalance b ON b.nftId = n.id 
+        ${identityId ? `&&  b.identityId = '${identityId}'` : ''}    
+        ${status === 'sold' ? `&&  b.status = 'sold'` : ''}   
         ${status === 'onSale' ? `JOIN` : `LEFT JOIN`} \`Orders\` o ON o.nftIdentityBalanceId = b.id
         LEFT JOIN Identity  ident ON ident.id = b.identityId
         LEFT JOIN Profile  pr ON pr.id = ident.profileId
@@ -116,11 +116,11 @@ export class NftService {
         GROUP BY li.nftId
         ) lik ON lik.nftId = n.id
 
-       LEFT JOIN NftLike ll On ll.nftId = n.id && ll.profileId='${profileId}'
+        LEFT JOIN NftLike ll On ll.nftId = n.id && ll.profileId='${profileId}'
 
 
         ${creatorId ? `JOIN` : `LEFT JOIN`} (
-          SELECT creator.address, id.id as identityId,  creator.nftId, JSON_ARRAYAGG(
+          SELECT creator.address, id.id as identityId, bal.status, creator.nftId, JSON_ARRAYAGG(
             JSON_OBJECT(
               'address', creator.address,
               'identityId', id.id,
@@ -133,9 +133,12 @@ export class NftService {
           FROM IdentityNftCreator creator
           JOIN BlockchainIdentityAddress bad On bad.address = creator.address
           JOIN Identity id On id.id = bad.identityId
+          JOIN IdentityNftBalance bal On bal.identityId = bad.identityId && bal.nftId = creator.nftId
           JOIN Profile pr On pr.id = id.profileId
           GROUP BY creator.nftId, creator.address
-        ) cr ON cr.nftId = n.id ${creatorId ? `&&  cr.identityId = '${creatorId}'` : ``}
+        ) cr ON cr.nftId = n.id 
+        ${creatorId ? `&&  cr.identityId = '${creatorId}'` : ``}
+        
 
         ${status === 'onLocked' ? `JOIN` : `LEFT JOIN`} (
           SELECT lk.identityNftBalanceId,
@@ -150,6 +153,7 @@ export class NftService {
 
         ${nftId ? `WHERE n.id = '${nftId}'` : ``}
         ${search ? `WHERE JSON_VALUE(n.metadata, '$.name') like '%${search}%'` : ``}
+        ${status === 'sold' ? `WHERE b.identityId = cr.identityId ` : ``}   
         GROUP BY b.id
         ${sortValue === 'price' ? `ORDER BY  CONVERT(o.price, INTEGER) ${sortType}` : ``}
         ${sortValue === 'unlockTime' ? `ORDER BY l.unlockTime  ${sortType}` : ``}

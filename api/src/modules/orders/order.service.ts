@@ -163,6 +163,9 @@ export class OrderService {
     await order.save();
 
     sellerBalance.amount -= buyAmount;
+    if (sellerBalance.amount === 0) {
+      sellerBalance.status = 'sold';
+    }
     await sellerBalance.save();
 
     const [buyerBalance] = await this.balanceModel.findOrCreate({
@@ -284,7 +287,12 @@ export class OrderService {
       user.address,
       balance.toJSON().nftId,
     );
-    console.log('**********', balanceFromBC);
+    Logger.log(
+      'Is balance consistence with blockchain',
+      +balanceFromBC === balance.toJSON().amount,
+      balanceFromBC,
+      balance.toJSON().amount,
+    );
     if (!balance.id) throw new HttpException('User does not have balance', 404);
     if (!balance.id) Logger.error('Error order');
     const onSaleBalance = balance.orders.length ? balance.orders[0].toJSON().total : 0;

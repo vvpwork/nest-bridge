@@ -52,10 +52,11 @@ export class IdentityNftBalanceModel extends Model<IIdentityAttributes> {
   @Column(DataType.INTEGER)
   amount: number;
 
+  // TODO add enums status
   @ForeignKey(() => IdentityNftBalanceStatusModel)
   @AllowNull(true)
   @Column(DataType.STRING)
-  status: IdentityNftBalanceStatusModel;
+  status: string;
 
   @HasMany(() => IdentityNftBalanceLock)
   locked: IdentityNftBalanceLock[];
