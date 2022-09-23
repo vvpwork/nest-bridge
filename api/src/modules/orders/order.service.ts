@@ -1,7 +1,15 @@
 import { Sequelize } from 'sequelize-typescript';
 import { HttpException, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { CurrenciesModel, IdentityNftBalanceLock, IdentityNftBalanceModel, NftModel, OrdersModel } from '@/db/models';
+import { Bn } from '@/common/utils/';
+import {
+  CurrenciesModel,
+  IdentityModel,
+  IdentityNftBalanceLock,
+  IdentityNftBalanceModel,
+  NftModel,
+  OrdersModel,
+} from '@/db/models';
 import { ICreateOrderDto } from './dtos/order-create.dto';
 import { IIdentityBalanceModel, IOrderModel } from '@/db/interfaces';
 import { IBuyOrderRequest } from './dtos/buy-order.dto';
@@ -21,6 +29,7 @@ export class OrderService {
     @InjectModel(IdentityNftBalanceModel) private balanceModel: typeof IdentityNftBalanceModel,
     @InjectModel(IdentityNftBalanceLock) private lockModel: typeof IdentityNftBalanceLock,
     @InjectModel(CurrenciesModel) private currencyModel: typeof CurrenciesModel,
+    @InjectModel(IdentityModel) private identityModel: typeof IdentityModel,
 
     private bcService: BlockchainService,
     private historyService: TransactionHistoryService,
@@ -121,7 +130,7 @@ export class OrderService {
     if (data.price) oldOrder.price = data.price;
     await oldOrder.save();
 
-    this.historyService.create({
+    await this.historyService.create({
       identityId: user.id,
       amount: oldOrder.amount,
       price: oldOrder.price,
@@ -142,6 +151,7 @@ export class OrderService {
       where: {
         id: orderId,
       },
+      include: [{ model: IdentityNftBalanceModel, include: [{ model: NftModel }, { model: IdentityModel }] }],
     });
     if (!order) throw new HttpException('Order was not found', 404);
     if (data.buyAmount > order.amount) throw new HttpException('Invalid balance', 400);
@@ -187,6 +197,7 @@ export class OrderService {
       price: order.price,
       nftId: sellerBalance.toJSON().nftId,
     });
+
     await this.historyService.create({
       identityId: user.id,
       txHash,
@@ -195,6 +206,37 @@ export class OrderService {
       price: order.price,
       nftId: sellerBalance.toJSON().nftId,
     });
+
+    const { nft } = order.nftIdentityBalance;
+    await this.notificationService.addNotification(
+      order.nftIdentityBalance.identity.profileId,
+      NOTIFICATION_TYPES.NFT_SOLD,
+      {
+        id: nft.id,
+        thumbnail: nft.thumbnail,
+        name: nft.metadata.name,
+        image: nft.metadata.image,
+        price: data.buyAmount > 1 ? Bn.multiplyBy(order.price, data.buyAmount).toString() : order.price,
+      },
+    );
+
+    const royaltyProfileIds = await this.identityModel
+      .findAll({ where: { id: nft.royaltyIds }, attributes: ['profileId'] })
+      .then((identities: Pick<IdentityModel, 'profileId'>[]) =>
+        identities.map((identity: { profileId: number }) => identity.profileId),
+      );
+
+    await Promise.all(
+      royaltyProfileIds.map((profileId: number) =>
+        this.notificationService.addNotification(profileId, NOTIFICATION_TYPES.ROYALTY_RECEIVED, {
+          id: nft.id,
+          name: nft.metadata.name,
+          thumbnail: nft.thumbnail,
+          image: nft.metadata.image,
+          royalty: Bn.multiplyBy(Bn.multiplyBy(order.price, data.buyAmount), nft.royalty).toString(),
+        }),
+      ),
+    );
 
     return {
       data: 'Ok',

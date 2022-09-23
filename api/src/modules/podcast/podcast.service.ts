@@ -31,7 +31,7 @@ export class PodcastService {
         title,
         name: await this.profileService.getUserNameByProfileId(params.profileId),
       },
-      NOTIFICATION_TYPES.FOLLOWING_PERSON_ADDED_LIBRARY,
+      NOTIFICATION_TYPES.FOLLOWING_PERSON_ADDED_PODCAST,
     );
     return newPodcastRecord;
   }
@@ -47,7 +47,7 @@ export class PodcastService {
 
     const allNotificationIds = await this.notificationService.getAllNotificationIdsByTypeAndParams(
       { id: podcastId },
-      NOTIFICATION_TYPES.FOLLOWING_PERSON_ADDED_LIBRARY,
+      NOTIFICATION_TYPES.FOLLOWING_PERSON_ADDED_PODCAST,
     );
     if (allNotificationIds.length) {
       const { id, title, image, source } = podcastRecord;

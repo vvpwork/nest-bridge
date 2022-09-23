@@ -25,4 +25,10 @@ export class Bn extends BigNumber implements IBigNumberUtile {
     const bn = this.div(new BigNumber(10).pow(decimal));
     return type === 'string' ? bn.toFormat(0).split(',').join('') : bn;
   }
+
+  static multiplyBy(firstAmount: string | BigNumber | number, secondAmount: string | BigNumber | number) {
+    const first = new BigNumber(firstAmount);
+    const second = new BigNumber(secondAmount);
+    return first.multipliedBy(second);
+  }
 }
