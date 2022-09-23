@@ -30,7 +30,7 @@ export class NewsService {
         ...params,
         name: await this.profileService.getUserNameByProfileId(params.profileId),
       },
-      NOTIFICATION_TYPES.FOLLOWING_PERSON_ADDED_LIBRARY,
+      NOTIFICATION_TYPES.FOLLOWING_PERSON_ADDED_NEWS,
     );
     console.log(newNewsRecord);
     return newNewsRecord;
@@ -47,7 +47,7 @@ export class NewsService {
 
     const allNotificationIds = await this.notificationService.getAllNotificationIdsByTypeAndParams(
       { id: newsId },
-      NOTIFICATION_TYPES.FOLLOWING_PERSON_ADDED_LIBRARY,
+      NOTIFICATION_TYPES.FOLLOWING_PERSON_ADDED_NEWS,
     );
     if (allNotificationIds.length) {
       const { id, title, image, source } = newsRecord;
@@ -76,7 +76,7 @@ export class NewsService {
 
     const allNotificationIds: number[] = await this.notificationService.getAllNotificationIdsByTypeAndParams(
       { id: libraryId },
-      NOTIFICATION_TYPES.FOLLOWING_PERSON_ADDED_LIBRARY,
+      NOTIFICATION_TYPES.FOLLOWING_PERSON_ADDED_NEWS,
     );
 
     if (allNotificationIds.length) {

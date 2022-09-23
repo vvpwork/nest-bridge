@@ -42,7 +42,7 @@ export class IdentityNftBalanceModel extends Model<IIdentityAttributes> {
   @ForeignKey(() => IdentityModel)
   @AllowNull(false)
   @Column(DataType.UUID)
-  identityId: IdentityModel;
+  identityId: number;
 
   @ForeignKey(() => NftModel)
   @Column(DataType.STRING)
@@ -64,7 +64,7 @@ export class IdentityNftBalanceModel extends Model<IIdentityAttributes> {
   nft: NftModel;
 
   @BelongsTo(() => IdentityModel, 'identityId')
-  identity: NftModel;
+  identity: IdentityModel;
 
   @HasMany(() => OrdersModel, 'nftIdentityBalanceId')
   orders: OrdersModel[];

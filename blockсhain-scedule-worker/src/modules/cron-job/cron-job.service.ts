@@ -38,7 +38,7 @@ export class CronJobService {
           getNft,
         );
 
-        this.notificationRepository.create({
+        await this.notificationRepository.create({
           profileId: dataFromDb.profileId,
           params: {
             name: dataFromDb.name,
