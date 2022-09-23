@@ -15,7 +15,6 @@ import { NftModel } from '@/db/models';
 import { getShortHash } from '@/common/utils/short-hash.utile';
 import { upsertData } from '@/db/utils/helper';
 import { IEventHandleData } from '../interfaces/blockchain-rabbit.interfsce';
-import shortHash from 'shorthash2';
 
 @Injectable()
 export class BlockchainRabbitService {
@@ -31,11 +30,7 @@ export class BlockchainRabbitService {
   async handlerMessage(command: TypeRpcCommand, data: any) {
     switch (command) {
       case TypeRpcCommand.ADD_COLLECTION:
-        return (async () => {
-          this.addCollection(data);
-          return 'run process to get NFT';
-        })();
-      // return 'ADD_COLLECTION';
+        return this.addCollectionHandler(data);
 
       default:
         Logger.error('Command is not found ');
@@ -89,20 +84,16 @@ export class BlockchainRabbitService {
     };
   }
 
+  addCollectionHandler(data: { addresses: string[]; identityId?: string }) {
+    this.addCollection(data);
+    this.listenToContractEvent(data.addresses[0]);
+    return 'Start added process';
+  }
+
   async addCollection(data: { addresses: string[]; identityId?: string }) {
-    await Promise.allSettled(
-      data.addresses.map(async (address: string) => {
-        try {
-          console.log(address);
-          const nfts = await this.getPastCollectionNfts(address);
-          await this.fillNftsByCollection(nfts, data.identityId);
-          this.listenToContractEvent(address);
-        } catch (err) {
-          console.log(err);
-        }
-      }),
-    );
-    return 'Added';
+    const { addresses } = data;
+    const nfts = await this.getPastCollectionNfts(addresses[0]);
+    await this.fillNftsByCollection(nfts, data.identityId);
   }
 
   /**
@@ -115,9 +106,10 @@ export class BlockchainRabbitService {
       erc1155abi,
       collectionAddress,
     );
-    const currentBlock = await this.web3Instance.eth.getBlockNumber();
+    // const currentBlock = await this.web3Instance.eth.getBlockNumber();
+
     const pastEvents = await contract.getPastEvents('TransferSingle', {
-      fromBlock: currentBlock - 2000,
+      fromBlock: 13841000
     });
 
     const mintedEvents = pastEvents
@@ -128,8 +120,10 @@ export class BlockchainRabbitService {
         owner: ev.returnValues.to,
       }));
 
-    return Promise.all(
+    console.log(mintedEvents);
+    const data = await Promise.all(
       mintedEvents.map(async (v) => {
+        console.log(v);
         const info = await this.getDataForNFT(collectionAddress, v.id);
         const [royalties, royalty] = info.royalties[0];
         const [creators] = info.creators[0];
@@ -154,6 +148,7 @@ export class BlockchainRabbitService {
         };
       }),
     );
+    return data;
   }
 
   /**
@@ -168,7 +163,7 @@ export class BlockchainRabbitService {
       nftAddress,
     );
 
-    const [creators, royalties, metadata]: any = await Promise.allSettled([
+    const [creators, royalties, metadata] = await Promise.all([
       collectionContract.methods.getCreators(id).call(),
       collectionContract.methods.getBridgeTowerRoyalties(id).call(),
       await (async () => {
@@ -183,9 +178,9 @@ export class BlockchainRabbitService {
     ]);
 
     return {
-      creators: creators.value || [],
-      royalties: royalties.value || [],
-      metadata: metadata.value || {},
+      creators,
+      royalties,
+      metadata,
     };
   }
 
