@@ -14,6 +14,7 @@ export interface IConfig {
   };
   blockchain: {
     nodeUrl: string;
+    nodeUrlWss: string;
     erc1155Proxy: string;
     exchangeV2Proxy: string;
     artemundiWallet: string;
