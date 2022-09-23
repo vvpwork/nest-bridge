@@ -7,7 +7,6 @@ import { ApiProperty } from '@nestjs/swagger';
  */
 export class EditPodcastDto {
   @IsString()
-  @Length(1, 200)
   @IsOptional()
   public title?: string;
 
@@ -17,7 +16,6 @@ export class EditPodcastDto {
 
   @IsString()
   @IsOptional()
-  @Length(1, 30)
   public source?: string;
 
   @IsString()

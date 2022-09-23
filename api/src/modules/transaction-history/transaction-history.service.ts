@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { TransactionHistoryModel } from '@/db/models';

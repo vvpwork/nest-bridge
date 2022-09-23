@@ -23,6 +23,7 @@ export class ConfigApiController {
         exchangeV2ProxyAddress: config.blockChain.exchangeV2Proxy,
         transferProxyAddress: config.blockChain.transferProxy,
         erc20TransferProxyAddress: config.blockChain.erc20proxy,
+        structuredStakingProxy: config.blockChain.structuredStakingProxy,
       },
     });
   }

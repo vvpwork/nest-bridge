@@ -2,7 +2,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { NOTIFICATION_TYPES } from '@DB/enums';
-import { FollowerModel, NotificationModel } from '@DB/models';
+import { FollowerModel, NotificationModel, ProfileModel } from '@DB/models';
 import { paginate } from '@Common/utils';
 
 @Injectable()
@@ -29,6 +29,13 @@ export class NotificationService {
     await this.notificationModel.update({ isRead: true }, { where: { profileId, isRead: false } });
 
     return paginatedData;
+  }
+
+  // check if user currently have unread notifications
+  async doesHaveUnreadNotifications(profileId: number): Promise<boolean> {
+    const unreadNotificationsCount = await this.notificationModel.count({ where: { profileId, isRead: false } });
+
+    return unreadNotificationsCount > 0;
   }
 
   async addNotificationToAllIdentityFollowers(

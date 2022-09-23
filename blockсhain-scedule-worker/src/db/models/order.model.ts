@@ -40,11 +40,11 @@ export class OrdersModel extends Model<IOrderModel> {
   amount: number;
 
   @AllowNull(false)
-  @Column(DataType.STRING(128))
+  @Column(DataType.TEXT)
   price: string;
 
   @AllowNull(false)
-  @Column(DataType.JSON)
+  @Column(DataType.TEXT)
   signature: string;
 
   @AllowNull(true)

@@ -10,6 +10,8 @@ import { getShortHash } from '@/common/utils/short-hash.utile';
 import { config } from '@/common/config';
 import { BlockchainService } from '../blockchain/blockchain.service';
 import { IUserInterface } from '@/common/interfaces';
+import { NotificationService } from '../notification';
+import { NOTIFICATION_TYPES } from '@/db/enums';
 
 const { lockPeriod } = config.nft;
 @Injectable()
@@ -22,10 +24,10 @@ export class OrderService {
 
     private bcService: BlockchainService,
     private historyService: TransactionHistoryService,
+    private notificationService: NotificationService,
   ) {}
 
   // TODO refactor nftId
-
   async create(data: ICreateOrderDto, user?: IUserInterface['data']) {
     Logger.log(data, '[Order Service] data to create data');
     const { identityId, nftId, amount, signature, metadata, price, currency } = data;
@@ -54,8 +56,15 @@ export class OrderService {
       amount,
       price,
       nftId,
-      txHash: signature,
-      data: metadata,
+      data: { metadata, signature },
+    });
+
+    await this.notificationService.addNotification(user.profileId, NOTIFICATION_TYPES.FOLLOWING_PERSON_LISTS_NFT, {
+      name: user.userName,
+      id: user.id,
+      amount,
+      price,
+      nftId,
     });
 
     // remove private info
@@ -226,6 +235,8 @@ export class OrderService {
         },
       ],
     });
+
+    if (!balance.id) throw new HttpException('Invalid balance', 404);
 
     const balanceFromBC = await this.bcService.getAvailableBalance(
       balance.nft.toJSON().collectionId,

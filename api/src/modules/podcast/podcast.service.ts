@@ -42,7 +42,7 @@ export class PodcastService {
     const podcastRecord = await this.podcastModel.findByPk(podcastId);
 
     if (!podcastRecord) {
-      throw new HttpException('PODCAST_NOT_FOUND', HttpStatus.NOT_FOUND);
+      throw new HttpException('PODCAST_NOT_FOUND', 404);
     }
 
     const allNotificationIds = await this.notificationService.getAllNotificationIdsByTypeAndParams(
@@ -69,7 +69,7 @@ export class PodcastService {
   async delete(podcastId: string): Promise<{ success: true }> {
     const podcastRecord = await this.podcastModel.findByPk(podcastId, { attributes: ['id'] });
     if (!podcastRecord) {
-      throw new HttpException('PODCAST_NOT_FOUND', HttpStatus.NOT_FOUND);
+      throw new HttpException('PODCAST_NOT_FOUND', 404);
     }
 
     await podcastRecord.destroy();

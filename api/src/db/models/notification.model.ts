@@ -9,6 +9,7 @@ import {
   Default,
   ForeignKey,
   AutoIncrement,
+  BelongsTo,
 } from 'sequelize-typescript';
 import { INotificationModel } from '../interfaces';
 import { ProfileModel } from '@/db/models/profile.model';
@@ -45,4 +46,7 @@ export class NotificationModel extends Model<INotificationModel> {
   @AllowNull(false)
   @Column(DataType.BOOLEAN)
   isRead: boolean;
+
+  @BelongsTo(() => ProfileModel, 'profileId')
+  profile: ProfileModel;
 }

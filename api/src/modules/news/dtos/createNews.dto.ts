@@ -7,13 +7,14 @@ import { ApiProperty } from '@nestjs/swagger';
  */
 export class CreateNewsDto {
   @IsString()
-  @Length(1, 200)
   public title!: string;
+
+  @IsString()
+  public description!: string;
 
   @ApiProperty({ type: 'string', format: 'binary' })
   public image!: string;
 
   @IsString()
-  @Length(1, 30)
   public source!: string;
 }

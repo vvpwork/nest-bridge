@@ -7,6 +7,7 @@ import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { CloudinaryService } from '@Common/services/cloudinary.service';
 import { IUserInterface } from '@Common/interfaces';
 import { Response } from 'express';
+import { brotliCompressSync } from 'zlib';
 import { LibraryService } from './library.service';
 
 @ApiTags('Libraries')
@@ -32,15 +33,17 @@ export class LibraryController {
     @UploadedFiles() files: Array<Express.Multer.File>,
     @Res() res: Response,
   ) {
+    const params = { ...body };
     // upload images to cloudinary
-    const image = await this.cloudinary.uploadFile(files.find((v: Express.Multer.File) => v.fieldname === 'image'));
-    const imageUrl = image.url ? image.url : '';
+    if (!body.image) {
+      const image = await this.cloudinary.uploadFile(files.find((v: Express.Multer.File) => v.fieldname === 'image'));
+      params.image = image.url ? image.url : '';
+    }
 
     return res.status(201).send({
       data: await this.libraryService.create({
         profileId: user.data.profileId,
-        ...body,
-        image: imageUrl,
+        ...params,
       } as ILibraryModel),
     });
   }
@@ -55,19 +58,21 @@ export class LibraryController {
   async update(
     @Body() body: EditLibraryDto,
     @Param('id') id: string,
+    @User() user: IUserInterface,
     @UploadedFiles() files: Array<Express.Multer.File>,
     @Res() res: Response,
   ) {
     const params: any = { ...body };
-    // upload images to cloudinary
-    const image = await this.cloudinary.uploadFile(files.find((v: Express.Multer.File) => v.fieldname === 'image'));
 
-    if (image && image.url) {
-      params.image = image.url;
+    if (!body.image) {
+      const image = await this.cloudinary.uploadFile(files.find((v: Express.Multer.File) => v.fieldname === 'image'));
+      if (image && image.url) {
+        params.image = image.url;
+      }
     }
 
     return res.status(200).send({
-      data: await this.libraryService.update(id, params as ILibraryModel),
+      data: await this.libraryService.update(id, params as ILibraryModel, user.data.userName),
     });
   }
 

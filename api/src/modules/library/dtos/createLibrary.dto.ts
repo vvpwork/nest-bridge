@@ -7,13 +7,11 @@ import { ApiProperty } from '@nestjs/swagger';
  */
 export class CreateLibraryDto {
   @IsString()
-  @Length(1, 200)
   public title!: string;
 
   @ApiProperty({ type: 'string', format: 'binary' })
   public image!: string;
 
   @IsString()
-  @Length(1, 30)
   public source!: string;
 }

@@ -60,6 +60,12 @@ export class IdentityNftBalanceModel extends Model<IIdentityAttributes> {
   @HasMany(() => IdentityNftBalanceLock)
   locked: IdentityNftBalanceLock[];
 
+  @BelongsTo(() => NftModel, 'nftId')
+  nft: NftModel;
+
+  @BelongsTo(() => IdentityModel, 'identityId')
+  identity: NftModel;
+
   @HasMany(() => OrdersModel, 'nftIdentityBalanceId')
   orders: OrdersModel[];
 }

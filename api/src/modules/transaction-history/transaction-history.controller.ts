@@ -17,11 +17,14 @@ export class TransactionHistoryController {
   @ApiResponse({
     status: 201,
     description: 'Transaction created successfully',
-    type: null,
   })
   async create(@User() user: IUserInterface, @Body() body: CreateTransactionDto, @Res() res: Response) {
     return res.status(201).send({
-      data: await this.transactionHistoryService.create({ identityId: user.data.id, ...body }),
+      data: await this.transactionHistoryService.create({
+        identityId: user.data.id,
+        address: user.data.address,
+        ...body,
+      }),
     });
   }
 }

@@ -1,5 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { IMessageRabbit } from './interfaces';
+import { TypeRpcCommand, TypeRpcMessage } from './interfaces/enums';
 import { RabbitService } from './services';
 
 @Injectable()
@@ -15,8 +16,12 @@ export class RabbitRootService {
     this.rabbitInstance.run();
   }
 
-  async getProcessResult(message: IMessageRabbit) {
-    return this.rabbitInstance.getMessageProcessingResult(message);
+  async addCollectionEvent(data: { addresses: string[]; identityId: string }) {
+    return this.rabbitInstance.getMessageProcessingResult({
+      type: TypeRpcMessage.BLOCKCHAIN,
+      command: TypeRpcCommand.ADD_COLLECTION,
+      data,
+    });
   }
 
   async handleMessage(message: string) {

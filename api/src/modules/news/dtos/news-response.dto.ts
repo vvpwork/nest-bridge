@@ -25,6 +25,13 @@ export class NewsResponseDto {
 
   @ApiProperty({
     type: String,
+    example: 'titleeee',
+  })
+  @IsString()
+  description: string;
+
+  @ApiProperty({
+    type: String,
     example: 'https://someImage',
   })
   @IsString()

@@ -32,6 +32,7 @@ export class NewsService {
       },
       NOTIFICATION_TYPES.FOLLOWING_PERSON_ADDED_LIBRARY,
     );
+    console.log(newNewsRecord);
     return newNewsRecord;
   }
 

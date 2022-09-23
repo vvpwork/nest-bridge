@@ -80,7 +80,7 @@ Next can be fount the list of all env variables.
 | -----------------            | ----------- | ---------------------------------------- | ------------------------ |
 | PORT                         |  True       | port where the api will running          |   8000
 | NODE_ENV                     |  True       | (development, production test)           |   development
-| BASE_URL                     |  False      |  base url for webHooks                   |  <http://localhost:8000>   |
+| BASE_URL                     |  False      |  base url for webHooks                   |  <http://localhost:8000>  |
 |                              `**** JWT`
 | JWT_SECRET                   | True        |  secret for sign jwt                     | test                     |  
 | JWT_EXPIRE_TIME              | True        |  time to expire jwt                      | id                       |  
@@ -111,12 +111,13 @@ Next can be fount the list of all env variables.
 | ARTEMUNDI_WALLET_ADDRESS     | True        | address artemund                          | i0x423cbE3E6479E86dfb816915c5BF57060e48C5A7
 | WALLET_SECRET_KEY            | True        | secret for defaul                         | wallet5ce0b20427fe6a03e218c053bb123a213229e8b48e96b208d1be86d3b8173fdd
 | ERC1155_BRIDGE_TOWER_FACTORY_C2_ADDRESS | True      | root factory                     | 0xb53270e658FF1a6EDD4fC205A871E53f016d1b8D
-| EXCHANGE_V2_PROXY_ADDRESS| True | proxy V2 | address0x2e74b7d50563Cda092b7c5890Ef76E25CB661442
-| TRANSFER_PROXY_ADDRESS| True | transfer proxy | 0x1B5A812e35a47C351200eA8f16A94a9B892a4C45
-| ERC_20_TRANSFER_PROXY_ADDRESS| True | erc20 proxy |0xDC086248188B455beB103Ba44f401D0aD8f93eb9
+| EXCHANGE_V2_PROXY_ADDRESS    | True        | proxy V2                                  | address0x2e74b7d50563Cda092b7c5890Ef76E25CB661442
+| TRANSFER_PROXY_ADDRESS       | True        | transfer proxy                            | 0x1B5A812e35a47C351200eA8f16A94a9B892a4C45
+| STRUCTURED_STAKING_PROXY     | True        | stacking proxy                            | 0x1B5A812e35a47C351200eA8f16A94a9B892a4C45
+| ERC_20_TRANSFER_PROXY_ADDRESS| True        | erc20 proxy                               |0xDC086248188B455beB103Ba44f401D0aD8f93eb9
 |                               `**** NFT`
-| NFT_LOCKING_PERIOD_IN_SECOND| True | time to lock nft |360
+| NFT_LOCKING_PERIOD_IN_SECOND | True        | time to lock nft (seconds)                | 360
 |                               `**** Cloudinary`
-| CLOUD_NAME| True | name cloudinary | bridgetowercapital
-| CLOUD_API_KEY| True | api key | 981927427522746
-|CLOUD_API_SECRET=| True | secret | _t7QbeziDGD5ib4b7AYhPmX7J0Y
+| CLOUD_NAME                   | True        | name cloudinary                           | bridgetowercapital
+| CLOUD_API_KEY                | True        | api key                                   | 981927427522746
+|CLOUD_API_SECRET              | True        | secret                                    | _t7QbeziDGD5ib4b7AYhPmX7J0Y

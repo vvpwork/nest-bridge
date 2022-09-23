@@ -4,7 +4,7 @@ const db = nodeConfig.get('db');
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable(
-      { tableName: 'Notification ', schema: db.schema },
+      { tableName: 'Notification', schema: db.schema },
       {
         id: {
           type: Sequelize.BIGINT,
@@ -36,7 +36,7 @@ module.exports = {
           defaultValue: false,
         },
         params: {
-          type: Sequelize.JSONB,
+          type: Sequelize.JSON,
           allowNull: true,
           defaultValue: {},
         },
@@ -53,10 +53,10 @@ module.exports = {
       },
     );
 
-    await queryInterface.addIndex({ tableName: 'Notification ', schema: db.schema }, ['profileId', 'isRead'], {
+    await queryInterface.addIndex({ tableName: 'Notification', schema: db.schema }, ['profileId', 'isRead'], {
       indexName: 'profileId_isRead',
     });
   },
 
-  down: queryInterface => queryInterface.dropTable({ tableName: 'Notification ', schema: db.schema }),
+  down: queryInterface => queryInterface.dropTable({ tableName: 'Notification', schema: db.schema }),
 };

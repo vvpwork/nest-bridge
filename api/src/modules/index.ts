@@ -12,3 +12,4 @@ export * from './orders';
 export * from './transaction-history';
 export * from './config-api';
 export * from './notification';
+export * from './dashboard';

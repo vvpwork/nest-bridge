@@ -1,0 +1,47 @@
+[
+  {
+    "id": "2dd02cec-97ba-4f21-9c76-dabbbca70f43",
+    "securitizeId": "62f29dd05203e400122d75a3",
+    "accountType": "partner",
+    "createdAt": "2022-08-12 13:24:43",
+    "updatedAt": "2022-08-19 21:03:29",
+    "profileId": 1,
+    "status": "in_progress"
+  },
+  {
+    "id": "9ec13f7f-46f4-4faf-a83d-1e9eab021533",
+    "securitizeId": "62dacf9c582bfe001408c2f5",
+    "accountType": "user",
+    "createdAt": "2022-08-16 11:26:57",
+    "updatedAt": "2022-09-13 13:26:57",
+    "profileId": 2,
+    "status": "in_progress"
+  },
+  {
+    "id": "bf7f8590-3c6f-4348-9978-9e4d53a3321d",
+    "securitizeId": "62b30c7c364a800012d579c9",
+    "accountType": "user",
+    "createdAt": "2022-08-12 13:14:28",
+    "updatedAt": "2022-08-16 12:02:02",
+    "profileId": 3,
+    "status": "in_progress"
+  },
+  {
+    "id": "73507d0c-632e-4802-8d58-0a8f102c3a93",
+    "securitizeId": "627bcbe8ef22cc0012918b34",
+    "accountType": "user",
+    "createdAt": "2022-07-19 13:37:37",
+    "updatedAt": "2022-09-13 13:06:54",
+    "profileId": 4,
+    "status": "in_progress"
+  },
+  {
+    "id": "de4cab06-964e-4d37-a17b-cf799cdcf32f",
+    "securitizeId": "62b309e5db759500127a9cc1",
+    "accountType": "user",
+    "createdAt": "2022-08-12 11:59:17",
+    "updatedAt": "2022-09-12 07:43:23",
+    "profileId": 5,
+    "status": "in_progress"
+  }
+]

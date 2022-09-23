@@ -168,11 +168,12 @@ export class BlockchainRabbitService {
             'IdentityNftBalance',
             ['id', 'identityId', 'nftId', 'amount'],
             nfts.map((nft: INftModel) => [
-              `'${getShortHash(nft.identityId, nft.id)}','${
-                nft.identityId
-              }','${nft.id}','${nft.ownerBalance}'`,
+              `'${getShortHash(nft.identityId, nft.id)}','${nft.identityId}','${
+                nft.id
+              }','${nft.ownerBalance}'`,
             ]),
           );
+
           await this.repository.sequelize.query(balancesQuery, {
             transaction: t,
           });
@@ -186,6 +187,20 @@ export class BlockchainRabbitService {
           await this.repository.sequelize.query(creatorsQuery, {
             transaction: t,
           });
+
+          const transactionHistoryQuery = upsertData(
+            'TransactionHistory',
+            ['identityId', 'nftId', 'amount', 'type'],
+            nfts.map((m) => [
+              `'${m.identityId}', '${m.id}', '${m.amount}', 'mint'`,
+            ]),
+          );
+
+          console.log(transactionHistoryQuery);
+          await this.repository.sequelize.query(transactionHistoryQuery, {
+            transaction: t,
+          });
+
           Logger.log('[BlockchainRabbitService] finish fill db');
         });
       } catch (err) {

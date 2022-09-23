@@ -17,6 +17,7 @@ import { paginate } from '@Common/utils/pagination.util';
 
 import { IIdentityModel, IProfileModel } from '@DB/interfaces';
 import { ACCOUNT_TYPES, NOTIFICATION_TYPES } from '@DB/enums';
+import { IUserInterface } from '@/common/interfaces';
 
 // TODO refactoring followers
 @Injectable()
@@ -80,51 +81,42 @@ export class ProfileService {
   }
 
   // TODO Refactor all methods
-
-  async getByUserNameOrAddress(userNameOrAddress: string, viewerUser?: IIdentityModel) {
-    let profile;
+  async getByUserNameOrAddress(userNameOrAddress: string, user?: IUserInterface['data']) {
+    let address: string;
+    let name: string;
     if (userNameOrAddress.substring(0, 2) === '0x') {
-      profile = await this.profileModel.findOne({
-        include: [
-          {
-            model: this.identityModel,
-            as: 'identity',
-            attributes: ['accountType'],
-            include: [
-              {
-                model: this.blockchainIdentityAddressModel,
-                as: 'address',
-                where: {
-                  address: userNameOrAddress,
-                },
-                required: true,
-              },
-            ],
-          },
-        ],
-      });
+      address = userNameOrAddress;
     } else {
-      profile = await this.profileModel.findOne({
-        where: {
-          userName: userNameOrAddress,
-        },
-        include: [
-          {
-            model: this.identityModel,
-            as: 'identity',
-            attributes: ['accountType'],
-            include: [
-              {
-                model: this.blockchainIdentityAddressModel,
-                as: 'address',
-              },
-            ],
-          },
-        ],
-      });
+      name = userNameOrAddress;
     }
+    const query = `
+      SELECT DISTINCT id.*, bc.address, pr.name, 
+      pr.avatar, pr.cover, pr.userName,
+      pr.website, pr.socials, pr.email, pr.bio, pr.sections,
+      pr.communityLink,
+      IF(fl.id, 1, 0) as isFollowing,
+      IF(fol.count, fol.count, 0) as followers,
+      IF(follower.count, follower.count, 0) as followings
+      FROM Identity id
+      LEFT JOIN BlockchainIdentityAddress bc On bc.identityId = id.id
+      LEFT JOIN Profile pr ON pr.id = id.profileID
+      LEFT JOIN Follower fl On fl.profileId = '${user.profileId}' && fl.targetProfileId = pr.id 
+      LEFT JOIN (
+        SELECT flw.targetProfileId, count(flw.id) as count  from Follower flw
+        GROUP BY flw.targetProfileId
+      ) fol On fol.targetProfileId = pr.id
+      LEFT JOIN (
+        SELECT flw.profileId, count(flw.id) as count  from Follower flw
+        GROUP BY flw.profileId
+      ) follower On follower.profileId = pr.id
+      ${address ? `WHERE bc.address = '${address}'` : `WHERE pr.userName = '${name}'`}
+      GROUP BY id.id
+      `;
 
-    return this.processProfileData(profile, viewerUser);
+    const [data] = await this.identityModel.sequelize.query(query);
+    return {
+      data: data[0],
+    };
   }
 
   async updateById(id: number, params: IProfileModel): Promise<void> {
@@ -343,6 +335,8 @@ export class ProfileService {
 
     profile.dataValues.isPartner = profile.identity.accountType === ACCOUNT_TYPES.PARTNER;
     profile.dataValues.address = profile.identity.address[0].address;
+    profile.dataValues.id = profile.identity.id;
+    profile.dataValues.profileId = profile.id;
     delete profile.dataValues.identity;
 
     profile.dataValues.followersCount = await this.getFollowersCount(profile.id);

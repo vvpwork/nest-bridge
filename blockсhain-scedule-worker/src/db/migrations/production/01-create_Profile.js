@@ -9,7 +9,6 @@ module.exports = {
         id: {
           type: Sequelize.BIGINT,
           autoIncrement: true,
-          allowNull: false,
           primaryKey: true,
         },
         cover: {
@@ -26,6 +25,7 @@ module.exports = {
         },
         userName: {
           type: Sequelize.STRING,
+          unique: true,
           allowNull: true,
         },
         website: {
@@ -37,16 +37,15 @@ module.exports = {
           allowNull: true,
         },
         socials: {
-          type: Sequelize.JSONB,
+          type: Sequelize.JSON,
           allowNull: true,
         },
         sections: {
-          type: Sequelize.JSONB,
+          type: Sequelize.JSON,
           allowNull: false,
         },
         email: {
           type: Sequelize.STRING,
-          after: 'identityId',
           allowNull: true,
         },
         communityLink: {
@@ -66,9 +65,12 @@ module.exports = {
       },
     );
 
-    await queryInterface.addIndex({ tableName: 'Profile', schema: db.schema }, ['userName'], {
-      indexName: 'userName',
-    });
+    // await queryInterface.addIndex({ tableName: 'Profile', schema: db.schema }, ['userName'], {
+    //   indexName: 'userName',
+    // });
+    // await queryInterface.addIndex({ tableName: 'Profile', schema: db.schema }, ['id'], {
+    //   indexName: 'id',
+    // });
   },
 
   down: queryInterface => queryInterface.dropTable({ tableName: 'Profile', schema: db.schema }),

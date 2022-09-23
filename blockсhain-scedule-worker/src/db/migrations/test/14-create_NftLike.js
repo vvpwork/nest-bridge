@@ -12,18 +12,19 @@ module.exports = {
           primaryKey: true,
           autoIncrement: true,
         },
-        identityId: {
+
+        profileId: {
           type: Sequelize.BIGINT,
           allowNull: false,
           references: {
-            model: 'Identity',
+            model: 'Profile',
             key: 'id',
           },
           onDelete: 'CASCADE',
         },
+
         nftId: {
-          type: Sequelize.UUID,
-          defaultValue: Sequelize.UUIDV4,
+          type: Sequelize.STRING,
           allowNull: false,
           references: {
             model: 'Nft',
@@ -47,9 +48,9 @@ module.exports = {
     queryInterface.addConstraint(
       { tableName: 'NftLike', schema: db.schema },
       {
-        fields: ['identityId', 'nftId'],
+        fields: ['profileId', 'nftId'],
         type: 'unique',
-        name: 'constraint_identityId_nftId',
+        name: 'constraint_profileId_nftId',
       },
     );
   },

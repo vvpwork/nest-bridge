@@ -11,7 +11,6 @@ export class CreatePodcastDto {
   public title!: string;
 
   @IsString()
-  @Length(1, 30)
   public source!: string;
 
   @ApiProperty({ type: 'string', format: 'binary' })
