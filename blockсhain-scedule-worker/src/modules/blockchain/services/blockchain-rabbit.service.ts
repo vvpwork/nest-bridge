@@ -15,6 +15,7 @@ import { NftModel } from '@/db/models';
 import { getShortHash } from '@/common/utils/short-hash.utile';
 import { upsertData } from '@/db/utils/helper';
 import { IEventHandleData } from '../interfaces/blockchain-rabbit.interfsce';
+import shortHash from 'shorthash2';
 
 @Injectable()
 export class BlockchainRabbitService {
@@ -167,7 +168,7 @@ export class BlockchainRabbitService {
       nftAddress,
     );
 
-    const [creators, royalties, metadata] = await Promise.all([
+    const [creators, royalties, metadata]: any = await Promise.allSettled([
       collectionContract.methods.getCreators(id).call(),
       collectionContract.methods.getBridgeTowerRoyalties(id).call(),
       await (async () => {
@@ -182,9 +183,9 @@ export class BlockchainRabbitService {
     ]);
 
     return {
-      creators,
-      royalties,
-      metadata,
+      creators: creators.value || [],
+      royalties: royalties.value || [],
+      metadata: metadata.value || {},
     };
   }
 
@@ -244,8 +245,12 @@ export class BlockchainRabbitService {
           // add creators
           const creatorsQuery = upsertData(
             'IdentityNftCreator',
-            ['address', 'nftId'],
-            nfts.map((cr: INftModel) => [`'${cr.creatorIds[0]}','${cr.id}'`]),
+            ['id', 'address', 'nftId'],
+            nfts.map((cr: INftModel) => [
+              `'${getShortHash(cr.creatorIds[0], cr.id)}', '${
+                cr.creatorIds[0]
+              }','${cr.id}'`,
+            ]),
           );
 
           await this.repository.sequelize.query(creatorsQuery, {

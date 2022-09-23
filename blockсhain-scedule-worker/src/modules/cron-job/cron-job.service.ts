@@ -55,7 +55,7 @@ export class CronJobService {
     }
   }
 
-  @Cron('* 5 * * * *')
+
   async consistencyDataCheck() {
     const query = `
     SELECT id FROM Collection 

@@ -6,6 +6,12 @@ module.exports = {
     await queryInterface.createTable(
       { tableName: 'IdentityNftCreator', schema: db.schema },
       {
+        id: {
+          type: Sequelize.UUID,
+          defaultValue: Sequelize.UUIDV4,
+          allowNull: false,
+          primaryKey: true,
+        },
         address: {
           type: Sequelize.STRING,
           references: {
@@ -36,6 +42,14 @@ module.exports = {
           allowNull: false,
           defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
         },
+      },
+    );
+    await queryInterface.addConstraint(
+      { tableName: 'IdentityNftCreator', schema: db.schema },
+      {
+        type: 'UNIQUE',
+        fields: ['address', 'nftId'],
+        name: 'unique_creatorNft',
       },
     );
   },
