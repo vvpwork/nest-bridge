@@ -25,7 +25,6 @@ export class BlockchainRabbitService {
     this.cloudService = new CloudinaryService();
     this.web3Instance = Web3Instance.getInstance();
     this.web3InstanceWSS = Web3Instance.getInstance('wss');
-    this.listenToContractEvent('0x6E5DF75C43F3ea997F1Ab245A8a4C0890A61F477');
   }
 
   async handlerRpcMessage(command: TypeRpcCommand, data: any) {
