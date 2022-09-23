@@ -31,7 +31,7 @@ export class RabbitRootService {
 
     switch (mes.type) {
       case TypeRpcMessage.BLOCKCHAIN:
-        return this.bc.rabbit.handlerMessage(mes.command, mes.data);
+        return this.bc.rabbit.handlerRpcMessage(mes.command, mes.data);
 
       default:
         return 'Type not found';

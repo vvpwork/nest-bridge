@@ -120,7 +120,7 @@ export class NftService {
 
 
         ${creatorId ? `JOIN` : `LEFT JOIN`} (
-          SELECT creator.address, creator.nftId, JSON_ARRAYAGG(
+          SELECT creator.address, id.id as identityId,  creator.nftId, JSON_ARRAYAGG(
             JSON_OBJECT(
               'address', creator.address,
               'identityId', id.id,
@@ -135,7 +135,7 @@ export class NftService {
           JOIN Identity id On id.id = bad.identityId
           JOIN Profile pr On pr.id = id.profileId
           GROUP BY creator.nftId, creator.address
-        ) cr ON cr.nftId = n.id ${creatorId ? `&& JSON_VALUE(cr.creatorsData, '$.identityId') = '${creatorId}'` : ``}
+        ) cr ON cr.nftId = n.id ${creatorId ? `&&  cr.identityId = '${creatorId}'` : ``}
 
         ${status === 'onLocked' ? `JOIN` : `LEFT JOIN`} (
           SELECT lk.identityNftBalanceId,

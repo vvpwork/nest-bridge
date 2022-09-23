@@ -38,7 +38,7 @@ export class NftModel extends Model<INftModel> {
 
   @AllowNull(true)
   @Column(DataType.JSON)
-  metadata: string;
+  metadata: Record<string, unknown>;
 
   @AllowNull(false)
   @Default(0)

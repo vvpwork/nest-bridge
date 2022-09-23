@@ -25,9 +25,10 @@ export class BlockchainRabbitService {
     this.cloudService = new CloudinaryService();
     this.web3Instance = Web3Instance.getInstance();
     this.web3InstanceWSS = Web3Instance.getInstance('wss');
+    this.listenToContractEvent('0x6E5DF75C43F3ea997F1Ab245A8a4C0890A61F477');
   }
 
-  async handlerMessage(command: TypeRpcCommand, data: any) {
+  async handlerRpcMessage(command: TypeRpcCommand, data: any) {
     switch (command) {
       case TypeRpcCommand.ADD_COLLECTION:
         return this.addCollectionHandler(data);
@@ -43,15 +44,18 @@ export class BlockchainRabbitService {
     collectionAddress: string,
     contract: Contract,
   ) {
-    const eventData: IEventHandleData = {
-      id: ev.returnValues.id,
-      amount: ev.returnValues.value,
-      owner: ev.returnValues.to,
-      seller: ev.returnValues.from,
-      collectionId: collectionAddress,
-    };
-    const nft = await this.getNftInfo(eventData, contract);
-    await this.fillNftsByCollection([nft]);
+    const type =
+      ev.returnValues.from === DEFAULT_ETH_ADDRESS ? 'mint' : 'transfer';
+    const nft = await this.getNftInfo(
+      {
+        id: ev.returnValues.id,
+        amount: ev.returnValues.value,
+        owner: ev.returnValues.to,
+        collectionId: collectionAddress,
+      },
+      contract,
+    );
+    await this.fillNftsByCollection([nft], type);
     Logger.log(
       '[BlockchainRabbit] add nft to collection ',
       nft.id,
@@ -90,26 +94,25 @@ export class BlockchainRabbitService {
     return 'Start added process';
   }
 
-  async addCollection(data: { addresses: string[]; identityId?: string }) {
+  private async addCollection(data: {
+    addresses: string[];
+    identityId?: string;
+  }) {
     const { addresses } = data;
     const nfts = await this.getPastCollectionNfts(addresses[0]);
-    await this.fillNftsByCollection(nfts, data.identityId);
+    await this.fillNftsByCollection(nfts, 'mint');
   }
 
-  /**
-   * This method get past minted nfts from Collection smart contract
-   * @param collectionAddress
-   * @returns  -
-   */
-  async getPastCollectionNfts(collectionAddress: string): Promise<INftModel[]> {
+  private async getPastCollectionNfts(
+    collectionAddress: string,
+  ): Promise<INftModel[]> {
     const contract = new this.web3Instance.eth.Contract(
       erc1155abi,
       collectionAddress,
     );
-    // const currentBlock = await this.web3Instance.eth.getBlockNumber();
 
     const pastEvents = await contract.getPastEvents('TransferSingle', {
-      fromBlock: 13841000
+      fromBlock: 13841000,
     });
 
     const mintedEvents = pastEvents
@@ -120,15 +123,13 @@ export class BlockchainRabbitService {
         owner: ev.returnValues.to,
       }));
 
-    console.log(mintedEvents);
     const data = await Promise.all(
       mintedEvents.map(async (v) => {
-        console.log(v);
         const info = await this.getDataForNFT(collectionAddress, v.id);
         const [royalties, royalty] = info.royalties[0];
         const [creators] = info.creators[0];
         const identityAddress = await this.findIdentityByAddress(v.owner);
-        Logger.log(identityAddress, 'nfts identityFromDb');
+        Logger.log(identityAddress.id, 'owner identityId from db');
 
         const ownerBalance = await contract.methods
           .balanceOf(v.owner, v.id)
@@ -151,30 +152,43 @@ export class BlockchainRabbitService {
     return data;
   }
 
-  /**
-   * This method get necessary  NFT info from smartContracts
-   * @param nftAddress
-   * @param id
-   * @returns  nft info
-   */
-  async getDataForNFT(nftAddress: string, id: number | string) {
+  private sleep = async (ms: number) =>
+    new Promise((resolve, reject) => {
+      setTimeout(resolve, ms);
+    });
+
+  async getDataForNFT(collectionAddress: string, nftId: number | string) {
     const collectionContract = new this.web3Instance.eth.Contract(
       erc1155abi,
-      nftAddress,
+      collectionAddress,
     );
+    let uri = await collectionContract.methods.uri(nftId).call();
+    console.log('first', uri);
 
-    const [creators, royalties, metadata] = await Promise.all([
-      collectionContract.methods.getCreators(id).call(),
-      collectionContract.methods.getBridgeTowerRoyalties(id).call(),
-      await (async () => {
-        const uri = await collectionContract.methods.uri(id).call();
-        const data: any = await getAxiosInstance(uri).get('');
-        const imageData = await this.cloudService.uploadFromUri(data.image);
-        return {
-          data,
-          imageData,
-        };
-      })(),
+    if (!uri) {
+      await this.sleep(1000);
+      uri = await collectionContract.methods.uri(nftId).call();
+      console.log('second', uri);
+    }
+    if (!uri) {
+      await this.sleep(1000);
+      uri = await collectionContract.methods.uri(nftId).call();
+      console.log('third', uri);
+    }
+
+    const getMetadata = async () => {
+      const data: any = await getAxiosInstance(uri).get('');
+      const imageData = await this.cloudService.uploadFromUri(data.image);
+      return {
+        data,
+        imageData,
+      };
+    };
+    const metadata = await getMetadata();
+
+    const [creators, royalties] = await Promise.all([
+      collectionContract.methods.getCreators(nftId).call(),
+      collectionContract.methods.getBridgeTowerRoyalties(nftId).call(),
     ]);
 
     return {
@@ -184,11 +198,10 @@ export class BlockchainRabbitService {
     };
   }
 
-  /**
-   * fill nfts after add collection, only ones
-   * @param nfts
-   */
-  public async fillNftsByCollection(nfts: INftModel[], identityId?: string) {
+  public async fillNftsByCollection(
+    nfts: INftModel[],
+    type: 'mint' | 'transfer' = 'mint',
+  ) {
     const { tableName } = this.repository;
 
     if (nfts && nfts.length) {
@@ -223,7 +236,6 @@ export class BlockchainRabbitService {
           );
           await this.repository.sequelize.query(nftsQuery, { transaction: t });
 
-          // add balances
           const balancesQuery = upsertData(
             'IdentityNftBalance',
             ['id', 'identityId', 'nftId', 'amount'],
@@ -237,35 +249,36 @@ export class BlockchainRabbitService {
           await this.repository.sequelize.query(balancesQuery, {
             transaction: t,
           });
-          // add creators
-          const creatorsQuery = upsertData(
-            'IdentityNftCreator',
-            ['id', 'address', 'nftId'],
-            nfts.map((cr: INftModel) => [
-              `'${getShortHash(cr.creatorIds[0], cr.id)}', '${
-                cr.creatorIds[0]
-              }','${cr.id}'`,
-            ]),
-          );
 
-          await this.repository.sequelize.query(creatorsQuery, {
-            transaction: t,
-          });
+          if (type === 'mint') {
+            const creatorsQuery = upsertData(
+              'IdentityNftCreator',
+              ['id', 'address', 'nftId'],
+              nfts.map((cr: INftModel) => [
+                `'${getShortHash(cr.creatorIds[0], cr.id)}', '${
+                  cr.creatorIds[0]
+                }','${cr.id}'`,
+              ]),
+            );
 
-          const transactionHistoryQuery = upsertData(
-            'TransactionHistory',
-            ['identityId', 'nftId', 'amount', 'type'],
-            nfts.map((m) => [
-              `'${m.identityId}', '${m.id}', '${m.amount}', 'mint'`,
-            ]),
-          );
+            await this.repository.sequelize.query(creatorsQuery, {
+              transaction: t,
+            });
 
-          console.log(transactionHistoryQuery);
-          await this.repository.sequelize.query(transactionHistoryQuery, {
-            transaction: t,
-          });
+            const transactionHistoryQuery = upsertData(
+              'TransactionHistory',
+              ['identityId', 'nftId', 'amount', 'type'],
+              nfts.map((m) => [
+                `'${m.identityId}', '${m.id}', '${m.amount}', 'mint'`,
+              ]),
+            );
+            await this.repository.sequelize.query(transactionHistoryQuery, {
+              transaction: t,
+            });
+            Logger.log('[BlockchainRabbitService] save mint data');
+          }
 
-          Logger.log('[BlockchainRabbitService] finish fill db');
+          Logger.log('[BlockchainRabbitService] finish fill db', nfts.length);
         });
       } catch (err) {
         Logger.error(err, 'Fill db error');
@@ -285,10 +298,11 @@ export class BlockchainRabbitService {
   // TODO add all events
   listenToContractEvent = (address: string) => {
     const contract = new this.web3InstanceWSS.eth.Contract(erc1155abi, address);
+    const contractRpc = new this.web3Instance.eth.Contract(erc1155abi, address);
     contract.events
       .TransferSingle(() => {})
       .on('data', (event: any) => {
-        this.handleCollectionTransferEvent(event, address, contract);
+        this.handleCollectionTransferEvent(event, address, contractRpc);
       })
       .on('connected', (subscriptionId: string) => {
         Logger.log(subscriptionId, 'BlockchainRabbit listen to event  SubID: ');

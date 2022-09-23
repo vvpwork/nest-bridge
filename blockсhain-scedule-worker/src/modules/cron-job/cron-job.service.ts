@@ -55,7 +55,6 @@ export class CronJobService {
     }
   }
 
-
   async consistencyDataCheck() {
     const query = `
     SELECT id FROM Collection 
@@ -76,9 +75,6 @@ export class CronJobService {
       const addresses = collectionToSearched.map((v: { id: string }) => v.id);
       Logger.log('[Cron service] start to get past event', addresses);
 
-      await this.bcService.rabbit.addCollection({
-        addresses,
-      });
       Logger.log('[Cron service] finish to get past event');
     }
   }

@@ -48,7 +48,7 @@ export class IdentityModel extends Model<IIdentityModel> {
 
   @ForeignKey(() => ProfileModel)
   @Column(DataType.BIGINT)
-  profileId: ProfileModel;
+  profileId: number;
 
   @Column(DataType.STRING)
   securitizeId: string;

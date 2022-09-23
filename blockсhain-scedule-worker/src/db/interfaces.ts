@@ -1,4 +1,10 @@
-import { ACCOUNT_TYPES, BALANCE_STATUSES, NOTIFICATION_TYPES, PROFILE_SECTIONS, PROFILE_STATUS } from './enums';
+import {
+  ACCOUNT_TYPES,
+  BALANCE_STATUSES,
+  NOTIFICATION_TYPES,
+  PROFILE_SECTIONS,
+  PROFILE_STATUS,
+} from './enums';
 import { MetadataObject, ProfileSocials } from './types';
 
 export interface IProfileModel {
@@ -61,10 +67,10 @@ export interface INftModel {
   collectionId: string;
   thumbnail: string;
   amount: number;
-  // only after get blockchain
-  identityId?: string;
+  // ** only after get blockchain
   ownerBalance?: number;
-  // ****
+  identityId?: string;
+  // *****
   metadata: MetadataObject;
   creatorIds: string[];
   royaltyIds: string[];

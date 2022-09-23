@@ -108,6 +108,7 @@ Next can be fount the list of all env variables.
 | SECURITIZE_REGISTRY_PROXY_ADDRESS | True | proxy address |  0xD32F4F0d7aB4A4D88831c05d402c4a1AF4b698F3
 |                              `**** Blockchain`
 | NODE_URL                     | True        | base node url                             | <https://nd-927-860-543.p2pify.com/c808ffb978332ba7e99704f6c41a22bf/ext/bc/C/rpc>
+| NODE_URL_WSS                   | True        | base node url                           | <WSS://nd-927-860-543.p2pify.com/c808ffb978332ba7e99704f6c41a22bf/ext/bc/C/ws>
 | ARTEMUNDI_WALLET_ADDRESS     | True        | address artemund                          | i0x423cbE3E6479E86dfb816915c5BF57060e48C5A7
 | WALLET_SECRET_KEY            | True        | secret for defaul                         | wallet5ce0b20427fe6a03e218c053bb123a213229e8b48e96b208d1be86d3b8173fdd
 | ERC1155_BRIDGE_TOWER_FACTORY_C2_ADDRESS | True      | root factory                     | 0xb53270e658FF1a6EDD4fC205A871E53f016d1b8D
@@ -120,4 +121,4 @@ Next can be fount the list of all env variables.
 |                               `**** Cloudinary`
 | CLOUD_NAME                   | True        | name cloudinary                           | bridgetowercapital
 | CLOUD_API_KEY                | True        | api key                                   | 981927427522746
-|CLOUD_API_SECRET              | True        | secret                                    | _t7QbeziDGD5ib4b7AYhPmX7J0Y
+| CLOUD_API_SECRET              | True        | secret                                    | _t7QbeziDGD5ib4b7AYhPmX7J0Y
