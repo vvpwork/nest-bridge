@@ -1,12 +1,10 @@
 /* eslint-disable @typescript-eslint/typedef */
 /* eslint-disable import/no-extraneous-dependencies */
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import HDWalletProvider from '@truffle/hdwallet-provider';
 import Web3 from 'web3';
-import { Contract } from 'web3-eth-contract';
 
 import { config } from '@/common/config';
-import { securitizeRegistryAbi } from './abis/securitizeRegistry';
 import { erc1155abi } from './abis/erc1155bridgeTowerProxy';
 import { getAxiosInstance } from '@/common/utils';
 import { CloudinaryService } from '@/common/services/cloudinary.service';
@@ -49,8 +47,9 @@ export class BlockchainService {
    */
   async getPastCollectionNfts(collectionAddress: string): Promise<INftModel[]> {
     const contract = new this.web3Instance.eth.Contract(erc1155abi, collectionAddress);
+    const currentBlock = await this.web3Instance.eth.getBlockNumber();
     const pastEvents = await contract.getPastEvents('TransferSingle', {
-      fromBlock: 10041528,
+      fromBlock: currentBlock - 2000,
     });
 
     const mintedEvents = pastEvents

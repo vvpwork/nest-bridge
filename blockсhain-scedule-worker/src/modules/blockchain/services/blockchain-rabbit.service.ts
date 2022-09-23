@@ -1,7 +1,10 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable no-empty-function */
 /* eslint-disable @typescript-eslint/typedef */
 import Web3 from 'web3';
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
+import { Contract } from 'web3-eth-contract';
 import { erc1155abi } from '../abis/erc1155bridgeTowerProxy';
 import { DEFAULT_ETH_ADDRESS } from '@/common/constants';
 import { CloudinaryService } from '@/common/services/cloudinary.service';
@@ -11,21 +14,25 @@ import { TypeRpcCommand } from '../../rabbit/interfaces/enums';
 import { NftModel } from '@/db/models';
 import { getShortHash } from '@/common/utils/short-hash.utile';
 import { upsertData } from '@/db/utils/helper';
+import { IEventHandleData } from '../interfaces/blockchain-rabbit.interfsce';
 
 @Injectable()
 export class BlockchainRabbitService {
   private readonly web3Instance: Web3;
+  private readonly web3InstanceWSS: Web3;
   private cloudService: CloudinaryService;
   constructor(@InjectModel(NftModel) private repository: typeof NftModel) {
     this.cloudService = new CloudinaryService();
     this.web3Instance = Web3Instance.getInstance();
+    this.web3InstanceWSS = Web3Instance.getInstance('wss');
+    this.listenToContractEvent('0x026DD3e8a7720D90c45f7415ab4BC42BE7f41743');
   }
 
   async handlerMessage(command: TypeRpcCommand, data: any) {
     switch (command) {
       case TypeRpcCommand.ADD_COLLECTION:
         return (async () => {
-          this.addCollection(data);
+          await this.addCollection(data);
           return 'run process to get NFT';
         })();
       // return 'ADD_COLLECTION';
@@ -36,11 +43,64 @@ export class BlockchainRabbitService {
     }
   }
 
+  private async handleCollectionTransferEvent(
+    ev: { returnValues: { [key: string]: any } },
+    collectionAddress: string,
+    contract: Contract,
+  ) {
+    const eventData: IEventHandleData = {
+      id: ev.returnValues.id,
+      amount: ev.returnValues.value,
+      owner: ev.returnValues.to,
+      seller: ev.returnValues.from,
+      collectionId: collectionAddress,
+    };
+    const nft = await this.getNftInfo(eventData, contract);
+    await this.fillNftsByCollection([nft]);
+    Logger.log(
+      '[BlockchainRabbit] add nft to collection ',
+      nft.id,
+      nft.collectionId,
+      nft.owner,
+    );
+  }
+
+  async getNftInfo(data: IEventHandleData, contract: Contract) {
+    const info = await this.getDataForNFT(data.collectionId, data.id);
+    const [royalties, royalty] = info.royalties[0];
+    const [creators] = info.creators[0];
+    const identityAddress = await this.findIdentityByAddress(data.owner);
+    Logger.log(identityAddress, 'nfts identityFromDb');
+
+    const ownerBalance = await contract.methods
+      .balanceOf(data.owner, data.id)
+      .call();
+
+    return {
+      ...data,
+      identityId: identityAddress.identityId,
+      ownerBalance,
+      thumbnail: info.metadata.imageData.thumbnail,
+      metadata: info.metadata.data,
+      totalSupply: 0,
+      royalty,
+      royaltyIds: [royalties],
+      creatorIds: [creators],
+    };
+  }
+
   async addCollection(data: { addresses: string[]; identityId?: string }) {
     await Promise.allSettled(
       data.addresses.map(async (address: string) => {
-        const nfts = await this.getPastCollectionNfts(address);
-        await this.fillNftsByCollection(nfts, data.identityId);
+        try {
+          console.log(address);
+          const nfts = await this.getPastCollectionNfts(address);
+          await this.fillNftsByCollection(nfts, data.identityId);
+          console.log('finish');
+          // this.listenToContractEvent(address);
+        } catch (err) {
+          console.log(err);
+        }
       }),
     );
     return 'Added';
@@ -56,8 +116,9 @@ export class BlockchainRabbitService {
       erc1155abi,
       collectionAddress,
     );
+    const currentBlock = await this.web3Instance.eth.getBlockNumber();
     const pastEvents = await contract.getPastEvents('TransferSingle', {
-      fromBlock: 10041528,
+      fromBlock: currentBlock - 2000,
     });
 
     const mintedEvents = pastEvents
@@ -102,7 +163,7 @@ export class BlockchainRabbitService {
    * @param id
    * @returns  nft info
    */
-  async getDataForNFT(nftAddress: string, id: number) {
+  async getDataForNFT(nftAddress: string, id: number | string) {
     const collectionContract = new this.web3Instance.eth.Contract(
       erc1155abi,
       nftAddress,
@@ -222,4 +283,21 @@ export class BlockchainRabbitService {
     const [data] = await this.repository.sequelize.query(query);
     return data[0] as IBlockchainIdentityAddress;
   }
+
+  // TODO add all events
+  listenToContractEvent = (address: string) => {
+    const contract = new this.web3InstanceWSS.eth.Contract(erc1155abi, address);
+    contract.events
+      .TransferSingle(() => {})
+      .on('data', (event: any) => {
+        this.handleCollectionTransferEvent(event, address, contract);
+      })
+      .on('connected', (subscriptionId: string) => {
+        Logger.log(subscriptionId, 'BlockchainRabbit listen to event  SubID: ');
+      })
+      .on('error', (error: Error, receipt: string) => {
+        Logger.error(error, receipt, 'BlockchainRabbit Error:');
+      });
+    Logger.log(address, 'Blockchain added collection listener');
+  };
 }
