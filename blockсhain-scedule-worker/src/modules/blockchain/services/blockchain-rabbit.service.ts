@@ -25,14 +25,13 @@ export class BlockchainRabbitService {
     this.cloudService = new CloudinaryService();
     this.web3Instance = Web3Instance.getInstance();
     this.web3InstanceWSS = Web3Instance.getInstance('wss');
-    this.listenToContractEvent('0x026DD3e8a7720D90c45f7415ab4BC42BE7f41743');
   }
 
   async handlerMessage(command: TypeRpcCommand, data: any) {
     switch (command) {
       case TypeRpcCommand.ADD_COLLECTION:
         return (async () => {
-          await this.addCollection(data);
+          this.addCollection(data);
           return 'run process to get NFT';
         })();
       // return 'ADD_COLLECTION';
@@ -96,8 +95,7 @@ export class BlockchainRabbitService {
           console.log(address);
           const nfts = await this.getPastCollectionNfts(address);
           await this.fillNftsByCollection(nfts, data.identityId);
-          console.log('finish');
-          // this.listenToContractEvent(address);
+          this.listenToContractEvent(address);
         } catch (err) {
           console.log(err);
         }
