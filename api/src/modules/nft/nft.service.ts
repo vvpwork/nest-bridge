@@ -474,8 +474,10 @@ export class NftService {
       balances.forEach((balance: IdentityNftBalanceModel) => {
         if (totalValue[balance.nft.collection.blockchain.name]?.amount) {
           totalValue[balance.nft.collection.blockchain.name].amount += balance.amount;
-        } else {
+        } else if (totalValue[balance.nft.collection.blockchain.name]) {
           totalValue[balance.nft.collection.blockchain.name].amount = balance.amount;
+        } else {
+          totalValue[balance.nft.collection.blockchain.name] = { amount: balance.amount };
         }
         if (balance?.orders.length) {
           balance.orders.forEach((order: OrdersModel) => {
