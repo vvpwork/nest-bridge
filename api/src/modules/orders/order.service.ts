@@ -47,7 +47,6 @@ export class OrderService {
 
     const currencyFromDb = await this.currencyModel.findOne({ where: { symbol: currency.toUpperCase() } });
     if (!currencyFromDb) throw new HttpException('Currency is not available', 404);
-
     const order = (
       await this.orderModel.create({
         nftIdentityBalanceId: balanceId,
