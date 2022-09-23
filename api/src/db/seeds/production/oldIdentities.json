@@ -38,10 +38,10 @@
   {
     "id": "de4cab06-964e-4d37-a17b-cf799cdcf32f",
     "securitizeId": "62b309e5db759500127a9cc1",
-    "accountType": "user",
+    "accountType": "partner",
     "createdAt": "2022-08-12 11:59:17",
     "updatedAt": "2022-09-12 07:43:23",
     "profileId": 5,
-    "status": "in_progress"
+    "status": "verified"
   }
 ]
