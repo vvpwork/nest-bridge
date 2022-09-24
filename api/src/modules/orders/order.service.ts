@@ -30,6 +30,7 @@ export class OrderService {
     @InjectModel(IdentityNftBalanceLock) private lockModel: typeof IdentityNftBalanceLock,
     @InjectModel(CurrenciesModel) private currencyModel: typeof CurrenciesModel,
     @InjectModel(IdentityModel) private identityModel: typeof IdentityModel,
+    @InjectModel(NftModel) private nftModel: typeof NftModel,
 
     private bcService: BlockchainService,
     private historyService: TransactionHistoryService,
@@ -67,12 +68,20 @@ export class OrderService {
       data: { metadata, signature },
     });
 
+    const nft = await this.nftModel.findOne({
+      where: {
+        id: nftId,
+      },
+    });
+
+    // TODO check show to followers
     await this.notificationService.addNotification(user.profileId, NOTIFICATION_TYPES.FOLLOWING_PERSON_LISTS_NFT, {
       name: user.userName,
       id: user.id,
       amount,
       price,
       nftId,
+      thumbnail: nft.toJSON().thumbnail,
     });
 
     // remove private info

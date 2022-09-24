@@ -6,6 +6,7 @@ import {
   IdentityModel,
   IdentityNftBalanceLock,
   IdentityNftBalanceModel,
+  NftModel,
   OrdersModel,
 } from '@/db/models';
 import { OrderService } from './order.service';
@@ -20,6 +21,7 @@ import { NotificationModule } from '../notification';
       IdentityNftBalanceLock,
       CurrenciesModel,
       IdentityModel,
+      NftModel,
     ]),
     BlockchainModule,
     NotificationModule,
