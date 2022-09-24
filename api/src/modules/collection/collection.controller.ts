@@ -110,8 +110,6 @@ export class CollectionController {
       identityId: user.data.id,
     });
 
-    console.log(resFromWorker);
-
     return res.status(201).send({
       data: result,
     });

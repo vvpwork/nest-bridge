@@ -58,6 +58,7 @@ export class NftService {
   ) {}
 
   async getAll(searchData?: INftQueryDto, profileId?: number) {
+    console.log(searchData);
     try {
       const { limit, offset, identityId, creatorId, collectionId, status, sortType, sortValue, nftId, search } =
         searchData;

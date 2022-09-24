@@ -157,6 +157,7 @@ export class AuthService {
   }
 
   async getUserFromReqHeaders(req: Request | any) {
+    req.user = { data: {} };
     if (!req.headers.authorization || (req.headers.authorization && !req.headers.authorization.includes('Bearer')))
       return null;
 
