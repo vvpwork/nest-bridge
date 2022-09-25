@@ -27,14 +27,29 @@ export interface IRabbitRPCRequest {
   removeAllListeners(): void;
 }
 
+/**
+ * This class provide public wrapper under RabbitMQ basic manipulations
+
+ * @class
+ * @param {string}  rpc_exchange - name for the  exchange  to create rpc to another service
+ * @param {string}  name_exchange - name  for the exchange to get messages from  rpc call
+ */
 export interface IRabbitService {
-  requestSequence: Map<string | null, { complete: (msg: string) => void }>;
   run(): void;
-  getMessageProcessingResult(
-    message: any,
-    priority?: number,
-  ): Promise<string | null>;
+
+  /**
+   * This function processes message from rabbitmq and return result that sand to the replyTo queue
+   * You should add your logic before call init
+   * @param msg - message from rabbitmq
+   * @returns - promise
+   */
   handlerMessageFromRPC(msg: string): Promise<any>;
+  /**
+   *  Use this method to publish message to custom exchange
+   * @param message
+   * @param exchange
+   * @param priority
+   */
   publishMessage(message: any, exchange: string, priority: number): void;
 }
 
@@ -47,4 +62,9 @@ export interface IMessageRabbit {
   command: TypeRpcCommand;
   // TODO add generic type
   data: { [key: string]: any };
+}
+
+export interface IRabbitRootService {
+  init(): Promise<void>;
+  publish(message: any): void;
 }

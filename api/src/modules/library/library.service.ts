@@ -33,7 +33,11 @@ export class LibraryService {
     return newLibraryRecord;
   }
 
-  async update(libraryId: string, params: ILibraryModel, userName: string): Promise<{ success: true }> {
+  async update(
+    libraryId: string,
+    params: ILibraryModel,
+    userName: string,
+  ): Promise<{ success: true }> {
     await this.libraryModel.update(params, { where: { id: libraryId } });
 
     const libraryRecord = await this.libraryModel.findByPk(libraryId);
@@ -72,10 +76,11 @@ export class LibraryService {
 
     await libraryRecord.destroy();
 
-    const allNotificationIds: number[] = await this.notificationService.getAllNotificationIdsByTypeAndParams(
-      { id: libraryId },
-      NOTIFICATION_TYPES.FOLLOWING_PERSON_ADDED_LIBRARY,
-    );
+    const allNotificationIds: number[] =
+      await this.notificationService.getAllNotificationIdsByTypeAndParams(
+        { id: libraryId },
+        NOTIFICATION_TYPES.FOLLOWING_PERSON_ADDED_LIBRARY,
+      );
 
     if (allNotificationIds.length) {
       await this.notificationModel.destroy({ where: { id: allNotificationIds } });

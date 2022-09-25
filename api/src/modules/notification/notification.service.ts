@@ -12,7 +12,11 @@ export class NotificationService {
     private notificationModel: typeof NotificationModel,
   ) {}
 
-  async addNotification(profileId: number, type: NOTIFICATION_TYPES, params: Record<string, unknown>) {
+  async addNotification(
+    profileId: number,
+    type: NOTIFICATION_TYPES,
+    params: Record<string, unknown>,
+  ) {
     return this.notificationModel.create({ profileId, type, params });
   }
 
@@ -33,7 +37,9 @@ export class NotificationService {
 
   // check if user currently have unread notifications
   async doesHaveUnreadNotifications(profileId: number): Promise<boolean> {
-    const unreadNotificationsCount = await this.notificationModel.count({ where: { profileId, isRead: false } });
+    const unreadNotificationsCount = await this.notificationModel.count({
+      where: { profileId, isRead: false },
+    });
 
     return unreadNotificationsCount > 0;
   }

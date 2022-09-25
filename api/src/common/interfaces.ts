@@ -39,6 +39,7 @@ export interface IConfig {
   };
   blockChain: {
     nodeUrl: string;
+    nodeUrlWss: string;
     exchangeV2Proxy: string;
     artemundiWallet: string;
     transferProxy: string;

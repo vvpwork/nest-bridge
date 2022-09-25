@@ -3,11 +3,12 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { TransactionHistoryService } from './transaction-history.service';
 import { TransactionHistoryModel } from '@/db/models';
 import { TransactionHistoryController } from './transaction-history.controller';
+import { BlockchainModule } from '../blockchain';
 
 @Global()
 @Module({
   controllers: [TransactionHistoryController],
-  imports: [SequelizeModule.forFeature([TransactionHistoryModel])],
+  imports: [SequelizeModule.forFeature([TransactionHistoryModel]), BlockchainModule],
   providers: [TransactionHistoryService],
   exports: [TransactionHistoryService],
 })

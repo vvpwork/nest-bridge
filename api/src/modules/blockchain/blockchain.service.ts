@@ -1,8 +1,11 @@
+/* eslint-disable security/detect-object-injection */
+/* eslint-disable semi */
 /* eslint-disable @typescript-eslint/typedef */
 /* eslint-disable import/no-extraneous-dependencies */
 import { Injectable } from '@nestjs/common';
 import HDWalletProvider from '@truffle/hdwallet-provider';
 import Web3 from 'web3';
+import EthDater from 'ethereum-block-by-date';
 
 import { config } from '@/common/config';
 import { erc1155abi } from './abis/erc1155bridgeTowerProxy';
@@ -10,6 +13,8 @@ import { getAxiosInstance } from '@/common/utils';
 import { CloudinaryService } from '@/common/services/cloudinary.service';
 import { DEFAULT_ETH_ADDRESS } from '@/common/constants';
 import { INftModel } from '@/db/interfaces';
+import { Web3Instance } from '@/common/utils/getWeb3Instance.util';
+import { abiErc20 } from './abis/erc-20-abi';
 
 const { secretKey, nodeUrl, erc1155proxyC2 } = config.blockChain;
 @Injectable()
@@ -18,15 +23,14 @@ export class BlockchainService {
   private cloudService: CloudinaryService;
   constructor() {
     this.cloudService = new CloudinaryService();
-    this.connect();
-  }
-
-  connect() {
-    this.web3Instance = new Web3(new HDWalletProvider(secretKey, nodeUrl));
+    this.web3Instance = Web3Instance.getInstance('http');
   }
 
   async isWalletWhitelistedOnSecuritize(address: string): Promise<boolean> {
-    const contract = new this.web3Instance.eth.Contract(erc1155abi, config.blockChain.erc1155proxyC2);
+    const contract = new this.web3Instance.eth.Contract(
+      erc1155abi,
+      config.blockChain.erc1155proxyC2,
+    );
     return contract.methods.isPartner(address).call();
   }
 
@@ -115,5 +119,25 @@ export class BlockchainService {
 
   isEthAddress(address: string) {
     return Web3.utils.isAddress(address);
+  }
+
+  async getBlockByPeriod(
+    address: string,
+    options: { startDate: Date | string; endDate: Date | string },
+  ) {
+    const dater = new EthDater(this.web3Instance as any);
+
+    const data = await dater.getEvery('days', options.startDate, options.endDate);
+
+    const result = await Promise.all(
+      data.map(async v => {
+        const balance = await this.web3Instance.eth.getBalance(address, v.block);
+        return {
+          ...v,
+          balance,
+        };
+      }),
+    );
+    return result;
   }
 }

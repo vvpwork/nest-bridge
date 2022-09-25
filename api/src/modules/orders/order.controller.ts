@@ -13,7 +13,10 @@ import { IDeleteOrderParam, IDeleteOrderQuery } from './dtos/delete-order.dto';
 @ApiTags('Orders')
 @Controller()
 export class OrderController {
-  constructor(private orderService: OrderService, private historyService: TransactionHistoryService) {}
+  constructor(
+    private orderService: OrderService,
+    private historyService: TransactionHistoryService,
+  ) {}
 
   @ApiResponse({
     status: 200,
@@ -79,7 +82,10 @@ export class OrderController {
     @Param() param: IDeleteOrderParam,
     @Query() query: IDeleteOrderQuery,
   ) {
-    const result = await this.orderService.delete(param.id, { txHash: query.txHash, user: user.data });
+    const result = await this.orderService.delete(param.id, {
+      txHash: query.txHash,
+      user: user.data,
+    });
     return res.status(204).send({
       ...result,
     });

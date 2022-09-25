@@ -4,7 +4,13 @@
 import { HttpException, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { ApiTags } from '@nestjs/swagger';
-import { BlockchainIdentityAddressModel, CollectionModel, IdentityModel, NftModel, ProfileModel } from '@/db/models';
+import {
+  BlockchainIdentityAddressModel,
+  CollectionModel,
+  IdentityModel,
+  NftModel,
+  ProfileModel,
+} from '@/db/models';
 import { ICollectionModel } from '@/db/interfaces';
 import { ICollectionQueryDto } from './dtos';
 import { BlockchainService } from '../blockchain/blockchain.service';

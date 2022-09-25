@@ -71,7 +71,11 @@ export class NftController {
     description: 'Get libraries list',
     type: IProfileLibrariesResponseDto,
   })
-  async getLibraries(@Param('id') id: number, @Query() query: PaginationQueryDto, @Res() res: Response) {
+  async getLibraries(
+    @Param('id') id: number,
+    @Query() query: PaginationQueryDto,
+    @Res() res: Response,
+  ) {
     return res.status(200).send({
       data: await this.nftService.getNftInfo('libraries', query),
     });
@@ -84,7 +88,11 @@ export class NftController {
     description: 'Get podcasts list',
     type: IProfilePodcastResponseDto,
   })
-  async getPodcasts(@Param('id') id: number, @Query() query: PaginationQueryDto, @Res() res: Response) {
+  async getPodcasts(
+    @Param('id') id: number,
+    @Query() query: PaginationQueryDto,
+    @Res() res: Response,
+  ) {
     return res.status(200).send({
       data: await this.nftService.getNftInfo('podcast', query),
     });
@@ -115,7 +123,11 @@ export class NftController {
     description: 'Get marketplace community link',
     type: ICommunityLinkResponseDto,
   })
-  async getCommunityLink(@Param('id') id: number, @Query() query: PaginationQueryDto, @Res() res: Response) {
+  async getCommunityLink(
+    @Param('id') id: number,
+    @Query() query: PaginationQueryDto,
+    @Res() res: Response,
+  ) {
     return res.status(200).send({
       data: await this.nftService.getCommunityLinkForMarketplace(),
     });

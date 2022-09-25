@@ -74,10 +74,11 @@ export class NewsService {
 
     await newsRecord.destroy();
 
-    const allNotificationIds: number[] = await this.notificationService.getAllNotificationIdsByTypeAndParams(
-      { id: libraryId },
-      NOTIFICATION_TYPES.FOLLOWING_PERSON_ADDED_NEWS,
-    );
+    const allNotificationIds: number[] =
+      await this.notificationService.getAllNotificationIdsByTypeAndParams(
+        { id: libraryId },
+        NOTIFICATION_TYPES.FOLLOWING_PERSON_ADDED_NEWS,
+      );
 
     if (allNotificationIds.length) {
       await this.notificationModel.destroy({ where: { id: allNotificationIds } });
@@ -110,7 +111,10 @@ export class NewsService {
   }
 
   async unLikeById(newsId: string, profileId: number): Promise<void> {
-    const likeRecord = await this.newsLikeModel.findOne({ where: { newsId, profileId }, attributes: ['id'] });
+    const likeRecord = await this.newsLikeModel.findOne({
+      where: { newsId, profileId },
+      attributes: ['id'],
+    });
 
     if (!likeRecord) {
       throw new HttpException('NOT_LIKED_YET', HttpStatus.BAD_REQUEST);

@@ -5,7 +5,9 @@ import { countHelper } from '@/common/utils';
 
 @Injectable()
 export class CreatorsService {
-  constructor(@InjectModel(IdentityNftCreatorModel) private creator: typeof IdentityNftCreatorModel) {}
+  constructor(
+    @InjectModel(IdentityNftCreatorModel) private creator: typeof IdentityNftCreatorModel,
+  ) {}
 
   async findAll(data: any) {
     const { limit, offset, search } = data;

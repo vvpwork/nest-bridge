@@ -74,10 +74,11 @@ export class PodcastService {
 
     await podcastRecord.destroy();
 
-    const allNotificationIds: number[] = await this.notificationService.getAllNotificationIdsByTypeAndParams(
-      { id: podcastId },
-      NOTIFICATION_TYPES.FOLLOWING_PERSON_ADDED_PODCAST,
-    );
+    const allNotificationIds: number[] =
+      await this.notificationService.getAllNotificationIdsByTypeAndParams(
+        { id: podcastId },
+        NOTIFICATION_TYPES.FOLLOWING_PERSON_ADDED_PODCAST,
+      );
 
     if (allNotificationIds.length) {
       await this.notificationModel.destroy({ where: { id: allNotificationIds } });

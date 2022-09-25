@@ -42,11 +42,16 @@ export class OrderService {
     Logger.log(data, '[Order Service] data to create data');
     const { identityId, nftId, amount, signature, metadata, price, currency } = data;
 
-    const { availableBalance, balanceId } = await this.getAvailableBalance({ identityId, nftId }, user);
+    const { availableBalance, balanceId } = await this.getAvailableBalance(
+      { identityId, nftId },
+      user,
+    );
 
     if (data.amount > availableBalance) throw new HttpException('Do not have enough balance ', 404);
 
-    const currencyFromDb = await this.currencyModel.findOne({ where: { symbol: currency.toUpperCase() } });
+    const currencyFromDb = await this.currencyModel.findOne({
+      where: { symbol: currency.toUpperCase() },
+    });
     if (!currencyFromDb) throw new HttpException('Currency is not available', 404);
     const order = (
       await this.orderModel.create({
@@ -75,14 +80,18 @@ export class OrderService {
     });
 
     // TODO check show to followers
-    await this.notificationService.addNotification(user.profileId, NOTIFICATION_TYPES.FOLLOWING_PERSON_LISTS_NFT, {
-      name: user.userName,
-      id: user.id,
-      amount,
-      price,
-      nftId,
-      thumbnail: nft.toJSON().thumbnail,
-    });
+    await this.notificationService.addNotification(
+      user.profileId,
+      NOTIFICATION_TYPES.FOLLOWING_PERSON_LISTS_NFT,
+      {
+        name: user.userName,
+        id: user.id,
+        amount,
+        price,
+        nftId,
+        thumbnail: nft.toJSON().thumbnail,
+      },
+    );
 
     // remove private info
     delete order.nftIdentityBalanceId;
@@ -159,7 +168,12 @@ export class OrderService {
       where: {
         id: orderId,
       },
-      include: [{ model: IdentityNftBalanceModel, include: [{ model: NftModel }, { model: IdentityModel }] }],
+      include: [
+        {
+          model: IdentityNftBalanceModel,
+          include: [{ model: NftModel }, { model: IdentityModel }],
+        },
+      ],
     });
     if (!order) throw new HttpException('Order was not found', 404);
     if (data.buyAmount > order.amount) throw new HttpException('Invalid balance', 400);
@@ -227,7 +241,8 @@ export class OrderService {
         thumbnail: nft.thumbnail,
         name: nft.metadata.name,
         image: nft.metadata.image,
-        price: data.buyAmount > 1 ? Bn.multiplyBy(order.price, data.buyAmount).toString() : order.price,
+        price:
+          data.buyAmount > 1 ? Bn.multiplyBy(order.price, data.buyAmount).toString() : order.price,
       },
     );
 
@@ -244,7 +259,10 @@ export class OrderService {
           name: nft.metadata.name,
           thumbnail: nft.thumbnail,
           image: nft.metadata.image,
-          royalty: Bn.multiplyBy(Bn.multiplyBy(order.price, data.buyAmount), nft.royalty).toString(),
+          royalty: Bn.multiplyBy(
+            Bn.multiplyBy(order.price, data.buyAmount),
+            nft.royalty,
+          ).toString(),
         }),
       ),
     );
@@ -272,7 +290,10 @@ export class OrderService {
     };
   }
 
-  private async getAvailableBalance(where: Partial<IIdentityBalanceModel>, user?: IUserInterface['data']) {
+  private async getAvailableBalance(
+    where: Partial<IIdentityBalanceModel>,
+    user?: IUserInterface['data'],
+  ) {
     let availableBalance = 0;
     const balance = await this.balanceModel.findOne({
       where,
@@ -315,6 +336,11 @@ export class OrderService {
     if (lockedBalance) {
       availableBalance -= lockedBalance.amount;
     }
-    return { availableBalance, balanceId: balance.id, identityId: balance.toJSON().identityId, nftId: balance.nftId };
+    return {
+      availableBalance,
+      balanceId: balance.id,
+      identityId: balance.toJSON().identityId,
+      nftId: balance.nftId,
+    };
   }
 }

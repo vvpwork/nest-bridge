@@ -4,7 +4,10 @@ import { User } from '@Common/decorators';
 import { PaginationQueryDto } from '@Common/dto';
 import { IUserInterface } from '@Common/interfaces';
 import { Response } from 'express';
-import { IHaveUnreadNotificationsResponseDto, INotificationListResponseDto } from '@Modules/notification/dtos';
+import {
+  IHaveUnreadNotificationsResponseDto,
+  INotificationListResponseDto,
+} from '@Modules/notification/dtos';
 import { NotificationService } from './notification.service';
 
 @ApiTags('Notifications')
@@ -18,9 +21,17 @@ export class NotificationController {
     description: 'Get all notifications for authorized user',
     type: INotificationListResponseDto,
   })
-  async getList(@User() user: IUserInterface, @Query() query: PaginationQueryDto, @Res() res: Response) {
+  async getList(
+    @User() user: IUserInterface,
+    @Query() query: PaginationQueryDto,
+    @Res() res: Response,
+  ) {
     return res.status(200).send({
-      data: await this.notificationService.getUserNotifications(user.data.profileId, query.limit, query.offset),
+      data: await this.notificationService.getUserNotifications(
+        user.data.profileId,
+        query.limit,
+        query.offset,
+      ),
     });
   }
 

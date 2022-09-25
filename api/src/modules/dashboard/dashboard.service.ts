@@ -1,7 +1,12 @@
 /* eslint-disable dot-notation */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { AssetsType, Blockchains, IDashboardStatsQueryDto, IPortfolioQueryDto } from '@Modules/dashboard/dtos';
+import {
+  AssetsType,
+  Blockchains,
+  IDashboardStatsQueryDto,
+  IPortfolioQueryDto,
+} from '@Modules/dashboard/dtos';
 import { IUserInterface } from '@Common/interfaces';
 import { paginate } from '@Common/utils';
 import { Sequelize } from 'sequelize-typescript';
@@ -10,7 +15,9 @@ import { BlockchainIdentityAddressModel, TransactionHistoryModel } from '@/db/mo
 
 @Injectable()
 export class DashboardService {
-  constructor(@InjectModel(TransactionHistoryModel) private historyModel: typeof TransactionHistoryModel) {}
+  constructor(
+    @InjectModel(TransactionHistoryModel) private historyModel: typeof TransactionHistoryModel,
+  ) {}
 
   async getPortfolio(user: IUserInterface['data'], query: IPortfolioQueryDto) {
     const { limit, offset, blockchain, asset } = query;
@@ -77,7 +84,11 @@ export class DashboardService {
     const newOptions = options;
     switch (assetType) {
       case 'staked': {
-        newOptions.where = { ...newOptions.where, type: [HISTORY_TYPES.STAKE], data: { isClaimed: false } };
+        newOptions.where = {
+          ...newOptions.where,
+          type: [HISTORY_TYPES.STAKE],
+          data: { isClaimed: false },
+        };
         break;
       }
 
@@ -100,13 +111,20 @@ export class DashboardService {
     return this.historyModel.findAll(newOptions);
   }
 
-  hydrateOptionsForFilters(options: any, filters: { asset?: AssetsType; blockchain?: Blockchains }) {
+  hydrateOptionsForFilters(
+    options: any,
+    filters: { asset?: AssetsType; blockchain?: Blockchains },
+  ) {
     const newOptions = options;
     const { asset, blockchain } = filters;
     if (asset) {
       switch (asset) {
         case AssetsType.digitalSecurity: {
-          const where = { ...options.where, type: HISTORY_TYPES.BUY_DIGITAL_SECURITY, data: { isClaimed: false } };
+          const where = {
+            ...options.where,
+            type: HISTORY_TYPES.BUY_DIGITAL_SECURITY,
+            data: { isClaimed: false },
+          };
           newOptions.where = where;
           break;
         }

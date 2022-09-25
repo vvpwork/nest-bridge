@@ -3,7 +3,12 @@ import { Request } from 'express';
 import { Reflector } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { BlockchainIdentityAddressModel, BlockchainModel, IdentityModel, ProfileModel } from '@DB/models';
+import {
+  BlockchainIdentityAddressModel,
+  BlockchainModel,
+  IdentityModel,
+  ProfileModel,
+} from '@DB/models';
 import { AuthController } from './auth.controller';
 import { config } from '@/common/config';
 import { AuthService } from './auth.service';
@@ -26,7 +31,12 @@ const { ttl, secret } = config.jwt;
     IdentityModule,
     SecuritizeModule,
     BlockchainModule,
-    SequelizeModule.forFeature([IdentityModel, BlockchainIdentityAddressModel, BlockchainModel, ProfileModel]),
+    SequelizeModule.forFeature([
+      IdentityModel,
+      BlockchainIdentityAddressModel,
+      BlockchainModel,
+      ProfileModel,
+    ]),
   ],
   controllers: [AuthController],
   providers: [AuthService],

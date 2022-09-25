@@ -1,4 +1,14 @@
-import { Body, Controller, Delete, Param, Patch, Post, Res, UploadedFiles, UseInterceptors } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Param,
+  Patch,
+  Post,
+  Res,
+  UploadedFiles,
+  UseInterceptors,
+} from '@nestjs/common';
 import { User } from '@Common/decorators/user.decorator';
 import { IPodcastModel } from '@DB/interfaces';
 import { PodcastModel } from '@DB/models';
@@ -33,7 +43,9 @@ export class PodcastController {
     @UploadedFiles() files: Array<Express.Multer.File>,
     @Res() res: Response,
   ) {
-    const image = await this.cloudinary.uploadFile(files.find((v: Express.Multer.File) => v.fieldname === 'image'));
+    const image = await this.cloudinary.uploadFile(
+      files.find((v: Express.Multer.File) => v.fieldname === 'image'),
+    );
     const imageUrl = image.url ? image.url : '';
 
     return res.status(201).send({
@@ -61,7 +73,9 @@ export class PodcastController {
     const params: any = { ...body };
 
     if (!body.image) {
-      const image = await this.cloudinary.uploadFile(files.find((v: Express.Multer.File) => v.fieldname === 'image'));
+      const image = await this.cloudinary.uploadFile(
+        files.find((v: Express.Multer.File) => v.fieldname === 'image'),
+      );
       if (image && image.url) {
         params.image = image.url;
       }

@@ -125,10 +125,12 @@ export class IProfileResponse {
   name: string = 'Artemundi';
 
   @IsString()
-  avatar: string = 'http://res.cloudinary.com/bridgetowercapital/image/upload/v1660723691/vvp7cxxeuxkse4b7mm7z.jpg';
+  avatar: string =
+    'http://res.cloudinary.com/bridgetowercapital/image/upload/v1660723691/vvp7cxxeuxkse4b7mm7z.jpg';
 
   @IsString()
-  cover: string = 'http://res.cloudinary.com/bridgetowercapital/image/upload/v1660723750/y6wdsoayuvnj8ugiukuw.jpg';
+  cover: string =
+    'http://res.cloudinary.com/bridgetowercapital/image/upload/v1660723750/y6wdsoayuvnj8ugiukuw.jpg';
 
   @IsString()
   userName: string = 'Artemundi';

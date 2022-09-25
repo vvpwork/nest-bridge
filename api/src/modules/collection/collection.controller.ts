@@ -120,7 +120,11 @@ export class CollectionController {
   })
   @Public()
   @Get(':id')
-  public async getBuId(@Param() param: ICollectionReadDto, @User() user: IUserInterface, @Res() res: Response) {
+  public async getBuId(
+    @Param() param: ICollectionReadDto,
+    @User() user: IUserInterface,
+    @Res() res: Response,
+  ) {
     const result = await this.service.findAll({
       collectionId: param.id,
       limit: 0,

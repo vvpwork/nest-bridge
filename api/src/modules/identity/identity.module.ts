@@ -4,7 +4,9 @@ import { BlockchainIdentityAddressModel, IdentityModel, ProfileModel } from '@/d
 import { IdentityService } from './identity.service';
 
 @Module({
-  imports: [SequelizeModule.forFeature([IdentityModel, BlockchainIdentityAddressModel, ProfileModel])],
+  imports: [
+    SequelizeModule.forFeature([IdentityModel, BlockchainIdentityAddressModel, ProfileModel]),
+  ],
   controllers: [],
   providers: [IdentityService],
   exports: [IdentityService],

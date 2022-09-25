@@ -11,7 +11,7 @@
 9. Add listeners for Mint and Transfer Nft;
 10. Add validate user balance before create order
 11. Sort from created order
-12. Add event listenre to finilize pool 
-13. Save black list pull;
-14. 
-
+12. Add event listenre to finilize pool
+13. Save black list pull staking;
+14. Move all blockchain operation to worker
+15. Add balance of coins to trans history

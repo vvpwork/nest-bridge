@@ -7,7 +7,12 @@ import { config } from '@Common/config';
 import { InjectRedis } from '@liaoliaots/nestjs-redis';
 import Redis from 'ioredis';
 import { IdentityService } from '../identity/identity.service';
-import { BlockchainIdentityAddressModel, BlockchainModel, IdentityModel, ProfileModel } from '@/db/models';
+import {
+  BlockchainIdentityAddressModel,
+  BlockchainModel,
+  IdentityModel,
+  ProfileModel,
+} from '@/db/models';
 import { BlockchainService } from '../blockchain/blockchain.service';
 import { SecuritizeService } from '../securitize';
 import { IUserInterface } from '@/common/interfaces';
@@ -20,7 +25,8 @@ export class AuthService {
   constructor(
     private jwt: JwtService,
     @InjectRedis() private readonly redis: Redis,
-    @InjectModel(BlockchainIdentityAddressModel) private bcIdentityAddressModel: typeof BlockchainIdentityAddressModel,
+    @InjectModel(BlockchainIdentityAddressModel)
+    private bcIdentityAddressModel: typeof BlockchainIdentityAddressModel,
     @InjectModel(IdentityModel) private identityModel: typeof IdentityModel,
     @InjectModel(BlockchainModel) private bcModel: typeof BlockchainModel,
     @InjectModel(ProfileModel) private profileModel: typeof ProfileModel,
@@ -30,7 +36,8 @@ export class AuthService {
   ) {}
 
   public async login(address: string, code: string, chainId: number) {
-    if (!this.bcService.isEthAddress(address)) throw new HttpException('Invalid blockchain address', 403);
+    if (!this.bcService.isEthAddress(address))
+      throw new HttpException('Invalid blockchain address', 403);
     if (
       !(await this.bcModel.findOne({
         where: {
@@ -42,7 +49,12 @@ export class AuthService {
 
     const { investorId, statusKyc, isPartner, whiteListTransaction } =
       config.nodeEnv === 'development'
-        ? { investorId: 'develop', statusKyc: PROFILE_STATUS.VERIFIED, isPartner: false, whiteListTransaction: null }
+        ? {
+            investorId: 'develop',
+            statusKyc: PROFILE_STATUS.VERIFIED,
+            isPartner: false,
+            whiteListTransaction: null,
+          }
         : await this.securitizeService.login(code, address);
 
     const userDataFromDB = await this.bcIdentityAddressModel.findOne({
@@ -131,7 +143,10 @@ export class AuthService {
   }
 
   public async isAuthenticated(req: Request | any) {
-    if (!req.headers.authorization || (req.headers.authorization && !req.headers.authorization.includes('Bearer')))
+    if (
+      !req.headers.authorization ||
+      (req.headers.authorization && !req.headers.authorization.includes('Bearer'))
+    )
       return false;
 
     const reqToken = req.headers.authorization.split(' ')[1];
@@ -158,7 +173,10 @@ export class AuthService {
 
   async getUserFromReqHeaders(req: Request | any) {
     req.user = { data: {} };
-    if (!req.headers.authorization || (req.headers.authorization && !req.headers.authorization.includes('Bearer')))
+    if (
+      !req.headers.authorization ||
+      (req.headers.authorization && !req.headers.authorization.includes('Bearer'))
+    )
       return null;
 
     const reqToken = req.headers.authorization.split(' ')[1];

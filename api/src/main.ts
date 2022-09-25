@@ -16,6 +16,7 @@ process.on('unhandledRejection', (reason: any, promise: any) => {
 process.on('uncaughtException', (error: Error, source: any) => {
   Logger.log(error, source);
 });
+
 async function bootstrap(): Promise<string> {
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix(apiV1Alias);
@@ -34,7 +35,6 @@ async function bootstrap(): Promise<string> {
   // *******  global middlewares
   app.use(cors());
   app.use(helmet());
-  // app.use(fileUpload());
   app.use(compression());
   app.use(morgan('combined'));
   // *******

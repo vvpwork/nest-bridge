@@ -7,9 +7,6 @@ import { IRabbitConnect, ConnectRabbitType } from '../interfaces';
 
 const { uri: rabbitUri } = config.rabbit;
 
-/**
- * This class is connecting to rabbitMQ server
- */
 export class RabbitConnect implements IRabbitConnect {
   protected _uri: string;
   private _connection: Connection;
@@ -25,9 +22,6 @@ export class RabbitConnect implements IRabbitConnect {
     this.queue = `${this.exchange}_queue`;
   }
 
-  /**
-   * This function connects to rabbitMQ server and does basic setting
-   */
   public async connect(type: ConnectRabbitType = ConnectRabbitType.RPC) {
     try {
       this._connection = await connect(this._uri);
@@ -66,13 +60,8 @@ export class RabbitConnect implements IRabbitConnect {
    * @param error - error from rabbitMQ connection
    */
   private async errorHandler(error: any) {
-    if (this._count_to_connect > 3) {
-      throw new Error('Error rabbit reconnect');
-    }
-    this._count_to_connect += 1;
-    Logger.log(`Reconnect rabbit start: ${this._count_to_connect}`);
-    await this.connect();
-    Logger.log(`Reconnect rabbit finish: ${this._count_to_connect}`);
+    Logger.error(error, `Rabbit connect error`);
+    process.exit(1);
   }
 
   public async disconnect() {

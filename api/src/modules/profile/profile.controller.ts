@@ -113,9 +113,18 @@ export class ProfileController {
     type: IProfileLibrariesResponseDto,
   })
   @Public()
-  async getLibraries(@Param('id') id: number, @Query() query: PaginationQueryDto, @Res() res: Response) {
+  async getLibraries(
+    @Param('id') id: number,
+    @Query() query: PaginationQueryDto,
+    @Res() res: Response,
+  ) {
     return res.status(200).send({
-      data: await this.profileService.getResourcesByProfileId('libraries', id, query.limit, query.offset),
+      data: await this.profileService.getResourcesByProfileId(
+        'libraries',
+        id,
+        query.limit,
+        query.offset,
+      ),
     });
   }
 
@@ -126,9 +135,18 @@ export class ProfileController {
     type: IProfilePodcastResponseDto,
   })
   @Public()
-  async getPodcasts(@Param('id') id: number, @Query() query: PaginationQueryDto, @Res() res: Response) {
+  async getPodcasts(
+    @Param('id') id: number,
+    @Query() query: PaginationQueryDto,
+    @Res() res: Response,
+  ) {
     return res.status(200).send({
-      data: await this.profileService.getResourcesByProfileId('podcasts', id, query.limit, query.offset),
+      data: await this.profileService.getResourcesByProfileId(
+        'podcasts',
+        id,
+        query.limit,
+        query.offset,
+      ),
     });
   }
 
@@ -170,7 +188,13 @@ export class ProfileController {
     @Res() res: Response,
   ) {
     return res.status(200).send({
-      data: await this.profileService.getFollowList('followers', id, request?.user?.data, query.limit, query.offset),
+      data: await this.profileService.getFollowList(
+        'followers',
+        id,
+        request?.user?.data,
+        query.limit,
+        query.offset,
+      ),
     });
   }
 
@@ -188,7 +212,13 @@ export class ProfileController {
     @Res() res: Response,
   ) {
     return res.status(200).send({
-      data: await this.profileService.getFollowList('followings', id, request?.user?.data, query.limit, query.offset),
+      data: await this.profileService.getFollowList(
+        'followings',
+        id,
+        request?.user?.data,
+        query.limit,
+        query.offset,
+      ),
     });
   }
 
@@ -197,7 +227,11 @@ export class ProfileController {
     status: 201,
     description: 'Follow target profile',
   })
-  async followByProfileId(@User() user: IUserInterface, @Param('id') id: number, @Res() res: Response) {
+  async followByProfileId(
+    @User() user: IUserInterface,
+    @Param('id') id: number,
+    @Res() res: Response,
+  ) {
     return res.status(201).send({
       data: await this.profileService.followByProfileId(user.data.profileId, id),
     });
@@ -208,7 +242,11 @@ export class ProfileController {
     status: 201,
     description: 'unFollow target profile',
   })
-  async unFollowByProfileId(@User() user: IUserInterface, @Param('id') id: number, @Res() res: Response) {
+  async unFollowByProfileId(
+    @User() user: IUserInterface,
+    @Param('id') id: number,
+    @Res() res: Response,
+  ) {
     return res.status(201).send({
       data: await this.profileService.unFollowByProfileId(user.data.profileId, id),
     });

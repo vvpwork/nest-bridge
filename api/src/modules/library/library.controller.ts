@@ -1,4 +1,14 @@
-import { Body, Controller, Delete, Param, Patch, Post, Res, UploadedFiles, UseInterceptors } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Param,
+  Patch,
+  Post,
+  Res,
+  UploadedFiles,
+  UseInterceptors,
+} from '@nestjs/common';
 import { User } from '@Common/decorators/user.decorator';
 import { ILibraryModel } from '@DB/interfaces';
 import { CreateLibraryDto, EditLibraryDto, ILibraryResponseDto } from '@Modules/library/dtos';
@@ -36,7 +46,9 @@ export class LibraryController {
     const params = { ...body };
     // upload images to cloudinary
     if (!body.image) {
-      const image = await this.cloudinary.uploadFile(files.find((v: Express.Multer.File) => v.fieldname === 'image'));
+      const image = await this.cloudinary.uploadFile(
+        files.find((v: Express.Multer.File) => v.fieldname === 'image'),
+      );
       params.image = image.url ? image.url : '';
     }
 
@@ -65,7 +77,9 @@ export class LibraryController {
     const params: any = { ...body };
 
     if (!body.image) {
-      const image = await this.cloudinary.uploadFile(files.find((v: Express.Multer.File) => v.fieldname === 'image'));
+      const image = await this.cloudinary.uploadFile(
+        files.find((v: Express.Multer.File) => v.fieldname === 'image'),
+      );
       if (image && image.url) {
         params.image = image.url;
       }

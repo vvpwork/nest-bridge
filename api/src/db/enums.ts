@@ -34,13 +34,13 @@ export enum NOTIFICATION_TYPES {
 }
 
 export enum HISTORY_TYPES {
-  BUY = 'BUY',
-  SELL = 'SELL',
-  LIST = 'LIST',
-  UNLIST = 'UNLIST',
-  PRICE_UPDATE = 'PRICE_UPDATE',
-  ROYALTY_RECEIVE = 'ROYALTY_RECEIVE',
-  STAKE = 'STAKE',
-  CLAIM = 'CLAIM',
-  BUY_DIGITAL_SECURITY = 'BUY_DIGITAL_SECURITY',
+  BUY = 'buy',
+  SELL = 'sell',
+  LIST = 'list',
+  UNLIST = 'unlist',
+  PRICE_UPDATE = 'priceUpdate',
+  ROYALTY_RECEIVE = 'royaltyReceive',
+  STAKE = 'stake',
+  CLAIM = 'claim',
+  BUY_DIGITAL_SECURITY = 'buyDigitalSecurity',
 }

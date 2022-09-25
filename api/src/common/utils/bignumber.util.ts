@@ -26,7 +26,10 @@ export class Bn extends BigNumber implements IBigNumberUtile {
     return type === 'string' ? bn.toFormat(0).split(',').join('') : bn;
   }
 
-  static multiplyBy(firstAmount: string | BigNumber | number, secondAmount: string | BigNumber | number) {
+  static multiplyBy(
+    firstAmount: string | BigNumber | number,
+    secondAmount: string | BigNumber | number,
+  ) {
     const first = new BigNumber(firstAmount);
     const second = new BigNumber(secondAmount);
     return first.multipliedBy(second);

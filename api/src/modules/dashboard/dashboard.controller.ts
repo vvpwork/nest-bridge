@@ -25,7 +25,11 @@ export class DashboardController {
     type: IPortfolioResponseDto,
   })
   @ApiForbiddenResponse({ description: 'Unauthorized Request' })
-  async getPortfolio(@User() user: IUserInterface, @Query() query: IPortfolioQueryDto, @Res() res: Response) {
+  async getPortfolio(
+    @User() user: IUserInterface,
+    @Query() query: IPortfolioQueryDto,
+    @Res() res: Response,
+  ) {
     return res.status(200).send({
       data: await this.dashboardService.getPortfolio(user.data, query),
     });
@@ -38,7 +42,11 @@ export class DashboardController {
     type: IDashboardStatResponseDto,
   })
   @ApiForbiddenResponse({ description: 'Unauthorized Request' })
-  async getStats(@User() user: IUserInterface, @Query() query: IDashboardStatsQueryDto, @Res() res: Response) {
+  async getStats(
+    @User() user: IUserInterface,
+    @Query() query: IDashboardStatsQueryDto,
+    @Res() res: Response,
+  ) {
     return res.status(200).send({
       data: await this.dashboardService.getStats(user.data, query),
     });

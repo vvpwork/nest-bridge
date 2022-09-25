@@ -164,7 +164,9 @@ export class ProfileService {
       const listOfNewsLikesCount = await this.getAllNewsLikeCounts();
       let listOfAllNewsIdsLikedByUser: NewsModel[] = [];
       if (viewerUser) {
-        listOfAllNewsIdsLikedByUser = await this.getAllNewsLikesListByProfileId(viewerUser.profileId);
+        listOfAllNewsIdsLikedByUser = await this.getAllNewsLikesListByProfileId(
+          viewerUser.profileId,
+        );
       }
 
       paginatedData.data = await Promise.all(
@@ -177,7 +179,10 @@ export class ProfileService {
     }
   }
 
-  async followByProfileId(sourceProfileId: number, targetProfileId: number): Promise<{ success: boolean }> {
+  async followByProfileId(
+    sourceProfileId: number,
+    targetProfileId: number,
+  ): Promise<{ success: boolean }> {
     const profile = await this.profileModel.findByPk(targetProfileId);
     if (!profile) {
       throw new HttpException('PROFILE_NOT_FOUND', HttpStatus.NOT_FOUND);
@@ -202,7 +207,10 @@ export class ProfileService {
     return { success: true };
   }
 
-  async unFollowByProfileId(sourceProfileId: number, targetProfileId: number): Promise<{ success: boolean }> {
+  async unFollowByProfileId(
+    sourceProfileId: number,
+    targetProfileId: number,
+  ): Promise<{ success: boolean }> {
     const profile = await this.profileModel.findByPk(targetProfileId);
     if (!profile) {
       throw new HttpException('PROFILE_NOT_FOUND', HttpStatus.NOT_FOUND);
@@ -237,7 +245,11 @@ export class ProfileService {
   }
 
   // ToDo move this and the same code to service, when circular dependencies are resolved
-  async injectLikesToNewsRecord(newsRecord: any, listOfNewsLikesCount: any, listOfAllNewsIdsLikedByUser: any) {
+  async injectLikesToNewsRecord(
+    newsRecord: any,
+    listOfNewsLikesCount: any,
+    listOfAllNewsIdsLikedByUser: any,
+  ) {
     const result = newsRecord;
     result.isLiked = false;
 
@@ -298,7 +310,9 @@ export class ProfileService {
     const listOfFollowersCount = await this.getAllFollowersCounts();
     let listOfAllProfileIdsFollowedByUser: number[] = [];
     if (viewerUser) {
-      listOfAllProfileIdsFollowedByUser = await this.getAllFollowingsListByProfileId(viewerUser.profileId);
+      listOfAllProfileIdsFollowedByUser = await this.getAllFollowingsListByProfileId(
+        viewerUser.profileId,
+      );
     }
 
     result.data = await Promise.all(
@@ -310,14 +324,20 @@ export class ProfileService {
     return result;
   }
 
-  async injectDataToFollowList(profile: any, listOfFollowersCount: any, listOfAllProfileIdsFollowedByUser: number[]) {
+  async injectDataToFollowList(
+    profile: any,
+    listOfFollowersCount: any,
+    listOfAllProfileIdsFollowedByUser: number[],
+  ) {
     profile.dataValues.followers = listOfFollowersCount[profile.dataValues.profileId]
       ? listOfFollowersCount[profile.dataValues.profileId]
       : 0;
 
     profile.dataValues.isFollower = false;
     if (listOfAllProfileIdsFollowedByUser) {
-      profile.dataValues.isFollower = listOfAllProfileIdsFollowedByUser.includes(profile.dataValues.profileId);
+      profile.dataValues.isFollower = listOfAllProfileIdsFollowedByUser.includes(
+        profile.dataValues.profileId,
+      );
     }
 
     profile.dataValues.accountType = profile.identity.accountType;

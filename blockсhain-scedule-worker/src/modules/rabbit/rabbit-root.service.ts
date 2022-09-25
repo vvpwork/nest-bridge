@@ -1,12 +1,12 @@
 import { Injectable, Logger } from '@nestjs/common';
+import { config } from '@/common/config';
 import { BlockchainService } from '../blockchain/blockchain.service';
-import { IMessageRabbit } from './interfaces';
-import { TypeRpcCommand, TypeRpcMessage } from './interfaces/enums';
+import { IMessageRabbit, IRabbitRootService } from './interfaces';
+import { TypeRpcMessage } from './interfaces/enums';
 import { RabbitService } from './services';
 
-// TODO add logic working with rpc
 @Injectable()
-export class RabbitRootService {
+export class RabbitRootService implements IRabbitRootService {
   private rabbitInstance: RabbitService;
   constructor(private bc: BlockchainService) {
     this.init();
@@ -14,27 +14,27 @@ export class RabbitRootService {
 
   async init() {
     this.rabbitInstance = await RabbitService.getInstance();
-    this.rabbitInstance.handlerMessageFromRPC = this.handleMessage;
+    this.rabbitInstance.handlerMessageFromRPC =
+      this.handlerMessageFromRpc.bind(this);
     this.rabbitInstance.run();
   }
 
-  publish() {
+  // TODO add interfaces
+  publish(message: any) {
     this.rabbitInstance.publishMessage(
-      '************ its work ********',
-      'default_exchange',
+      message,
+      config.rabbit.exchangeNameDefault,
     );
   }
 
-  handleMessage: any = async (message: string) => {
+  private async handlerMessageFromRpc(message: string) {
     const mes: IMessageRabbit = JSON.parse(message);
-    console.log(mes);
-
+    Logger.log(mes, 'RabbitService received message');
     switch (mes.type) {
       case TypeRpcMessage.BLOCKCHAIN:
         return this.bc.rabbit.handlerRpcMessage(mes.command, mes.data);
-
       default:
         return 'Type not found';
     }
-  };
+  }
 }
