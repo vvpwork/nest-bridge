@@ -4,6 +4,7 @@ const oldProfiles = require('./oldProfiles.json');
 const oldIdentities = require('./oldIdentities.json');
 const oldBcAddresses = require('./oldBcAddresses.json');
 
+
 module.exports = {
   up: async queryInterface => {
     const accountTypes = [
@@ -218,7 +219,9 @@ module.exports = {
     const identitiesQuery = upsertData(
       'Identity',
       ['id', 'securitizeId', 'status', 'accountType', 'profileId'],
-      identities.map(tr => [`'${tr.id}','${tr.securitizeId}','${tr.status}','${tr.accountType}','${tr.profileId}'`]),
+      identities.map(tr => [
+        `'${tr.id}','${tr.securitizeId}','${tr.status}','${tr.accountType}','${tr.profileId}'`,
+      ]),
     );
     await queryInterface.sequelize.query(identitiesQuery);
     const bcIdentityAddress = [
@@ -240,14 +243,21 @@ module.exports = {
     const bcIdentityQuery = upsertData(
       'BlockchainIdentityAddress',
       ['id', 'chainId', 'IdentityId', 'address'],
-      bcIdentityAddress.map(tr => [`'${tr.id}','${tr.chainId}','${tr.identityId}', '${tr.address}'`]),
+      bcIdentityAddress.map(tr => [
+        `'${tr.id}','${tr.chainId}','${tr.identityId}', '${tr.address}'`,
+      ]),
     );
 
     await queryInterface.sequelize.query(bcIdentityQuery);
     // await resetSequence(queryInterface, 'Identity');
 
     const currencies = [
-      { name: 'USDC token', symbol: 'USDC', decimals: 6, address: '0xAF82969ECF299c1f1Bb5e1D12dDAcc9027431160' },
+      {
+        name: 'USDC token',
+        symbol: 'USDC',
+        decimals: 6,
+        address: '0xAF82969ECF299c1f1Bb5e1D12dDAcc9027431160',
+      },
     ];
     const currenciesQuery = upsertData(
       'Currencies',
@@ -287,7 +297,18 @@ module.exports = {
 
     const collectionQuery = upsertData(
       'Collection',
-      ['id', 'identityId', 'name', 'description', 'cover', 'logo', 'symbol', 'salt', 'chainId', 'masterAddress'],
+      [
+        'id',
+        'identityId',
+        'name',
+        'description',
+        'cover',
+        'logo',
+        'symbol',
+        'salt',
+        'chainId',
+        'masterAddress',
+      ],
       collections.map(tr => [
         `'${tr.id}','${tr.identityId}','${tr.name}','${tr.description}', '${tr.cover}', '${tr.logo}','${tr.symbol}',${tr.salt}, '${tr.chainId}', '${tr.masterAddress}'`,
       ]),
@@ -388,7 +409,17 @@ module.exports = {
 
     const nftsQuery = upsertData(
       'Nft',
-      ['id', 'collectionId', 'thumbnail', 'amount', 'metadata', 'creatorIds', 'royaltyIds', 'royalty', 'totalSupply'],
+      [
+        'id',
+        'collectionId',
+        'thumbnail',
+        'amount',
+        'metadata',
+        'creatorIds',
+        'royaltyIds',
+        'royalty',
+        'totalSupply',
+      ],
       nfts.map(tr => [
         `'${tr.id}','${tr.collectionId}','${tr.thumbnail}','${tr.amount}', '${tr.metadata}', '${tr.creatorIds}','${tr.royaltyIds}',${tr.royalty}, '${tr.totalSupply}'`,
       ]),
@@ -399,8 +430,10 @@ module.exports = {
     // add creators
     const creatorsQuery = upsertData(
       'IdentityNftCreator',
-      ['address', 'nftId'],
-      nfts.map(cr => [`'0x3C865AC4Bd0B7652Aab04e94E1a14ED39c868879', '${cr.id}'`]),
+      ['id', 'address', 'nftId'],
+      nfts.map(cr => [
+        `'${'seed_creator'}', '0x3C865AC4Bd0B7652Aab04e94E1a14ED39c868879', '${cr.id}'`,
+      ]),
     );
 
     await queryInterface.sequelize.query(creatorsQuery);
@@ -624,7 +657,9 @@ module.exports = {
     const newsQuery = upsertData(
       'News',
       ['id', 'profileId', 'title', 'description', 'image', 'source'],
-      news.map(m => [`'${m.id}','${m.profileId}','${m.title}','${m.description}','${m.image}','${m.source}'`]),
+      news.map(m => [
+        `'${m.id}','${m.profileId}','${m.title}','${m.description}','${m.image}','${m.source}'`,
+      ]),
     );
     await queryInterface.sequelize.query(newsQuery);
 
@@ -681,7 +716,9 @@ module.exports = {
     const notificationsQuery = upsertData(
       'Notification',
       ['id', 'profileId', 'type', 'isRead', 'params'],
-      notifications.map(m => [`'${m.id}','${m.profileId}','${m.type}','${m.isRead}','${m.params}'`]),
+      notifications.map(m => [
+        `'${m.id}','${m.profileId}','${m.type}','${m.isRead}','${m.params}'`,
+      ]),
     );
     // await queryInterface.sequelize.query(notificationsQuery);
 
@@ -722,7 +759,9 @@ module.exports = {
     const podcastsQuery = upsertData(
       'Podcast',
       ['id', 'profileId', 'title', 'description', 'image', 'source'],
-      podcasts.map(m => [`'${m.id}','${m.profileId}','${m.title}','${m.description}','${m.image}','${m.source}'`]),
+      podcasts.map(m => [
+        `'${m.id}','${m.profileId}','${m.title}','${m.description}','${m.image}','${m.source}'`,
+      ]),
     );
     await queryInterface.sequelize.query(podcastsQuery);
 

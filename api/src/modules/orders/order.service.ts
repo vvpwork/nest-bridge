@@ -20,6 +20,7 @@ import { BlockchainService } from '../blockchain/blockchain.service';
 import { IUserInterface } from '@/common/interfaces';
 import { NotificationService } from '../notification';
 import { NOTIFICATION_TYPES } from '@/db/enums';
+import { IUpdateOrderDto } from './dtos/update-order.dto';
 
 const { lockPeriod } = config.nft;
 @Injectable()
@@ -70,6 +71,7 @@ export class OrderService {
       amount,
       price,
       nftId,
+      additionalInfo: data.additionalInfo,
       data: { metadata, signature },
     });
 
@@ -122,7 +124,7 @@ export class OrderService {
     };
   }
 
-  async update(data: Partial<IOrderModel>, user: IUserInterface['data']) {
+  async update(data: IUpdateOrderDto, user: IUserInterface['data']) {
     const oldOrder = await this.orderModel.findOne({
       where: {
         id: data.id,
@@ -143,7 +145,7 @@ export class OrderService {
 
     oldOrder.amount = data.amount;
     oldOrder.signature = data.signature;
-    oldOrder.metadata = data.metadata;
+    oldOrder.metadata = JSON.stringify(data.metadata);
     if (data.price) oldOrder.price = data.price;
     await oldOrder.save();
 
@@ -154,6 +156,7 @@ export class OrderService {
       type: 'priceUpdate',
       txHash: data.signature,
       data: data.metadata,
+      additionalInfo: data.additionalInfo,
     });
 
     return {
@@ -221,6 +224,7 @@ export class OrderService {
       amount: buyAmount,
       price: order.price,
       nftId: sellerBalance.toJSON().nftId,
+      additionalInfo: data.additionalInfo,
     });
 
     await this.historyService.create({
@@ -230,6 +234,7 @@ export class OrderService {
       amount: buyAmount,
       price: order.price,
       nftId: sellerBalance.toJSON().nftId,
+      additionalInfo: data.additionalInfo,
     });
 
     const { nft } = order.nftIdentityBalance;

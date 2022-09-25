@@ -1,14 +1,8 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import {
-  IsNumber,
-  IsObject,
-  IsOptional,
-  isString,
-  IsString,
-  ValidateNested,
-} from 'class-validator';
+import { IsNumber, IsObject, IsOptional, IsString, ValidateNested } from 'class-validator';
 import { NodeCompatibleEventEmitter } from 'rxjs/internal/observable/fromEvent';
+import { IAdditionalInfo } from '@/modules/transaction-history/dtos';
 
 export class ICreateOrderDto {
   @IsOptional()
@@ -39,6 +33,11 @@ export class ICreateOrderDto {
   @IsOptional()
   @IsObject()
   metadata: { [key: string]: any };
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => IAdditionalInfo)
+  public additionalInfo?: IAdditionalInfo;
 }
 
 export class ICreateOrderResponseDto {

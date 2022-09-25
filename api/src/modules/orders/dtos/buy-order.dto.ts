@@ -1,5 +1,6 @@
 import { Type } from 'class-transformer';
-import { IsNumber, IsString } from 'class-validator';
+import { IsNumber, IsOptional, IsString, ValidateNested } from 'class-validator';
+import { IAdditionalInfo } from '@/modules/transaction-history/dtos';
 
 export class IBuyOrderRequest {
   @IsString()
@@ -10,4 +11,9 @@ export class IBuyOrderRequest {
 
   @IsString()
   txHash: string;
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => IAdditionalInfo)
+  public additionalInfo?: IAdditionalInfo;
 }

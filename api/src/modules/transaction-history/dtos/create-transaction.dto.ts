@@ -1,6 +1,6 @@
 import { IsEnum, IsNumber, IsOptional, IsString, Length, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
-import { IAddTransactionsStakingData } from './transaction-data.dto';
+import { IAdditionalInfo, IAddTransactionsStakingData } from './transaction-data.dto';
 
 /**
  * https://github.com/typestack/class-validator#validation-decorators
@@ -21,6 +21,11 @@ export class CreateTransactionDto {
   @ValidateNested()
   @Type(() => IAddTransactionsStakingData)
   public data?: IAddTransactionsStakingData;
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => IAdditionalInfo)
+  public additionalInfo?: IAdditionalInfo;
 
   @IsEnum(TransactionsType)
   type!: TransactionsType;

@@ -2,7 +2,7 @@ import { IGetStakeHistoryQuery } from '../dtos/get-stakedhistory.dto';
 
 export const getStakedHistorySelect = (identityId: string, query: IGetStakeHistoryQuery) =>
   `with Staketable as (
-    SELECT DATE(trs.createdAt) as date, trs.data as stakeInfo, trs.txHash 
+    SELECT trs.createdAt as date, trs.data as stakeInfo, trs.txHash 
     FROM TransactionHistory trs
     WHERE trs.identityId = '${identityId}' && type = 'stake'
     )

@@ -5,7 +5,6 @@
 import { Injectable } from '@nestjs/common';
 import HDWalletProvider from '@truffle/hdwallet-provider';
 import Web3 from 'web3';
-import EthDater from 'ethereum-block-by-date';
 
 import { config } from '@/common/config';
 import { erc1155abi } from './abis/erc1155bridgeTowerProxy';
@@ -121,23 +120,23 @@ export class BlockchainService {
     return Web3.utils.isAddress(address);
   }
 
-  async getBlockByPeriod(
-    address: string,
-    options: { startDate: Date | string; endDate: Date | string },
-  ) {
-    const dater = new EthDater(this.web3Instance as any);
+  // async getBlockByPeriod(
+  //   address: string,
+  //   options: { startDate: Date | string; endDate: Date | string },
+  // ) {
+  //   const dater = new EthDater(this.web3Instance as any);
 
-    const data = await dater.getEvery('days', options.startDate, options.endDate);
+  //   const data = await dater.getEvery('days', options.startDate, options.endDate);
 
-    const result = await Promise.all(
-      data.map(async v => {
-        const balance = await this.web3Instance.eth.getBalance(address, v.block);
-        return {
-          ...v,
-          balance,
-        };
-      }),
-    );
-    return result;
-  }
+  //   const result = await Promise.all(
+  //     data.map(async v => {
+  //       const balance = await this.web3Instance.eth.getBalance(address, v.block);
+  //       return {
+  //         ...v,
+  //         balance,
+  //       };
+  //     }),
+  //   );
+  //   return result;
+  // }
 }

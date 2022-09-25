@@ -59,6 +59,9 @@ export class TransactionHistoryModel extends Model<ITransactionHistory> {
   @Column(DataType.JSON)
   data: string;
 
+  @Column(DataType.JSON)
+  additionalInfo: string;
+
   @ForeignKey(() => TransactionHistoryTypeModel)
   @Column(DataType.STRING)
   type: TransactionHistoryTypeModel;

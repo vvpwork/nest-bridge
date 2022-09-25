@@ -106,6 +106,7 @@ export interface ITransactionHistory {
   amount: number;
   price: string;
   txHash: string;
+  additionalInfo: any;
   data?:
     | {
         poolId?: number;

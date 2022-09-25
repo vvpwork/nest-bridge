@@ -13,10 +13,7 @@ import { IDeleteOrderParam, IDeleteOrderQuery } from './dtos/delete-order.dto';
 @ApiTags('Orders')
 @Controller()
 export class OrderController {
-  constructor(
-    private orderService: OrderService,
-    private historyService: TransactionHistoryService,
-  ) {}
+  constructor(private orderService: OrderService) {}
 
   @ApiResponse({
     status: 200,

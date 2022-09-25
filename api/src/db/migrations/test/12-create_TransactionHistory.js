@@ -37,15 +37,25 @@ module.exports = {
           allowNull: true,
         },
         price: {
-          type: Sequelize.STRING(64),
+          type: Sequelize.TEXT,
           allowNull: true,
         },
         txHash: {
-          type: Sequelize.STRING(128),
+          type: Sequelize.TEXT,
+          allowNull: true,
+        },
+
+        address: {
+          type: Sequelize.TEXT,
           allowNull: true,
         },
 
         data: {
+          type: Sequelize.JSON,
+          allowNull: true,
+        },
+
+        additionalInfo: {
           type: Sequelize.JSON,
           allowNull: true,
         },
@@ -72,5 +82,6 @@ module.exports = {
     );
   },
 
-  down: queryInterface => queryInterface.dropTable({ tableName: 'TransactionHistory', schema: db.schema }),
+  down: queryInterface =>
+    queryInterface.dropTable({ tableName: 'TransactionHistory', schema: db.schema }),
 };

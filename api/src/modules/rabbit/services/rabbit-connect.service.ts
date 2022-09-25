@@ -52,6 +52,7 @@ export class RabbitConnect implements IRabbitConnect {
       this._count_to_connect = 0;
     } catch (error: any) {
       Logger.error('Error rabbit connect');
+      process.exit(1);
     }
   };
 
@@ -60,7 +61,7 @@ export class RabbitConnect implements IRabbitConnect {
    * @param error - error from rabbitMQ connection
    */
   private async errorHandler(error: any) {
-    throw new Error('Error rabbit reconnect');
+    Logger.error('Error rabbit reconnect');
     process.exit(1);
   }
 

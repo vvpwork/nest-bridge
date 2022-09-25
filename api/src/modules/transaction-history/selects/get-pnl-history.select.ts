@@ -4,11 +4,9 @@ export const getPnlHistorySelect = (identityId: string, type: HISTORY_TYPES) => 
   const select = `
   with Staketable as (
     SELECT DATE(trs.createdAt) as date,
+    trs.additionalInfo,  
     JSON_ARRAYAGG(
-        JSON_OBJECT(
-            'data', trs.data,
-            'txHash', trs.txHash  
-        )
+        trs.data
     ) as stakedData
     FROM TransactionHistory trs
     WHERE trs.identityId = '${identityId}' && type = 'stake'
@@ -16,6 +14,9 @@ export const getPnlHistorySelect = (identityId: string, type: HISTORY_TYPES) => 
 
     SELECT 
     DATE(tr.createdAt) as date,
+    JSON_ARRAYAGG(
+      tr.additionalInfo
+  ) as balances,
     CONVERT(sum(tr.amount * CONVERT(tr.price, INTEGER)), CHAR)  as totalNfts,
     st.stakedData
     FROM TransactionHistory tr

@@ -55,6 +55,11 @@ module.exports = {
           allowNull: true,
         },
 
+        additionalInfo: {
+          type: Sequelize.JSON,
+          allowNull: true,
+        },
+
         type: {
           type: Sequelize.STRING,
           allowNull: false,
@@ -77,5 +82,6 @@ module.exports = {
     );
   },
 
-  down: queryInterface => queryInterface.dropTable({ tableName: 'TransactionHistory', schema: db.schema }),
+  down: queryInterface =>
+    queryInterface.dropTable({ tableName: 'TransactionHistory', schema: db.schema }),
 };

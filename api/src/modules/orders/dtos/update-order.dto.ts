@@ -1,6 +1,8 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 
-import { IsNumber, IsUUID, IsOptional, IsString, IsObject } from 'class-validator';
+import { IsNumber, IsUUID, IsOptional, IsString, IsObject, ValidateNested } from 'class-validator';
+import { IAdditionalInfo } from '@/modules/transaction-history/dtos';
 import { ICreateOrderResponseDto } from './order-create.dto';
 
 export class IUpdateOrderDto {
@@ -34,6 +36,11 @@ export class IUpdateOrderDto {
   @IsOptional()
   @IsObject()
   metadata: { [key: string]: any };
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => IAdditionalInfo)
+  public additionalInfo?: IAdditionalInfo;
 }
 
 export class IUpdateOrderResponseDto extends ICreateOrderResponseDto {}
