@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { TransactionHistoryModel } from '@/db/models';
 import { ITransactionHistory } from '@/db/interfaces';
@@ -45,6 +45,7 @@ export class TransactionHistoryService {
   }
 
   async getPnlHistory(user: IUserInterface['data']) {
+    let result = [];
     const [data]: any = await this.historyModel.sequelize.query(
       getPnlHistorySelect(
         user.id,
@@ -52,22 +53,27 @@ export class TransactionHistoryService {
       ),
     );
 
+    result = data;
     if (data.length) {
-      // TODO remove after save balances to history
-      const blocks = await this.bcService.getBlockByPeriod(user.address, {
-        startDate: data[0].date,
-        endDate: data[data.length - 1].date,
-      });
-      const result = data.map((v: any) => ({
-        ...v,
-        balanceAvax: (() => {
-          const block = blocks.find((b: any) => b.date.split('T')[0] === v.date);
-          return block ? block.balance : '';
-        })(),
-      }));
-      return result;
+      try {
+        // TODO remove after save balances to history
+        const blocks = await this.bcService.getBlockByPeriod(user.address, {
+          startDate: data[0].date,
+          endDate: data[data.length - 1].date,
+        });
+        result = data.map((v: any) => ({
+          ...v,
+          balanceAvax: (() => {
+            const block = blocks.find((b: any) => b.date.split('T')[0] === v.date);
+            return block ? block.balance : '';
+          })(),
+        }));
+        return result;
+      } catch (err) {
+        Logger.error(err, 'TrnHistory service get past balance');
+      }
     }
 
-    return data;
+    return result;
   }
 }
