@@ -52,20 +52,22 @@ export class TransactionHistoryService {
       ),
     );
 
-    // TODO remove after save balances to history
-    const blocks = await this.bcService.getBlockByPeriod(user.address, {
-      startDate: data[0].date,
-      endDate: data[data.length - 1].date,
-    });
+    if (data.length) {
+      // TODO remove after save balances to history
+      const blocks = await this.bcService.getBlockByPeriod(user.address, {
+        startDate: data[0].date,
+        endDate: data[data.length - 1].date,
+      });
+      const result = data.map((v: any) => ({
+        ...v,
+        balanceAvax: (() => {
+          const block = blocks.find((b: any) => b.date.split('T')[0] === v.date);
+          return block ? block.balance : '';
+        })(),
+      }));
+      return result;
+    }
 
-    const result = data.map((v: any) => ({
-      ...v,
-      balanceAvax: (() => {
-        const block = blocks.find((b: any) => b.date.split('T')[0] === v.date);
-        return block ? block.balance : '';
-      })(),
-    }));
-
-    return result;
+    return data;
   }
 }

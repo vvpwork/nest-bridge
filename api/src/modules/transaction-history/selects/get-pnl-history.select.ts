@@ -20,7 +20,7 @@ export const getPnlHistorySelect = (identityId: string, type: HISTORY_TYPES) => 
     st.stakedData
     FROM TransactionHistory tr
     LEFT JOIN Staketable st On st.date = DATE(tr.createdAt)
-    WHERE tr.identityId = '${identityId}' && type = '${type}'
+    WHERE tr.identityId = '${identityId}' && type = '${type}' or type='stake'
     GROUP BY DATE(tr.createdAt)
     `;
 
