@@ -15,7 +15,6 @@ import { NftModel } from '@/db/models';
 import { getShortHash } from '@/common/utils/short-hash.utile';
 import { upsertData } from '@/db/utils/helper';
 import { IEventHandleData } from '../interfaces/blockchain-rabbit.interfsce';
-import { MetadataScanner } from '@nestjs/core';
 
 @Injectable()
 export class BlockchainRabbitService {
@@ -202,7 +201,7 @@ export class BlockchainRabbitService {
     type: 'mint' | 'transfer' = 'mint',
   ) {
     const { tableName } = this.repository;
-
+    const reg = /\B'|'\B/g;
     if (nfts && nfts.length) {
       Logger.log(
         '[BlockchainRabbitService] start fill db by nfts',
@@ -210,6 +209,7 @@ export class BlockchainRabbitService {
       );
       try {
         this.repository.sequelize.transaction(async (t) => {
+          console.log(nfts.map((v) => v.totalSupply));
           const nftsQuery = upsertData(
             tableName,
             [
@@ -229,10 +229,10 @@ export class BlockchainRabbitService {
                 nft.amount
               }', '${JSON.stringify({
                 ...nft.metadata,
-                description: nft.metadata.description.replace("'", '"'),
+                description: nft.metadata.description.replace(reg, ''),
               })}', '${JSON.stringify(nft.creatorIds)}','${JSON.stringify(
                 nft.royaltyIds,
-              )}',${nft.royalty}, '${nft.totalSupply}'`,
+              )}',${nft.royalty}, ${nft.totalSupply || nft.amount}`,
             ]),
           );
           await this.repository.sequelize.query(nftsQuery, { transaction: t });
