@@ -49,7 +49,7 @@ export class OrdersModel extends Model<IOrderModel> {
 
   @AllowNull(true)
   @Column(DataType.JSON)
-  metadata: string;
+  metadata: any;
 
   @ForeignKey(() => CurrenciesModel)
   @Column(DataType.STRING)

@@ -145,7 +145,7 @@ export class OrderService {
 
     oldOrder.amount = data.amount;
     oldOrder.signature = data.signature;
-    oldOrder.metadata = JSON.stringify(data.metadata);
+    oldOrder.metadata = data.metadata;
     if (data.price) oldOrder.price = data.price;
     await oldOrder.save();
 
