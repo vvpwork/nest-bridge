@@ -8,13 +8,18 @@ import { Contract } from 'web3-eth-contract';
 import { erc1155abi } from '../abis/erc1155bridgeTowerProxy';
 import { DEFAULT_ETH_ADDRESS } from '@/common/constants';
 import { CloudinaryService } from '@/common/services/cloudinary.service';
-import { IBlockchainIdentityAddress, INftModel } from '@/db/interfaces';
+import {
+  IBlockchainIdentityAddress,
+  ICollectionModel,
+  INftModel,
+} from '@/db/interfaces';
 import { getAxiosInstance, sleep, Web3Instance } from '@/common/utils';
 import { TypeRpcCommand } from '../../rabbit/interfaces/enums';
 import { NftModel } from '@/db/models';
 import { getShortHash } from '@/common/utils/short-hash.utile';
 import { upsertData } from '@/db/utils/helper';
 import { IEventHandleData } from '../interfaces/blockchain-rabbit.interfsce';
+import { getAllCollectionsSelect } from '../selects';
 
 @Injectable()
 export class BlockchainRabbitService {
@@ -25,6 +30,7 @@ export class BlockchainRabbitService {
     this.cloudService = new CloudinaryService();
     this.web3Instance = Web3Instance.getInstance();
     this.web3InstanceWSS = Web3Instance.getInstance('wss');
+    this.runCollectionListeners();
   }
 
   async handlerRpcMessage(command: TypeRpcCommand, data: any) {
@@ -36,6 +42,15 @@ export class BlockchainRabbitService {
         Logger.error('Command is not found ');
         return Promise.resolve('Command is not found ');
     }
+  }
+
+  private async runCollectionListeners() {
+    const [data] = await this.repository.sequelize.query(
+      getAllCollectionsSelect(),
+    );
+    data.map((collection: ICollectionModel) =>
+      this.listenToContractEvent(collection.id),
+    );
   }
 
   private async handleCollectionTransferEvent(
