@@ -163,13 +163,13 @@ export class BlockchainRabbitService {
     Logger.log('first', uri);
 
     if (!uri) {
-      await sleep(1000);
+      await sleep(2000);
       uri = await collectionContract.methods.uri(nftId).call();
       Logger.log('second', uri);
     }
 
     if (!uri) {
-      await sleep(1000);
+      await sleep(3000);
       uri = await collectionContract.methods.uri(nftId).call();
       Logger.log('third', uri);
     }
