@@ -50,7 +50,7 @@ module.exports = {
       { tableName: 'BlockchainIdentityAddress', schema: db.schema },
       {
         type: 'UNIQUE',
-        fields: ['IdentityId', 'chainId', 'address'],
+        fields: ['IdentityId', 'chainId' ],
         name: 'unique_identityChainAddress',
       },
     );
