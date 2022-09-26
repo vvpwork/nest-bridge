@@ -25,6 +25,7 @@ import { getShortHash } from '@/common/utils/short-hash.utile';
 import { upsertData } from '@/db/utils/helper';
 import { IEventHandleData } from '../interfaces/blockchain-rabbit.interfsce';
 import { getAllCollectionsSelect } from '../selects';
+import { identity } from 'rxjs';
 
 @Injectable()
 export class BlockchainRabbitService {
@@ -111,7 +112,9 @@ export class BlockchainRabbitService {
   }
 
   addCollectionHandler(data: { addresses: string[]; identityId?: string }) {
-    this.addCollection(data);
+    if (data.identityId) {
+      this.addCollection(data);
+    }
     this.listenToContractEvent(data.addresses[0]);
     return 'Start added process';
   }
@@ -121,8 +124,13 @@ export class BlockchainRabbitService {
     identityId?: string;
   }) {
     const { addresses } = data;
-    const nfts = await this.getPastCollectionNfts(addresses[0]);
-    await this.fillNftsByCollection(nfts, 'mint');
+
+    await Promise.allSettled(
+      addresses.map(async (address: string) => {
+        const nfts = await this.getPastCollectionNfts(address);
+        await this.fillNftsByCollection(nfts, 'mint');
+      }),
+    );
   }
 
   private async getPastCollectionNfts(

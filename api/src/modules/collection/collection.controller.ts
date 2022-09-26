@@ -110,6 +110,7 @@ export class CollectionController {
       addresses: [body.id],
       identityId: user.data.id,
     });
+    Logger.log(resFromWorker, 'CollectionController answer from worker');
 
     return res.status(201).send({
       data: result,

@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { NewsModel, NewsLikeModel, NotificationModel } from '@DB/models';
 import { NotificationService } from '@Modules/notification';
 import { NOTIFICATION_TYPES } from '@DB/enums';
@@ -23,17 +23,20 @@ export class NewsService {
   async create(params: INewsModel): Promise<NewsModel> {
     const newNewsRecord = await this.newsModel.create(params);
 
-    // TODO
-    await this.notificationService.addNotificationToAllIdentityFollowers(
-      params.profileId,
-      {
-        id: newNewsRecord.id,
-        ...params,
-        name: await this.profileService.getUserNameByProfileId(params.profileId),
-      },
-      NOTIFICATION_TYPES.FOLLOWING_PERSON_ADDED_NEWS,
-    );
-    console.log(newNewsRecord);
+    // TODO fixed notification
+    try {
+      await this.notificationService.addNotificationToAllIdentityFollowers(
+        params.profileId,
+        {
+          id: newNewsRecord.id,
+          ...params,
+          name: await this.profileService.getUserNameByProfileId(params.profileId),
+        },
+        NOTIFICATION_TYPES.FOLLOWING_PERSON_ADDED_NEWS,
+      );
+    } catch (err) {
+      Logger.error(err, 'NewService add notification');
+    }
     return newNewsRecord;
   }
 

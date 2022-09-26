@@ -46,17 +46,19 @@ export class NewsController {
     @UploadedFiles() files: Array<Express.Multer.File>,
     @Res() res: Response,
   ) {
-    // upload images to cloudinary
-    const image = await this.cloudinary.uploadFile(
-      files.find((v: Express.Multer.File) => v.fieldname === 'image'),
-    );
-    const imageUrl = image.url ? image.url : '';
+    let image: any = '';
+    const imageToLoad = files.find((v: Express.Multer.File) => v.fieldname === 'image');
+
+    if (imageToLoad) {
+      image = await this.cloudinary.uploadFile(imageToLoad);
+      image = image.url ? image.url : '';
+    }
 
     return res.status(201).send({
       data: await this.newsService.create({
         profileId: user.data.profileId,
         ...body,
-        image: imageUrl,
+        image,
       } as INewsModel),
     });
   }

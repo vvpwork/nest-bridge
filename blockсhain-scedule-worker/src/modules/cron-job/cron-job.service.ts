@@ -55,10 +55,11 @@ export class CronJobService {
     }
   }
 
+  @Cron('0 */2 * * *')
   async consistencyDataCheck() {
     const query = `
-    SELECT id FROM Collection 
-    Limit 100 
+    SELECT * FROM Collection 
+  
     `;
 
     const [collections]: any =
@@ -74,7 +75,7 @@ export class CronJobService {
       }
       const addresses = collectionToSearched.map((v: { id: string }) => v.id);
       Logger.log('[Cron service] start to get past event', addresses);
-
+      this.bcService.rabbit.addCollectionHandler({ addresses });
       Logger.log('[Cron service] finish to get past event');
     }
   }
