@@ -15,6 +15,7 @@ import { NftModel } from '@/db/models';
 import { getShortHash } from '@/common/utils/short-hash.utile';
 import { upsertData } from '@/db/utils/helper';
 import { IEventHandleData } from '../interfaces/blockchain-rabbit.interfsce';
+import { MetadataScanner } from '@nestjs/core';
 
 @Injectable()
 export class BlockchainRabbitService {
@@ -222,14 +223,16 @@ export class BlockchainRabbitService {
               'royalty',
               'totalSupply',
             ],
+
             nfts.map((nft: INftModel) => [
               `'${nft.id}','${nft.collectionId}','${nft.thumbnail}','${
                 nft.amount
-              }', '${JSON.stringify(nft.metadata)}', '${JSON.stringify(
-                nft.creatorIds,
-              )}','${JSON.stringify(nft.royaltyIds)}',${nft.royalty}, '${
-                nft.totalSupply
-              }'`,
+              }', '${JSON.stringify({
+                ...nft.metadata,
+                description: nft.metadata.description.replace("'", '"'),
+              })}', '${JSON.stringify(nft.creatorIds)}','${JSON.stringify(
+                nft.royaltyIds,
+              )}',${nft.royalty}, '${nft.totalSupply}'`,
             ]),
           );
           await this.repository.sequelize.query(nftsQuery, { transaction: t });
