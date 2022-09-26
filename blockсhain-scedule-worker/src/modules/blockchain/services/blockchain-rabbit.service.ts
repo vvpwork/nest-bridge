@@ -13,7 +13,12 @@ import {
   ICollectionModel,
   INftModel,
 } from '@/db/interfaces';
-import { getAxiosInstance, sleep, Web3Instance } from '@/common/utils';
+import {
+  getAxiosInstance,
+  sleep,
+  stringMsqlAdapter,
+  Web3Instance,
+} from '@/common/utils';
 import { TypeRpcCommand } from '../../rabbit/interfaces/enums';
 import { NftModel } from '@/db/models';
 import { getShortHash } from '@/common/utils/short-hash.utile';
@@ -244,8 +249,8 @@ export class BlockchainRabbitService {
                 nft.amount
               }', '${JSON.stringify({
                 ...nft.metadata,
-                name: nft.metadata.name.replace(reg, ''),
-                description: nft.metadata.description.replace(reg, ''),
+                name: stringMsqlAdapter(nft.metadata.name),
+                description: stringMsqlAdapter(nft.metadata.description),
               })}', '${JSON.stringify(nft.creatorIds)}','${JSON.stringify(
                 nft.royaltyIds,
               )}',${nft.royalty}, ${nft.totalSupply || nft.amount}`,

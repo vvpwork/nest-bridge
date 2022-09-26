@@ -142,7 +142,15 @@ export class ProfileService {
       }
     }
 
-    await this.profileModel.update(params, { where: { id } });
+    await this.profileModel.update(
+      {
+        ...params,
+        socials: typeof params.socials === 'string' ? JSON.parse(params.socials) : params.socials,
+        sections:
+          typeof params.sections === 'string' ? JSON.parse(params.sections) : params.sections,
+      },
+      { where: { id } },
+    );
   }
 
   async getResourcesByProfileId(

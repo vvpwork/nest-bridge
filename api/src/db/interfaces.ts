@@ -16,9 +16,9 @@ export interface IProfileModel {
   bio: string;
   email: string;
   communityLink: string;
-  socials: ProfileSocials;
+  socials: ProfileSocials | string;
   website: string;
-  sections: PROFILE_SECTIONS[];
+  sections: PROFILE_SECTIONS[] | string;
   createdAt: any;
   updatedAt: any;
 }
