@@ -1,1 +1,1 @@
-export * from './get-all -collection.select';
+export * from './get-all-collection.select';
