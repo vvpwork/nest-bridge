@@ -1,5 +1,4 @@
-import { Optional } from '@nestjs/common';
-import { IsBoolean, IsNumber, IsOptional, IsString, Length } from 'class-validator';
+import { IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class TransactionDataDto {
   @IsNumber()
@@ -42,15 +41,15 @@ export class IAddTransactionsStakingData {
 }
 
 export class IAdditionalInfo {
-  @Optional()
+  @IsOptional()
   @IsString()
-  ethBalance: string;
+  ethBalance?: string;
 
-  @Optional()
+  @IsOptional()
   @IsString()
-  usdcBalance: string;
+  usdcBalance?: string;
 
-  @Optional()
+  @IsOptional()
   @IsString()
-  avaxBalance: string;
+  avaxBalance?: string;
 }
