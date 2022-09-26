@@ -76,7 +76,7 @@ services:
       dockerfile: Dockerfile.local
     container_name: api_bridge
     ports:
-      - 8003:8000
+      - 8080:8000
     env_file:
       - ./api/.env.schema
     environment:
