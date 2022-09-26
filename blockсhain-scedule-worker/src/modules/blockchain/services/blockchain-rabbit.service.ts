@@ -201,7 +201,7 @@ export class BlockchainRabbitService {
     type: 'mint' | 'transfer' = 'mint',
   ) {
     const { tableName } = this.repository;
-    const reg = /\B'|'\B/g;
+    const reg = /'/g;
     if (nfts && nfts.length) {
       Logger.log(
         '[BlockchainRabbitService] start fill db by nfts',
@@ -229,6 +229,7 @@ export class BlockchainRabbitService {
                 nft.amount
               }', '${JSON.stringify({
                 ...nft.metadata,
+                name: nft.metadata.name.replace(reg, ''),
                 description: nft.metadata.description.replace(reg, ''),
               })}', '${JSON.stringify(nft.creatorIds)}','${JSON.stringify(
                 nft.royaltyIds,
