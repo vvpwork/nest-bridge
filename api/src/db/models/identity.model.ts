@@ -34,7 +34,7 @@ export class IdentityModel extends Model<IIdentityModel> {
   @AllowNull(false)
   @Default(DataType.UUIDV4)
   @Column(DataType.UUID)
-  id: number;
+  id: string;
 
   @Column(
     DataType.ENUM(

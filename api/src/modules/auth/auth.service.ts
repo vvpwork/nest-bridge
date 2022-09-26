@@ -1,4 +1,4 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { HttpException, Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 import { InjectModel } from '@nestjs/sequelize';
@@ -63,7 +63,22 @@ export class AuthService {
       },
     });
 
-    if (userDataFromDB) {
+    const userBySecuritize = await this.identityModel.findOne({
+      where: {
+        securitizeId: investorId,
+      },
+    });
+
+    if ((userDataFromDB && !userBySecuritize) || (!userDataFromDB && userBySecuritize)) {
+      throw new HttpException('Invalid address for securitize id', 403);
+    }
+    Logger.log(investorId, statusKyc, isPartner, 'AuthService data from securitize');
+
+    if (userDataFromDB && userBySecuritize) {
+      if (userBySecuritize.toJSON().id !== userDataFromDB.toJSON().identityId) {
+        throw new HttpException('Invalid address for securitize id', 403);
+      }
+
       await this.identityModel.update(
         {
           status: statusKyc,
@@ -85,25 +100,25 @@ export class AuthService {
     });
 
     if (!identity) {
-      const profile = await this.profileModel.create({ userName: 'new user' });
+      const profile = await this.profileModel.create({ userName: `${Date.now()}` });
 
+      Logger.log(profile.toJSON(), 'AuthService new profile');
       identity = await this.identityModel.create({
         securitizeId: investorId,
         profileId: profile.id,
         status: statusKyc,
         accountType: isPartner ? ACCOUNT_TYPES.PARTNER : ACCOUNT_TYPES.USER,
       });
+      Logger.log(identity.toJSON(), 'AuthService new identity');
     }
 
-    await identity.save();
-
-    await this.bcIdentityAddressModel.findOrCreate({
-      where: {
-        chainId,
-        address,
-        identityId: identity.id,
-      },
+    const newBcAddress = await this.bcIdentityAddressModel.create({
+      chainId,
+      address,
+      identityId: identity.id,
     });
+
+    Logger.log(newBcAddress.toJSON(), 'AuthService new bc address');
 
     return whiteListTransaction
       ? {
