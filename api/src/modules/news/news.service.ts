@@ -23,6 +23,7 @@ export class NewsService {
   async create(params: INewsModel): Promise<NewsModel> {
     const newNewsRecord = await this.newsModel.create(params);
 
+    // TODO
     await this.notificationService.addNotificationToAllIdentityFollowers(
       params.profileId,
       {
