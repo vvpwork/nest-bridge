@@ -65,7 +65,7 @@ export class AuthService {
 
     const userBySecuritize = await this.identityModel.findOne({
       where: {
-        securitizeId: investorId,
+        securitizeId: config.nodeEnv === 'development' ? '62b309e5db759500127a9cc1' : investorId,
       },
     });
 

@@ -4,7 +4,7 @@ ENV NODE_ENV build
 
 
 USER  root
-WORKDIR /home/
+WORKDIR /home
 COPY . .
 RUN yarn
 RUN yarn build 

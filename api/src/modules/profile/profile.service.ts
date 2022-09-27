@@ -275,7 +275,7 @@ export class ProfileService {
   async getFollowList(
     type: 'followers' | 'followings',
     profileId: number,
-    viewerUser?: IIdentityModel | null,
+    viewerUser?: IUserInterface['data'] | null,
     limit?: number,
     offset?: number,
   ) {
@@ -317,7 +317,7 @@ export class ProfileService {
 
     const listOfFollowersCount = await this.getAllFollowersCounts();
     let listOfAllProfileIdsFollowedByUser: number[] = [];
-    if (viewerUser) {
+    if (viewerUser.profileId) {
       listOfAllProfileIdsFollowedByUser = await this.getAllFollowingsListByProfileId(
         viewerUser.profileId,
       );
@@ -371,7 +371,7 @@ export class ProfileService {
     profile.dataValues.followingCount = await this.getFollowingCount(profile.id);
 
     profile.dataValues.isFollower = false;
-    if (viewerUser) {
+    if (viewerUser.profileId) {
       profile.dataValues.isFollower = await this.isFollower(viewerUser.profileId, profile.id);
     }
 

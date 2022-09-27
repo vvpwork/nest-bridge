@@ -184,6 +184,7 @@ export class ProfileController {
   async getFollowersList(
     @Param('id') id: number,
     @Query() query: PaginationQueryDto,
+    @User() user: IUserInterface,
     @Req() request: IUserRequest,
     @Res() res: Response,
   ) {
@@ -191,7 +192,7 @@ export class ProfileController {
       data: await this.profileService.getFollowList(
         'followers',
         id,
-        request?.user?.data,
+        user.data,
         query.limit,
         query.offset,
       ),
@@ -208,6 +209,7 @@ export class ProfileController {
   async getFollowingsList(
     @Param('id') id: number,
     @Query() query: PaginationQueryDto,
+    @User() user: IUserInterface,
     @Req() request: IUserRequest,
     @Res() res: Response,
   ) {
@@ -215,7 +217,7 @@ export class ProfileController {
       data: await this.profileService.getFollowList(
         'followings',
         id,
-        request?.user?.data,
+        user.data,
         query.limit,
         query.offset,
       ),
