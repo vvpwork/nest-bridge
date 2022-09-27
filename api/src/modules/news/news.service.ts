@@ -23,20 +23,16 @@ export class NewsService {
   async create(params: INewsModel): Promise<NewsModel> {
     const newNewsRecord = await this.newsModel.create(params);
 
-    // TODO fixed notification
-    try {
-      await this.notificationService.addNotificationToAllIdentityFollowers(
-        params.profileId,
-        {
-          id: newNewsRecord.id,
-          ...params,
-          name: await this.profileService.getUserNameByProfileId(params.profileId),
-        },
-        NOTIFICATION_TYPES.FOLLOWING_PERSON_ADDED_NEWS,
-      );
-    } catch (err) {
-      Logger.error(err, 'NewService add notification');
-    }
+    await this.notificationService.addNotificationToAllIdentityFollowers(
+      params.profileId,
+      {
+        id: newNewsRecord.id,
+        ...params,
+        name: await this.profileService.getUserNameByProfileId(params.profileId),
+      },
+      NOTIFICATION_TYPES.FOLLOWING_PERSON_ADDED_NEWS,
+    );
+
     return newNewsRecord;
   }
 
