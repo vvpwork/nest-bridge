@@ -57,12 +57,13 @@ export class NotificationService {
 
     while (allFollowers.length) {
       const toProcess = allFollowers.splice(0, 100);
-      // eslint-disable-next-line no-await-in-loop
-      await Promise.all(
-        toProcess.map((follower: Pick<FollowerModel, 'profileId'>) =>
-          this.addNotification(+follower.profileId, type, params),
-        ),
+      const dataToInsert = [];
+      toProcess.forEach((follower: Pick<FollowerModel, 'profileId'>) =>
+        dataToInsert.push({ profileId: +follower.profileId, type, params }),
       );
+
+      // eslint-disable-next-line no-await-in-loop
+      await this.notificationModel.bulkCreate(dataToInsert);
     }
   }
 
