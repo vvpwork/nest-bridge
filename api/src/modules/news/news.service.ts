@@ -36,9 +36,9 @@ export class NewsService {
         NOTIFICATION_TYPES.FOLLOWING_PERSON_ADDED_NEWS,
       );
     } catch (err) {
-      Logger.error(err, 'NewService add notification');
+      Logger.error('NewService add notification', err);
+      return newNewsRecord;
     }
-
     return newNewsRecord;
   }
 
