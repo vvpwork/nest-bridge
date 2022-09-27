@@ -15,7 +15,7 @@ import {
 import { InjectModel } from '@nestjs/sequelize';
 import { paginate } from '@Common/utils/pagination.util';
 
-import { IIdentityModel, IProfileModel } from '@DB/interfaces';
+import { IProfileModel } from '@DB/interfaces';
 import { ACCOUNT_TYPES, NOTIFICATION_TYPES } from '@DB/enums';
 import { IUserInterface } from '@/common/interfaces';
 
