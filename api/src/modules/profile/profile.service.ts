@@ -160,6 +160,8 @@ export class ProfileService {
     offset?: number,
     viewerUser?: IUserInterface['data'] | null,
   ) {
+    console.log(profileId);
+    console.log(viewerUser);
     if (type === 'libraries') {
       return paginate(this.libraryModel, { where: { profileId }, limit, offset });
     }
@@ -170,6 +172,7 @@ export class ProfileService {
       const paginatedData = await paginate(this.newsModel, { where: { profileId }, limit, offset });
 
       const listOfNewsLikesCount = await this.getAllNewsLikeCounts();
+      console.log(listOfNewsLikesCount);
       let listOfAllNewsIdsLikedByUser: NewsModel[] = [];
       if (viewerUser.profileId) {
         listOfAllNewsIdsLikedByUser = await this.getAllNewsLikesListByProfileId(
@@ -265,9 +268,10 @@ export class ProfileService {
       result.isLiked = listOfAllNewsIdsLikedByUser.includes(newsRecord.dataValues.id);
     }
 
-    result.likesCount = listOfNewsLikesCount[newsRecord.dataValues.id]
-      ? listOfNewsLikesCount[newsRecord.dataValues.id]
-      : 0;
+    result.likesCount =
+      listOfNewsLikesCount && listOfNewsLikesCount[newsRecord.dataValues.id]
+        ? listOfNewsLikesCount[newsRecord.dataValues.id]
+        : 0;
 
     return result;
   }
