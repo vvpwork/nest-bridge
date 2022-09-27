@@ -37,6 +37,7 @@ export class NewsService {
     } catch (err) {
       Logger.error(err, 'NewService add notification');
     }
+
     return newNewsRecord;
   }
 
