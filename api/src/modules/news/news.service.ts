@@ -6,6 +6,7 @@ import { ProfileService } from '@Modules/profile';
 import { InjectModel } from '@nestjs/sequelize';
 
 import { IIdentityModel, INewsModel } from '@DB/interfaces';
+import { IUserInterface } from '@/common/interfaces';
 
 @Injectable()
 export class NewsService {
@@ -92,7 +93,7 @@ export class NewsService {
     return { success: true };
   }
 
-  async getOneById(id: string, viewerUser?: IIdentityModel | null) {
+  async getOneById(id: string, viewerUser?: IUserInterface['data'] | null) {
     const newsRecord = await this.newsModel.findByPk(id);
     if (!newsRecord) {
       throw new HttpException('NEWS_NOT_FOUND', HttpStatus.NOT_FOUND);
@@ -128,13 +129,13 @@ export class NewsService {
     await likeRecord.destroy();
   }
 
-  async injectLikesToNewsRecord(newsRecord: NewsModel, viewerUser?: IIdentityModel) {
+  async injectLikesToNewsRecord(newsRecord: NewsModel, viewerUser: IUserInterface['data']) {
     const result = newsRecord;
     result.isLiked = false;
 
     result.likesCount = await this.getLikesCount(newsRecord.id);
 
-    if (viewerUser) {
+    if (viewerUser.profileId) {
       result.isLiked = await this.isLiked(newsRecord.id, +viewerUser.profileId);
     }
 

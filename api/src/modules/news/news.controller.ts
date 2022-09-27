@@ -110,9 +110,14 @@ export class NewsController {
     description: 'Get news record data',
     type: INewsResponseDto,
   })
-  async getOne(@Param('id') id: string, @Req() request: IUserRequest, @Res() res: Response) {
+  async getOne(
+    @Param('id') id: string,
+    @User() user: IUserInterface,
+    @Req() request: IUserRequest,
+    @Res() res: Response,
+  ) {
     return res.status(200).send({
-      data: await this.newsService.getOneById(id, request?.user?.data),
+      data: await this.newsService.getOneById(id, user.data),
     });
   }
 
