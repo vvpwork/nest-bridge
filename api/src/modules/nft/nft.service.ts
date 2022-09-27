@@ -132,7 +132,7 @@ export class NftService {
   async getNftInfo(
     type: 'libraries' | 'podcast' | 'news',
     pagination: { limit?: number; offset?: number },
-    viewerUser?: IIdentityModel | null,
+    viewerUser?: IUserInterface['data'] | null,
   ): Promise<any> {
     const { limit, offset } = pagination;
     const artemundiIdentity = await this.getArtemundiIdentity();

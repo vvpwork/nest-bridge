@@ -106,13 +106,12 @@ export class NftController {
     type: IProfileNewsResponseDto,
   })
   async getNews(
-    @Param('id') id: number,
     @Query() query: PaginationQueryDto,
+    @User() user: IUserInterface,
     @Res() res: Response,
-    @Req() request: IUserRequest,
   ) {
     return res.status(200).send({
-      data: await this.nftService.getNftInfo('news', query, request?.user?.data),
+      data: await this.nftService.getNftInfo('news', query, user.data),
     });
   }
 
