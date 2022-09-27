@@ -61,7 +61,7 @@ export const getNftSelect = (searchData: INftQueryDto, profileId: number) => {
     ${collectionId ? `&& c.id = '${collectionId}'` : ''}
 
     JOIN IdentityNftBalance b ON b.nftId = n.id 
-    ${identityId ? `&&  ident.id = '${identityId}'` : ''}  
+    ${identityId ? `&&  b.identityId = '${identityId}'` : ''}  
     ${status === 'sold' ? `&&  b.status = 'sold'` : ''}   
     ${status === 'onSale' ? `JOIN` : `LEFT JOIN`} \`Orders\` o ON o.nftIdentityBalanceId = b.id
     LEFT JOIN Identity  ident ON ident.id = b.identityId 
