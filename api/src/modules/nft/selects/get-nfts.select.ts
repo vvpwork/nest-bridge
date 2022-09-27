@@ -20,7 +20,13 @@ export const getNftSelect = (searchData: INftQueryDto, profileId: number) => {
     b.identityId as identityId,
     ident.status as status,
     ident.accountType,
-    JSON_OBJECT('id', pr.id, 'cover', pr.cover, 'avatar', pr.avatar, 'name', pr.name ) as profile,
+    JSON_OBJECT(
+      'id', pr.id, 
+      'cover', pr.cover, 
+      'avatar', pr.avatar, 
+      'name', pr.name,
+      'userName', pr.userName 
+      ) as profile,
     n.id as nftId, 
     JSON_OBJECT(
         'id', c.id, 
