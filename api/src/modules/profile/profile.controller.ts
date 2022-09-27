@@ -160,7 +160,7 @@ export class ProfileController {
   async getNews(
     @Param('id') id: number,
     @Query() query: PaginationQueryDto,
-    @Req() request: IUserRequest,
+    @User() user: IUserInterface,
     @Res() res: Response,
   ) {
     return res.status(200).send({
@@ -169,7 +169,7 @@ export class ProfileController {
         id,
         query.limit,
         query.offset,
-        request?.user?.data,
+        user.data,
       ),
     });
   }
@@ -185,7 +185,6 @@ export class ProfileController {
     @Param('id') id: number,
     @Query() query: PaginationQueryDto,
     @User() user: IUserInterface,
-    @Req() request: IUserRequest,
     @Res() res: Response,
   ) {
     return res.status(200).send({

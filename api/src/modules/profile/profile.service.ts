@@ -158,7 +158,7 @@ export class ProfileService {
     profileId: number,
     limit?: number,
     offset?: number,
-    viewerUser?: IIdentityModel | null,
+    viewerUser?: IUserInterface['data'] | null,
   ) {
     if (type === 'libraries') {
       return paginate(this.libraryModel, { where: { profileId }, limit, offset });
@@ -171,7 +171,7 @@ export class ProfileService {
 
       const listOfNewsLikesCount = await this.getAllNewsLikeCounts();
       let listOfAllNewsIdsLikedByUser: NewsModel[] = [];
-      if (viewerUser) {
+      if (viewerUser.profileId) {
         listOfAllNewsIdsLikedByUser = await this.getAllNewsLikesListByProfileId(
           viewerUser.profileId,
         );
@@ -356,7 +356,7 @@ export class ProfileService {
     return profile;
   }
 
-  async processProfileData(profile: any, viewerUser?: IIdentityModel) {
+  async processProfileData(profile: any, viewerUser?: IUserInterface['data']) {
     if (!profile) {
       throw new HttpException('PROFILE_NOT_FOUND', HttpStatus.NOT_FOUND);
     }
