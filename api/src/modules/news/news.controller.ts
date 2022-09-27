@@ -54,12 +54,14 @@ export class NewsController {
       image = image.url ? image.url : '';
     }
 
+    const result = await this.newsService.create({
+      profileId: user.data.profileId,
+      ...body,
+      image,
+    } as INewsModel);
+
     return res.status(201).send({
-      data: await this.newsService.create({
-        profileId: user.data.profileId,
-        ...body,
-        image,
-      } as INewsModel),
+      data: result,
     });
   }
 

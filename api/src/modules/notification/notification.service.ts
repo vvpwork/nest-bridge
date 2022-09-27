@@ -49,6 +49,7 @@ export class NotificationService {
     params: Record<string, unknown>,
     type: NOTIFICATION_TYPES,
   ) {
+    console.log('*******', params, profileId);
     const allFollowers: Pick<FollowerModel, 'profileId'>[] = await FollowerModel.findAll({
       where: { targetProfileId: profileId },
       attributes: ['profileId'],
