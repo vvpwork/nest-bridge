@@ -81,10 +81,8 @@ export class OrderService {
       },
     });
 
-    // TODO check show to followers
-    await this.notificationService.addNotification(
+    await this.notificationService.addNotificationToAllIdentityFollowers(
       user.profileId,
-      NOTIFICATION_TYPES.FOLLOWING_PERSON_LISTS_NFT,
       {
         name: user.userName,
         id: user.id,
@@ -93,6 +91,7 @@ export class OrderService {
         nftId,
         thumbnail: nft.toJSON().thumbnail,
       },
+      NOTIFICATION_TYPES.FOLLOWING_PERSON_LISTS_NFT,
     );
 
     // remove private info
