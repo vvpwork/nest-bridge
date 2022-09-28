@@ -19,7 +19,7 @@ export class TransactionHistoryService {
   ) {}
 
   async create(data: Partial<ITransactionHistory>) {
-    this.sseService.addEvent({ type: TypeSseMessage.ORDER_BUY, data });
+    this.sseService.addEvent({ type: TypeSseMessage.ORDER_UPDATE, data });
     return this.historyModel.create(data);
   }
 

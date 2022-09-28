@@ -26,9 +26,10 @@ export class RabbitRootService {
     });
   }
 
-  async handleMessage(message: string) {
+  handleMessage: any = (message: string) => {
     const mes = JSON.parse(message);
-    this.sseService.addEvent({ type: TypeSseMessage.NOTIFICATION, data: { mes } });
+    // TODO fixed it sseService = undefined
+    // this.sseService.addEvent({ type: TypeSseMessage.NOTIFICATION, data: { mes } });
     return 'ok';
-  }
+  };
 }
