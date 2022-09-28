@@ -3,7 +3,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 module.exports = {
-  port: Number.parseInt(process.env.PORT || '3000', 10),
+  port: Number.parseInt(process.env.PORT || '8000', 10),
   nodeEnv: process.env.NODE_ENV,
   jwt: {
     secret: process.env.JWT_SECRET,

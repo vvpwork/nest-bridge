@@ -7,6 +7,7 @@ import { NOTIFICATION_TYPES } from '@/db/enums';
 import { config } from '../../common/config';
 import { IdentityNftBalanceLock, NotificationModel } from '../../db/models';
 import { BlockchainService } from '../blockchain/blockchain.service';
+import { RabbitRootService } from '../rabbit/rabbit-root.service';
 
 @Injectable()
 export class CronJobService {
@@ -16,6 +17,7 @@ export class CronJobService {
     @InjectModel(NotificationModel)
     private notificationRepository: typeof NotificationModel,
     private bcService: BlockchainService,
+    private rabbitService: RabbitRootService,
   ) {}
 
   @Cron(config.triggerTime)
@@ -24,9 +26,10 @@ export class CronJobService {
       const [[result]]: any = await this.lockRepository.sequelize.query(
         `DELETE FROM IdentityNftBalanceLock WHERE unlockTime  <= ${Date.now()} RETURNING identityNftBalanceId, amount`,
       );
-      Logger.log('[Cron service] Result after delete', JSON.stringify(result));
-
+      
       if (result) {
+        // TODO fixed it for array result
+        Logger.log('[Cron service] Result after delete', JSON.stringify(result));
         const getNft = `select  n.id  as nftId, pr.id as profileId, pr.userName, n.thumbnail from IdentityNftBalance b
         JOIN Nft n On n.id = b.nftId
         JOIN Identity ident On ident.id = b.identityId
@@ -49,6 +52,10 @@ export class CronJobService {
           type: NOTIFICATION_TYPES.NFTS_UNLOCKED,
         });
         Logger.log(dataFromDb, '[Cron service] Save to Notification');
+        this.rabbitService.publish({
+          type: 'NFTS_UNLOCK',
+          data: { nftId: dataFromDb.nftId },
+        });
       }
     } catch (err) {
       Logger.error(err, '[Cron service]');

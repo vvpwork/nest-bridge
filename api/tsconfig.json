@@ -23,6 +23,7 @@
       "es6",
       "es7",
       "es2017",
+      "ES2020",
       "DOM"
     ],
     "baseUrl": "./",
@@ -38,7 +39,7 @@
       ],
       "@Modules/*": [
         "src/modules/*"
-      ]
+      ],
     }
   },
   "include": [

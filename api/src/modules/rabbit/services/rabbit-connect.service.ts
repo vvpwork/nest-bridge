@@ -17,7 +17,6 @@ export class RabbitConnect implements IRabbitConnect {
   public exchange: string;
   public queue: string;
   public push_queue: string;
-  private _count_to_connect: number = 3;
 
   constructor(name_exchange: string = 'rpc_exchange', uri?: string) {
     this._uri = uri || rabbitUri;
@@ -48,8 +47,6 @@ export class RabbitConnect implements IRabbitConnect {
       await this.channel.assertQueue(this.queue, { durable: false, maxPriority: 10 });
       await this.channel.bindQueue(this.queue, this.exchange, '');
       await this.channel.prefetch(1);
-
-      this._count_to_connect = 0;
     } catch (error: any) {
       Logger.error('Error rabbit connect');
       process.exit(1);
