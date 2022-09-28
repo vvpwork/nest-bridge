@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/typedef */
-import { HttpException, Logger } from '@nestjs/common';
+import { Logger } from '@nestjs/common';
 import { Message } from 'amqplib';
 import { IRabbitRPCRequest, IRabbitService, ConnectRabbitType } from '../interfaces';
 import { config } from '@/common/config';
