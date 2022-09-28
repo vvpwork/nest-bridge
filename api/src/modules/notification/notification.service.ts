@@ -4,12 +4,15 @@ import { InjectModel } from '@nestjs/sequelize';
 import { NOTIFICATION_TYPES } from '@DB/enums';
 import { FollowerModel, NotificationModel, ProfileModel } from '@DB/models';
 import { paginate } from '@Common/utils';
+import { SseService } from '../sse/sse.service';
+import { TypeSseMessage } from '../sse/enums';
 
 @Injectable()
 export class NotificationService {
   constructor(
     @InjectModel(NotificationModel)
     private notificationModel: typeof NotificationModel,
+    private sseService: SseService,
   ) {}
 
   async addNotification(
@@ -17,6 +20,7 @@ export class NotificationService {
     type: NOTIFICATION_TYPES,
     params: Record<string, unknown>,
   ) {
+    this.sseService.addEvent({ type: TypeSseMessage.NOTIFICATION, data: {} });
     return this.notificationModel.create({ profileId, type, params });
   }
 
@@ -66,6 +70,8 @@ export class NotificationService {
       // eslint-disable-next-line no-await-in-loop
       await this.notificationModel.bulkCreate(dataToInsert);
     }
+
+    this.sseService.addEvent({ type: TypeSseMessage.NOTIFICATION, data: {} });
   }
 
   async getAllNotificationIdsByTypeAndParams(params: any, type: NOTIFICATION_TYPES) {

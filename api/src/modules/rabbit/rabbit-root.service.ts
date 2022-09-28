@@ -1,18 +1,20 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { IMessageRabbit } from './interfaces';
+import { TypeSseMessage } from '../sse/enums';
+import { SseService } from '../sse/sse.service';
 import { TypeRpcCommand, TypeRpcMessage } from './interfaces/enums';
 import { RabbitService } from './services';
 
 @Injectable()
 export class RabbitRootService {
   private rabbitInstance: RabbitService;
+  private sseService: SseService;
   constructor() {
     this.init();
   }
 
   async init() {
     this.rabbitInstance = await RabbitService.getInstance();
-    this.rabbitInstance.handlerMessageFromRPC = this.handleMessage;
+    this.rabbitInstance.handlerMessageFromRPC = this.handleMessage.bind(this);
     this.rabbitInstance.run();
   }
 
@@ -24,8 +26,10 @@ export class RabbitRootService {
     });
   }
 
-  async handleMessage(message: string) {
-    Logger.log(message);
+  handleMessage: any = (message: string) => {
+    const mes = JSON.parse(message);
+    // TODO fixed it sseService = undefined
+    // this.sseService.addEvent({ type: TypeSseMessage.NOTIFICATION, data: { mes } });
     return 'ok';
-  }
+  };
 }

@@ -1,23 +1,25 @@
 /* eslint-disable no-param-reassign */
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
+import { TypeSseMessage } from '../sse/enums';
 import { TransactionHistoryModel } from '@/db/models';
 import { ITransactionHistory } from '@/db/interfaces';
 import { IUserInterface } from '@/common/interfaces';
 import { ACCOUNT_TYPES, HISTORY_TYPES } from '@/db/enums';
 import { getNftHistorySelect, getPnlHistorySelect, getStakedHistorySelect } from './selects';
-import { BlockchainService } from '../blockchain/blockchain.service';
 import { IGetStakeHistoryQuery } from './dtos/get-stakedhistory.dto';
 import { countHelper } from '@/common/utils';
+import { SseService } from '../sse/sse.service';
 
 @Injectable()
 export class TransactionHistoryService {
   constructor(
     @InjectModel(TransactionHistoryModel) private historyModel: typeof TransactionHistoryModel,
-    private bcService: BlockchainService,
+    private sseService: SseService,
   ) {}
 
   async create(data: Partial<ITransactionHistory>) {
+    this.sseService.addEvent({ type: TypeSseMessage.ORDER_UPDATE, data });
     return this.historyModel.create(data);
   }
 
