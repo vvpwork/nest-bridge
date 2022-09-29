@@ -25,7 +25,6 @@ import { getShortHash } from '@/common/utils/short-hash.utile';
 import { upsertData } from '@/db/utils/helper';
 import { IEventHandleData } from '../interfaces/blockchain-rabbit.interfsce';
 import { getAllCollectionsSelect } from '../selects';
-import { identity } from 'rxjs';
 
 @Injectable()
 export class BlockchainRabbitService {
@@ -54,6 +53,11 @@ export class BlockchainRabbitService {
     const [data] = await this.repository.sequelize.query(
       getAllCollectionsSelect(),
     );
+
+    const collectionsIds = data.map(
+      (collection: ICollectionModel) => collection.id,
+    );
+    this.addCollectionHandler({ addresses: collectionsIds });
     data.map((collection: ICollectionModel) =>
       this.listenToContractEvent(collection.id),
     );
@@ -113,9 +117,11 @@ export class BlockchainRabbitService {
 
   addCollectionHandler(data: { addresses: string[]; identityId?: string }) {
     if (data.identityId) {
-      this.addCollection(data);
+      data.addresses.map((address: string) =>
+        this.listenToContractEvent(address),
+      );
     }
-    this.listenToContractEvent(data.addresses[0]);
+    this.addCollection(data);
     return 'Start added process';
   }
 
