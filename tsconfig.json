@@ -25,24 +25,9 @@
       "es2017",
       "DOM"
     ],
-    "baseUrl": "./",
-    "paths": {
-      "@/*": [
-        "src/*"
-      ],
-      "@Common/*": [
-        "src/common/*"
-      ],
-      "@DB/*": [
-        "../db/*"
-      ],
-      "@Modules/*": [
-        "src/modules/*"
-      ]
-    }
   },
   "include": [
-    "src/**/*"
+    "db"
   ],
   "exclude": [
     "node_modules"

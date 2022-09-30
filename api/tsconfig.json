@@ -35,7 +35,7 @@
         "src/common/*"
       ],
       "@DB/*": [
-        "src/db/*"
+        "../db/*"
       ],
       "@Modules/*": [
         "src/modules/*"

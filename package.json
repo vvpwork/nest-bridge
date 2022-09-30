@@ -3,7 +3,10 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
-    "husky": "^8.0.1"
+    "husky": "^8.0.1",
+    "sequelize": "^6.23.2",
+    "sequelize-typescript": "^2.1.3",
+    "typescript": "^4.8.4"
   },
   "scripts": {
     "prepare": "husky install",

@@ -11,7 +11,7 @@ import { IUserInterface } from '@Common/interfaces';
 import { paginate } from '@Common/utils';
 import { Sequelize } from 'sequelize-typescript';
 import { ACCOUNT_TYPES, HISTORY_TYPES } from '@DB/enums';
-import { BlockchainIdentityAddressModel, TransactionHistoryModel } from '@/db/models';
+import { BlockchainIdentityAddressModel, TransactionHistoryModel } from '@DB/models';
 
 @Injectable()
 export class DashboardService {

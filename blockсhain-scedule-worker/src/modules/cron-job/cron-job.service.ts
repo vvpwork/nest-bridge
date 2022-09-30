@@ -3,9 +3,9 @@ import { Injectable, Logger } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 import { InjectModel } from '@nestjs/sequelize';
 
-import { NOTIFICATION_TYPES } from '@/db/enums';
+import { IdentityNftBalanceLock, NotificationModel } from '@DB/models';
+import { NOTIFICATION_TYPES } from '@DB/enums';
 import { config } from '../../common/config';
-import { IdentityNftBalanceLock, NotificationModel } from '../../db/models';
 import { BlockchainService } from '../blockchain/blockchain.service';
 import { RabbitRootService } from '../rabbit/rabbit-root.service';
 

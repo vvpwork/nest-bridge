@@ -55,12 +55,13 @@ export class RabbitConnect implements IRabbitConnect {
     }
   }
 
-  /**
-   * This function is logging error to console
-   * @param error - error from rabbitMQ connection
-   */
   private async errorHandler(error: any) {
     Logger.error(error, `Rabbit connect error`);
+    this.connect();
+  }
+
+  private async closeHandler(error: any) {
+    Logger.error(error, `Rabbit connect close`);
     process.exit(1);
   }
 

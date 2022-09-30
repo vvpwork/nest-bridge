@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { IdentityNftCreatorModel } from '@/db/models';
+import { IdentityNftCreatorModel } from '@DB/models';
 import { countHelper } from '@/common/utils';
 
 @Injectable()

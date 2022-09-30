@@ -1,10 +1,10 @@
 import { Logger, Module } from '@nestjs/common';
 import { ScheduleModule } from '@nestjs/schedule';
 import { SequelizeModule } from '@nestjs/sequelize';
+import * as models from '@DB/models';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { config } from './common/config';
-import * as models from './db/models';
 import { RabbitModule, BlockchainModule, CronJobModule } from './modules';
 
 @Module({

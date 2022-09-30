@@ -3,20 +3,20 @@ import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 import { InjectModel } from '@nestjs/sequelize';
 
-import { config } from '@Common/config';
-import { InjectRedis } from '@liaoliaots/nestjs-redis';
-import Redis from 'ioredis';
-import { IdentityService } from '../identity/identity.service';
 import {
   BlockchainIdentityAddressModel,
   BlockchainModel,
   IdentityModel,
   ProfileModel,
-} from '@/db/models';
+} from '@DB/models';
+import { ACCOUNT_TYPES, PROFILE_STATUS } from '@DB/enums';
+import { config } from '@Common/config';
+import { InjectRedis } from '@liaoliaots/nestjs-redis';
+import Redis from 'ioredis';
+import { IdentityService } from '../identity/identity.service';
 import { BlockchainService } from '../blockchain/blockchain.service';
 import { SecuritizeService } from '../securitize';
 import { IUserInterface } from '@/common/interfaces';
-import { ACCOUNT_TYPES, PROFILE_STATUS } from '@/db/enums';
 
 const { secret, ttl } = config.jwt;
 

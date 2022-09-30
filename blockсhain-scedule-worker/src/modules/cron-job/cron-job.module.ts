@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { IdentityNftBalanceLock, NotificationModel } from '@/db/models';
+import { IdentityNftBalanceLock, NotificationModel } from '@DB/models';
 import { CronJobService } from './cron-job.service';
 import { RabbitModule } from '../rabbit';
 

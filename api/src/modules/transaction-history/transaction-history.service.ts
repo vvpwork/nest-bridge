@@ -1,11 +1,11 @@
 /* eslint-disable no-param-reassign */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
+import { TransactionHistoryModel } from '@DB/models';
+import { ITransactionHistory } from '@DB/interfaces';
+import { ACCOUNT_TYPES, HISTORY_TYPES } from '@DB/enums';
 import { TypeSseMessage } from '../sse/enums';
-import { TransactionHistoryModel } from '@/db/models';
-import { ITransactionHistory } from '@/db/interfaces';
 import { IUserInterface } from '@/common/interfaces';
-import { ACCOUNT_TYPES, HISTORY_TYPES } from '@/db/enums';
 import { getNftHistorySelect, getPnlHistorySelect, getStakedHistorySelect } from './selects';
 import { IGetStakeHistoryQuery } from './dtos/get-stakedhistory.dto';
 import { countHelper } from '@/common/utils';

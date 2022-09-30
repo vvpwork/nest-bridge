@@ -10,7 +10,7 @@ export class SseService {
   private events: Subject<any> = new Subject();
 
   addEvent(event: ISseMessage) {
-    this.events.next({ id: Date.now(), ...event });
+    this.events.next({ data: event });
   }
 
   sendEvents() {

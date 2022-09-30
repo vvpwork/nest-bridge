@@ -19,14 +19,14 @@ import { Multer } from 'multer';
 import { Response } from 'express';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { InjectModel } from '@nestjs/sequelize';
-import { CollectionModel } from '@/db/models';
+import { CollectionModel } from '@DB/models';
+import { ICollectionModel } from '@DB/interfaces';
 import { ICollectionCreate, ICollectionCreateDto } from './dtos/collection-create.dto';
 import { CloudinaryService } from '@/common/services/cloudinary.service';
 import { Public, User } from '@/common/decorators';
 
 import { CollectionService } from './collection.service';
 import { ICollectionQueryDto, ICollectionReadDto, ICollectionResponse } from './dtos';
-import { ICollectionModel } from '@/db/interfaces';
 import { BlockchainService } from '../blockchain/blockchain.service';
 import { RabbitRootService } from '../rabbit/rabbit-root.service';
 import { TypeRpcCommand, TypeRpcMessage } from '../rabbit/interfaces/enums';
@@ -182,17 +182,17 @@ export class CollectionController {
     @UploadedFiles() files: Array<Express.Multer.File>,
     @Param() param: ICollectionUpdateParam,
   ) {
-    // TODO refactor
-    const coverData = files.find((v: Express.Multer.File) => v.fieldname === 'cover');
-    const logoData = files.find((v: Express.Multer.File) => v.fieldname === 'logo');
+    let coverData: any = files.find((v: Express.Multer.File) => v.fieldname === 'cover');
+    let logoData: any = files.find((v: Express.Multer.File) => v.fieldname === 'logo');
+    if (coverData) {
+      coverData = (await this.cloudinary.uploadFile(coverData)).url;
+    }
+    if (logoData) {
+      logoData = (await this.cloudinary.uploadFile(logoData)).url;
+    }
 
-    const [cover, logo] = await Promise.allSettled([
-      this.cloudinary.uploadFile(coverData),
-      this.cloudinary.uploadFile(logoData),
-    ]);
-
-    const coverImage: any = cover.status === 'fulfilled' ? cover.value.url : coverData;
-    const logoImage: any = logo.status === 'fulfilled' ? logo.value.url : logoData;
+    const coverImage: any = coverData || body.cover;
+    const logoImage: any = logoData || body.logo;
 
     const bodyData = { cover: coverImage, logo: logoImage, ...body };
     const result = await this.service.update(param.id, user.data.id, bodyData);

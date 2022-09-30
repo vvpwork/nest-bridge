@@ -1,5 +1,6 @@
 import { HttpException, Injectable, Logger } from '@nestjs/common';
 import { Axios } from 'axios';
+import { PROFILE_STATUS } from '@DB/enums';
 import { getAxiosInstance } from '@/common/utils';
 import { config } from '@/common/config';
 import {
@@ -9,9 +10,8 @@ import {
   ISecuritizeService,
 } from './interfaces';
 import { BlockchainService } from '../blockchain/blockchain.service';
-import { PROFILE_STATUS } from '@/db/enums';
 
-const { baseUrl, secret, issuerId } = config.securitize;
+const { baseUrl, secret, issuerId, apiKey } = config.securitize;
 
 const statuses = {
   IN_PROGRESS: ['processing', 'manual-review', 'pending', 'pending-aml', 'passed'],
@@ -30,7 +30,6 @@ export class SecuritizeService implements ISecuritizeService {
   }
 
   async subscribeToWebHookEvent(
-    accessToken: string,
     domainId: string,
     eventType: string = 'domain-investor-kyc-update',
     isActive: boolean = true,
@@ -44,7 +43,7 @@ export class SecuritizeService implements ISecuritizeService {
 
     const data = await this.api.post('v1/webhooks/subscriptions', payload, {
       headers: {
-        'access-token': accessToken,
+        Authorization: `apiKey ${apiKey}`,
       },
     });
 
@@ -136,6 +135,7 @@ export class SecuritizeService implements ISecuritizeService {
     const { investorId, accessToken, refreshToken } = authResult;
     const kycResult = await this.getKycStatus(accessToken);
     let statusKyc: PROFILE_STATUS = this.verifyKycStatus(kycResult.status);
+    Logger.log(statusKyc, kycResult, 'Securitize service status KYC');
     const isAddressOnWList = this.bcService.isWalletWhitelistedOnSecuritize(address);
 
     let whiteListTransaction: any = null;
@@ -148,6 +148,11 @@ export class SecuritizeService implements ISecuritizeService {
       }
     }
     const isPartner = await this.isPartner(address);
+    if (statusKyc !== 'VERIFIED') {
+      this.subscribeToWebHookEvent(investorId)
+        .then((status: any) => Logger.log(status))
+        .catch((er: any) => Logger.error(er));
+    }
 
     return {
       whiteListTransaction,

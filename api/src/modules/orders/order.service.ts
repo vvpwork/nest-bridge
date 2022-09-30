@@ -1,7 +1,6 @@
 import { Sequelize } from 'sequelize-typescript';
 import { HttpException, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { Bn } from '@/common/utils/';
 import {
   CurrenciesModel,
   IdentityModel,
@@ -9,9 +8,11 @@ import {
   IdentityNftBalanceModel,
   NftModel,
   OrdersModel,
-} from '@/db/models';
+} from '@DB/models';
+import { IIdentityBalanceModel } from '@DB/interfaces';
+import { NOTIFICATION_TYPES } from '@DB/enums';
+import { Bn } from '@/common/utils/';
 import { ICreateOrderDto } from './dtos/order-create.dto';
-import { IIdentityBalanceModel, IOrderModel } from '@/db/interfaces';
 import { IBuyOrderRequest } from './dtos/buy-order.dto';
 import { TransactionHistoryService } from '../transaction-history/transaction-history.service';
 import { getShortHash } from '@/common/utils/short-hash.utile';
@@ -19,7 +20,6 @@ import { config } from '@/common/config';
 import { BlockchainService } from '../blockchain/blockchain.service';
 import { IUserInterface } from '@/common/interfaces';
 import { NotificationService } from '../notification';
-import { NOTIFICATION_TYPES } from '@/db/enums';
 import { IUpdateOrderDto } from './dtos/update-order.dto';
 
 const { lockPeriod } = config.nft;

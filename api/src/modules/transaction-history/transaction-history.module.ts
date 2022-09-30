@@ -1,7 +1,7 @@
 import { Global, Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
+import { TransactionHistoryModel } from '@DB/models';
 import { TransactionHistoryService } from './transaction-history.service';
-import { TransactionHistoryModel } from '@/db/models';
 import { TransactionHistoryController } from './transaction-history.controller';
 import { BlockchainModule } from '../blockchain';
 

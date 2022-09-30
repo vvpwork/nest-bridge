@@ -20,10 +20,10 @@ import {
   PodcastModel,
   ProfileModel,
   TransactionHistoryModel,
-} from '@/db/models';
+} from '@DB/models';
+import { upsertData } from '@DB/utils/helper';
+import { IIdentityModel, INftModel, IProfileModel } from '@DB/interfaces';
 import { INftQueryDto } from './dtos/nft-query.dto';
-import { upsertData } from '@/db/utils/helper';
-import { IIdentityModel, INftModel, IProfileModel } from '@/db/interfaces';
 import { getShortHash } from '@/common/utils/short-hash.utile';
 import { config } from '@/common/config';
 import { countHelper } from '@/common/utils';

@@ -1,4 +1,4 @@
-import { HISTORY_TYPES } from '@/db/enums';
+import { HISTORY_TYPES } from '@DB/enums';
 
 export const getPnlHistorySelect = (identityId: string, type: HISTORY_TYPES) => {
   const select = `

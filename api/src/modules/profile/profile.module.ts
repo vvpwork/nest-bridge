@@ -1,8 +1,6 @@
 import { Global, Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 
-import { ProfileController } from './profile.controller';
-import { ProfileService } from './profile.service';
 import {
   BlockchainIdentityAddressModel,
   FollowerModel,
@@ -13,7 +11,9 @@ import {
   NotificationModel,
   PodcastModel,
   ProfileModel,
-} from '@/db/models';
+} from '@DB/models';
+import { ProfileController } from './profile.controller';
+import { ProfileService } from './profile.service';
 
 @Global()
 @Module({

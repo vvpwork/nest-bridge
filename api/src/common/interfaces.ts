@@ -1,8 +1,7 @@
 import { Request } from 'express';
 import BigNumber from 'bignumber.js';
 import { IIdentityModel } from '@DB/interfaces';
-import { IdentityModel } from '@DB/models';
-import { ACCOUNT_TYPES } from '@/db/enums';
+import { ACCOUNT_TYPES } from '@DB/enums';
 
 export interface IConfig {
   port: number;
@@ -32,6 +31,7 @@ export interface IConfig {
     ttl: string | number;
   };
   securitize: {
+    apiKey: string;
     issuerId: string;
     secret: string;
     baseUrl: string;

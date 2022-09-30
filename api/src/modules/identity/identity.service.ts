@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { BlockchainIdentityAddressModel, IdentityModel, ProfileModel } from '@/db/models';
-import { IIdentityModel } from '@/db/interfaces';
+import { BlockchainIdentityAddressModel, IdentityModel, ProfileModel } from '@DB/models';
+import { IIdentityModel } from '@DB/interfaces';
 
 @Injectable()
 export class IdentityService {

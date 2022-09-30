@@ -5,14 +5,16 @@ import Web3 from 'web3';
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Contract } from 'web3-eth-contract';
-import { erc1155abi } from '../abis/erc1155bridgeTowerProxy';
-import { DEFAULT_ETH_ADDRESS } from '@/common/constants';
-import { CloudinaryService } from '@/common/services/cloudinary.service';
+import { NftModel } from '@DB/models';
+import { upsertData } from '@DB/utils/helper';
 import {
   IBlockchainIdentityAddress,
   ICollectionModel,
   INftModel,
-} from '@/db/interfaces';
+} from '@DB/interfaces';
+import { DEFAULT_ETH_ADDRESS } from '@/common/constants';
+import { erc1155abi } from '../abis/erc1155bridgeTowerProxy';
+import { CloudinaryService } from '@/common/services/cloudinary.service';
 import {
   getAxiosInstance,
   sleep,
@@ -20,9 +22,7 @@ import {
   Web3Instance,
 } from '@/common/utils';
 import { TypeRpcCommand } from '../../rabbit/interfaces/enums';
-import { NftModel } from '@/db/models';
 import { getShortHash } from '@/common/utils/short-hash.utile';
-import { upsertData } from '@/db/utils/helper';
 import { IEventHandleData } from '../interfaces/blockchain-rabbit.interfsce';
 import { getAllCollectionsSelect } from '../selects';
 

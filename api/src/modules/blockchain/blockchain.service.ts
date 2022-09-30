@@ -6,12 +6,12 @@ import { Injectable } from '@nestjs/common';
 import HDWalletProvider from '@truffle/hdwallet-provider';
 import Web3 from 'web3';
 
+import { INftModel } from '@DB/interfaces';
 import { config } from '@/common/config';
 import { erc1155abi } from './abis/erc1155bridgeTowerProxy';
 import { getAxiosInstance } from '@/common/utils';
 import { CloudinaryService } from '@/common/services/cloudinary.service';
 import { DEFAULT_ETH_ADDRESS } from '@/common/constants';
-import { INftModel } from '@/db/interfaces';
 import { Web3Instance } from '@/common/utils/getWeb3Instance.util';
 import { abiErc20 } from './abis/erc-20-abi';
 

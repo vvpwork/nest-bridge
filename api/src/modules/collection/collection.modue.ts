@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { CollectionModel, NftModel } from '@/db/models';
+import { CollectionModel, NftModel } from '@DB/models';
 import { CollectionController } from './collection.controller';
 import { CollectionService } from './collection.service';
 import { BlockchainModule } from '../blockchain';

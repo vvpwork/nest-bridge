@@ -7,6 +7,7 @@ import { MulterModule } from '@nestjs/platform-express';
 import { config } from '@Common/config';
 import { ExceptionsFilter } from '@Common/filters';
 
+import * as models from '@DB/models';
 import {
   AuthModule,
   ProfileModule,
@@ -23,7 +24,6 @@ import {
   NotificationModule,
   DashboardModule,
 } from './modules';
-import * as models from './db/models';
 import { SseModule } from './modules/sse/sse.module';
 import { BlockchainModule } from './modules/blockchain';
 import { CreatorsModule } from './modules/creators';

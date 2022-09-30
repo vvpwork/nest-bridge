@@ -30,6 +30,7 @@ module.exports = {
     timeoutDelay: process.env.MESSAGE_TIMEOUT || 6000,
   },
   securitize: {
+    apiKey: process.env.SECURITIZE_API_KEY,
     issuerId: process.env.SECURITIZE_ISSUER_ID,
     secret: process.env.SECURITIZE_SECRET,
     baseUrl: process.env.SECURITIZE_API_BASE_URL,

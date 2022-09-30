@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { OrderController } from './order.controller';
 import {
   CurrenciesModel,
   IdentityModel,
@@ -8,7 +7,8 @@ import {
   IdentityNftBalanceModel,
   NftModel,
   OrdersModel,
-} from '@/db/models';
+} from '@DB/models';
+import { OrderController } from './order.controller';
 import { OrderService } from './order.service';
 import { BlockchainModule } from '../blockchain';
 import { NotificationModule } from '../notification';

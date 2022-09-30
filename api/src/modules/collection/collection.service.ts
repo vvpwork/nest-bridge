@@ -10,8 +10,8 @@ import {
   IdentityModel,
   NftModel,
   ProfileModel,
-} from '@/db/models';
-import { ICollectionModel } from '@/db/interfaces';
+} from '@DB/models';
+import { ICollectionModel } from '@DB/interfaces';
 import { ICollectionQueryDto } from './dtos';
 import { BlockchainService } from '../blockchain/blockchain.service';
 import { NftService } from '../nft/nft.service';

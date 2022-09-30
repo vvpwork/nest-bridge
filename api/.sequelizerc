@@ -2,7 +2,7 @@ const path = require('path');
 const config = require('config');
 
 const environment = config.get('nodeEnv');
-const databasePath = environment === 'development' ? './src/db/' : './src/db/';
+const databasePath = environment === 'development' ? '../db/' : '../db/';
 
 module.exports = {
   config: path.resolve(`./config`, 'config.js'),

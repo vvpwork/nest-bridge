@@ -13,7 +13,7 @@ import {
   PodcastModel,
   ProfileModel,
   TransactionHistoryModel,
-} from '@/db/models';
+} from '@DB/models';
 import { NftService } from './nft.service';
 import { NftController } from './nft.controller';
 import { RabbitModule } from '../rabbit';
