@@ -1,2 +1,5 @@
 export const apiV1Alias = '/api/v1';
 export const DEFAULT_ETH_ADDRESS = '0x0000000000000000000000000000000000000000';
+
+export const SECURITIZE_TOKEN_ID = '38eba883-c7af-4396-b627-7760e0218f6d';
+export const SECURITIZE_DOMAIN_ID = '44ed2a58-98ef-408c-b721-11760ba736a0';

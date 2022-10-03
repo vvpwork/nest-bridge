@@ -16,7 +16,7 @@ import { ITransactionHistory } from '../interfaces';
 import { IdentityModel } from './identity.model';
 import { NftModel } from './nft.model';
 import { TransactionHistoryTypeModel } from './transaction-history-type.model';
-
+// TODO update columns depended of staking and DSecuritize  
 @DefaultScope(() => ({
   order: [['createdAt', 'DESC']],
 }))

@@ -27,6 +27,7 @@ import {
 import { SseModule } from './modules/sse/sse.module';
 import { BlockchainModule } from './modules/blockchain';
 import { CreatorsModule } from './modules/creators';
+import { SecuritizeModule } from './modules/securitize';
 
 const routes = RouterModule.register([
   {
@@ -84,6 +85,10 @@ const routes = RouterModule.register([
   {
     path: '/dashboard',
     module: DashboardModule,
+  },
+  {
+    path: '/securitize',
+    module: SecuritizeModule,
   },
 ]);
 

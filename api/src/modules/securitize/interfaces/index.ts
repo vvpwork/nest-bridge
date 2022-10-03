@@ -14,6 +14,15 @@ export interface ISecuritizeKycStatusResponseData {
   isManual: boolean;
 }
 
+export interface IGetInvestorInfo {
+  tokensHeld: number;
+  tokensTreasury: number;
+  roundTokensAssigned: number;
+  bonusTokens: number;
+  roundBonusTokensAssigned: number;
+  roundBonusTokens: number;
+}
+
 export interface ISecuritizeGetPreparedTransactionResponseData {
   preparedTransaction: string;
 }

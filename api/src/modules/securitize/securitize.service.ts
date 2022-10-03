@@ -1,15 +1,18 @@
+/* eslint-disable max-len */
 import { HttpException, Injectable, Logger } from '@nestjs/common';
 import { Axios } from 'axios';
 import { PROFILE_STATUS } from '@DB/enums';
 import { getAxiosInstance } from '@/common/utils';
 import { config } from '@/common/config';
 import {
+  IGetInvestorInfo,
   ISecuritizeAuthorizeResponseData,
   ISecuritizeGetPreparedTransactionResponseData,
   ISecuritizeKycStatusResponseData,
   ISecuritizeService,
 } from './interfaces';
 import { BlockchainService } from '../blockchain/blockchain.service';
+import { SECURITIZE_DOMAIN_ID, SECURITIZE_TOKEN_ID } from '@/common/constants';
 
 const { baseUrl, secret, issuerId, apiKey } = config.securitize;
 
@@ -21,11 +24,16 @@ const statuses = {
 @Injectable()
 export class SecuritizeService implements ISecuritizeService {
   private api: Axios;
+  private publicApi: Axios;
   private kycUrl: string = '/api/v1/securitize/kyc';
   constructor(private bcService: BlockchainService) {
     this.api = getAxiosInstance(baseUrl, {
       clientId: issuerId,
       Authorization: `Bearer ${secret}`,
+    });
+
+    this.publicApi = getAxiosInstance('https://public-api.sandbox.securitize.io', {
+      Authorization: ` apiKey ${apiKey}`,
     });
   }
 
@@ -136,7 +144,8 @@ export class SecuritizeService implements ISecuritizeService {
     const kycResult = await this.getKycStatus(accessToken);
     let statusKyc: PROFILE_STATUS = this.verifyKycStatus(kycResult.status);
     Logger.log(statusKyc, kycResult, 'Securitize service status KYC');
-    const isAddressOnWList = this.bcService.isWalletWhitelistedOnSecuritize(address);
+
+    const isAddressOnWList = await this.bcService.isWalletWhitelistedOnSecuritize(address);
 
     let whiteListTransaction: any = null;
     if (statusKyc === 'VERIFIED' && !isAddressOnWList) {
@@ -163,5 +172,16 @@ export class SecuritizeService implements ISecuritizeService {
       statusKyc,
       isPartner,
     };
+  }
+
+  async getInvestorInfo(externalId: string) {
+    try {
+      const url = `v1/domains/${SECURITIZE_DOMAIN_ID}/investors/${externalId}/token-info?tokenId=${SECURITIZE_TOKEN_ID}`;
+      const investorInfo: IGetInvestorInfo = await this.publicApi.get(url);
+      return investorInfo;
+    } catch (err) {
+      Logger.error(err, 'Securitize service getInvestorInfo error: ');
+      return {};
+    }
   }
 }
