@@ -16,3 +16,4 @@
 14. Move all blockchain operation to worker (rpc call from api to worker &&  listeners map in redux)
 15. Add balance of coins to trans history
 16. Add EndToEnd tests 
+17. Refactor Docker files add root paths DB && multistaging 
