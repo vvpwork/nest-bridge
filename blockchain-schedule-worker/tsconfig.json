@@ -1,0 +1,50 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": false,
+    "noImplicitAny": false,
+    "noUnusedLocals": false,
+    "removeComments": true,
+    "noLib": false,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "node",
+    "useUnknownInCatchVariables": false,
+    "target": "ES2017",
+    "types": [
+      "node"
+    ],
+    "sourceMap": true,
+    "allowJs": true,
+    "outDir": "dist",
+    "lib": [
+      "es6",
+      "es7",
+      "es2017",
+      "DOM"
+    ],
+    "baseUrl": "./",
+    "paths": {
+      "@/*": [
+        "src/*"
+      ],
+      "@Common/*": [
+        "src/common/*"
+      ],
+      "@DB/*": [
+        "../db/*"
+      ],
+      "@Modules/*": [
+        "src/modules/*"
+      ]
+    }
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
