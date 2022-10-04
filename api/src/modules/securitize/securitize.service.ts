@@ -174,6 +174,7 @@ export class SecuritizeService implements ISecuritizeService {
     };
   }
 
+  // TODO need tot test
   async getInvestorInfo(externalId: string) {
     try {
       const url = `v1/domains/${SECURITIZE_DOMAIN_ID}/investors/${externalId}/token-info?tokenId=${SECURITIZE_TOKEN_ID}`;

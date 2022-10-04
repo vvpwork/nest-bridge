@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { BlockchainIdentityAddressModel, IdentityModel, ProfileModel } from '@DB/models';
 import { IIdentityModel } from '@DB/interfaces';
@@ -25,5 +25,15 @@ export class IdentityService {
     `;
     const [data] = await this.identityRepository.sequelize.query(query);
     return data[0];
+  }
+
+  async updateById(id: string, params: Partial<IIdentityModel>) {
+    const identity = await this.identityRepository.update(params, {
+      where: {
+        id,
+      },
+      returning: true,
+    });
+    return identity;
   }
 }
