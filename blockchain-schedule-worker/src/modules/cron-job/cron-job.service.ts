@@ -4,8 +4,8 @@ import { Cron } from '@nestjs/schedule';
 import { InjectModel } from '@nestjs/sequelize';
 
 import { NOTIFICATION_TYPES } from '@DB/enums';
+import { IdentityNftBalanceLock, NotificationModel } from '@DB/models';
 import { config } from '../../common/config';
-import { IdentityNftBalanceLock, NotificationModel } from '../../db/models';
 import { BlockchainService } from '../blockchain/blockchain.service';
 import { RabbitRootService } from '../rabbit/rabbit-root.service';
 
@@ -66,6 +66,7 @@ export class CronJobService {
     }
   }
 
+  // TODO move timeline to env 
   @Cron('0 */2 * * *')
   async consistencyDataCheck() {
     const query = `
